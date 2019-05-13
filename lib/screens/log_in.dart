@@ -161,15 +161,14 @@ class _LogInScreenState extends StateObserver<LogInScreen, Session, Changes> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           MaterialButton(
-                            child: Text("ENTRAR"),
-                            textColor: const Color(0xff221233),
-                            color: Colors.greenAccent,
-                            onPressed: () {
-                              final formState = _formKey.currentState;
-                              formState.save();
-                              state.logIn(_email, _password);
-                            }
-                          )
+                              child: Text("ENTRAR"),
+                              textColor: const Color(0xff221233),
+                              color: Colors.greenAccent,
+                              onPressed: () {
+                                final formState = _formKey.currentState;
+                                formState.save();
+                                state.logIn(_email, _password);
+                              })
                         ],
                       ),
                     ),
@@ -185,7 +184,7 @@ class _LogInScreenState extends StateObserver<LogInScreen, Session, Changes> {
                       splashColor: Colors.transparent,
                       child: Text("criar conta"),
                       textColor: const Color(0xff00e2ba),
-                      onPressed: () => print("ad"),
+                      onPressed: () => Navigator.pushNamed(context, '/sign_up'),
                     ),
                   ),
                   Container(

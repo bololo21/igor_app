@@ -1,12 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:observable_state/observable_state.dart';
 
-enum Changes{
+enum Changes {
   logIn,
   signUp,
 }
 
-class Session extends Observable<Changes>{
+class Session extends Observable<Changes> {
   FirebaseUser _currentUser;
   FirebaseUser get currentUser => _currentUser;
 
@@ -17,11 +18,13 @@ class Session extends Observable<Changes>{
     }, notify: Changes.logIn);
   }
 
-  void signUp(String email, String password) {
+  // TODO: arrumar resto dos dados do usuário (erro com provider installer)
+  void signUp(String email, String password, String username, String date, String gender) {
     setState(() async {
       _currentUser = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-    }
-    , notify: Changes.signUp);
+      /*Firestore.instance.collection('users').document(_currentUser.uid)
+          .setData({'username': username, 'birthDate': date, 'gender': gender });*/
+    }, notify: Changes.signUp);
   }
 }

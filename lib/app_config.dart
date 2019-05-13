@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppConfig{
+class AppConfig {
   double width;
   double height;
   double blockSize;
@@ -9,11 +9,9 @@ class AppConfig{
   setConfig(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    blockSize = width/100;
-    blockSizeVertical = height/100;
-
+    blockSize = width / 100;
+    blockSizeVertical = height / 100;
   }
-
 }
-final AppConfig appConfig = AppConfig();
 
+final AppConfig appConfig = AppConfig();
