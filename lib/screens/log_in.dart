@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:igor_app/app_config.dart';
+import 'package:igor_app/session.dart';
+import 'package:observable_state/observable_state.dart';
 
 class LogInScreen extends StatefulWidget {
   @override
   _LogInScreenState createState() => _LogInScreenState();
 }
 
-class _LogInScreenState extends State<LogInScreen> {
+class _LogInScreenState extends StateObserver<LogInScreen, Session, Changes> {
   String _email, _password;
   bool x = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  List<Changes> get changes => [Changes.logIn];
+
   @override
   Widget build(BuildContext context) {
     appConfig.setConfig(context);
@@ -158,7 +164,11 @@ class _LogInScreenState extends State<LogInScreen> {
                             child: Text("ENTRAR"),
                             textColor: const Color(0xff221233),
                             color: Colors.greenAccent,
-                            onPressed: () => print("asda"),
+                            onPressed: () {
+                              final formState = _formKey.currentState;
+                              formState.save();
+                              state.logIn(_email, _password);
+                            }
                           )
                         ],
                       ),
@@ -188,7 +198,8 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                   ),
                 ],
-              )
+              ),
+              Text('${state.currentUser}')
             ],
           )),
         )

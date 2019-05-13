@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:igor_app/app_config.dart';
 import 'package:igor_app/screens/log_in.dart';
+import 'package:igor_app/session.dart';
+import 'package:observable_state/observable_state.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  final session = Session();
+  runApp(
+      ObservableProvider(
+        state: session,
+        child: MyApp(),
+  ));
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
