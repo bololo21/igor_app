@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:observable_state/observable_state.dart';
 
@@ -23,8 +23,12 @@ class Session extends Observable<Changes> {
     setState(() async {
       _currentUser = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      /*Firestore.instance.collection('users').document(_currentUser.uid)
-          .setData({'username': username, 'birthDate': date, 'gender': gender });*/
     }, notify: Changes.signUp);
   }
+
+  void setData(String email, String username, String date, String gender) {
+    Firestore.instance.collection('users').document(_currentUser.uid)
+        .setData({'username': username, 'birthDate': date, 'gender': gender });
+  }
 }
+*/

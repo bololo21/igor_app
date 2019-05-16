@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:igor_app/app_config.dart';
-import 'package:igor_app/screens/log_in.dart';
-import 'package:igor_app/screens/sign_up.dart';
-import 'package:igor_app/session.dart';
-import 'package:observable_state/observable_state.dart';
+import 'package:igor_app/src/screens/log_in.dart';
+import 'package:igor_app/src/screens/sign_up.dart';
 
 void main() {
-  final session = Session();
-  runApp(
-      ObservableProvider(
-        state: session,
-        child: MyApp(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

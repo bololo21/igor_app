@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:igor_app/app_config.dart';
-import 'package:igor_app/session.dart';
-import 'package:observable_state/observable_state.dart';
+import 'package:igor_app/src/blocs/bloc_provider.dart';
+import 'package:igor_app/src/blocs/login_bloc.dart';
 
 class LogInScreen extends StatefulWidget {
   @override
   _LogInScreenState createState() => _LogInScreenState();
 }
 
-class _LogInScreenState extends StateObserver<LogInScreen, Session, Changes> {
+class _LogInScreenState extends State<LogInScreen> {
   String _email, _password;
   bool x = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  @override
-  List<Changes> get changes => [Changes.logIn];
+  final _bloc = $Provider.of<LoginBloc>();
 
   @override
   Widget build(BuildContext context) {
     appConfig.setConfig(context);
+
     return Scaffold(
         body: Stack(
       children: <Widget>[
         new Container(
-          // configuração de background image
           decoration: new BoxDecoration(
             image: new DecorationImage(
               image: new AssetImage("assets/log_in/Backgrownd.png"),
@@ -70,56 +68,62 @@ class _LogInScreenState extends StateObserver<LogInScreen, Session, Changes> {
                       ),
                       child: Column(
                         children: <Widget>[
-                          TextFormField(
-                            cursorColor: const Color(0xffe2e2e1),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (input) {
-                              if (input.isEmpty)
-                                return "E-mail não deve ser vazio.";
-                            },
-                            onSaved: (input) => _email = input,
-                            decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: const Color(0xffe2e2e1))),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: const Color(0xffe2e2e1))),
-                                suffixIcon: Icon(
-                                  Icons.error,
-                                  color: Colors.greenAccent,
-                                ),
-                                labelText: 'E-mail',
-                                labelStyle: TextStyle(
-                                    color: const Color(0xffe2e2e1),
-                                    fontSize: 22,
-                                    fontFamily: 'Fira-sans')),
-                          ),
-                          TextFormField(
-                            cursorColor: const Color(0xffe2e2e1),
-                            validator: (input) {
-                              if (input.isEmpty)
-                                return "Senha não deve ser vazia";
-                            },
-                            onSaved: (input) => _password = input,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: const Color(0xffe2e2e1))),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: const Color(0xffe2e2e1))),
-                                suffixIcon: Icon(
-                                  Icons.error,
-                                  color: Colors.greenAccent,
-                                ),
-                                labelText: 'Senha',
-                                labelStyle: TextStyle(
-                                    color: const Color(0xffe2e2e1),
-                                    fontSize: 22,
-                                    fontFamily: 'Fira-sans')),
-                          ),
+                          StreamBuilder(
+                              stream: _bloc.email,
+                              builder:
+                                  (context, AsyncSnapshot<String> snapshot) {
+                                return TextField(
+                                  cursorColor: const Color(0xffe2e2e1),
+                                  keyboardType: TextInputType.emailAddress,
+                                  onChanged:  _bloc.changeEmail,
+                                  style: TextStyle(color: const Color(0xffe2e2e1)),
+                                  decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: const Color(0xffe2e2e1))),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: const Color(0xffe2e2e1))),
+                                      suffixIcon: Icon(
+                                        Icons.error,
+                                        color: Colors.greenAccent,
+                                      ),
+                                      labelText: 'E-mail',
+                                      labelStyle: TextStyle(
+                                          color: const Color(0xffe2e2e1),
+                                          fontSize: 22,
+                                          fontFamily: 'Fira-sans'),
+                                      errorText: snapshot.error),
+                                );
+                              }),
+                          StreamBuilder(
+                              stream: _bloc.password,
+                              builder:
+                                  (context, AsyncSnapshot<String> snapshot) {
+                                return TextField(
+                                  cursorColor: const Color(0xffe2e2e1),
+                                  obscureText: true,
+                                  onChanged: _bloc.changePassword,
+                                  style: TextStyle(color: const Color(0xffe2e2e1)),
+                                  decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: const Color(0xffe2e2e1))),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: const Color(0xffe2e2e1))),
+                                      suffixIcon: Icon(
+                                        Icons.error,
+                                        color: Colors.greenAccent,
+                                      ),
+                                      labelText: 'Senha',
+                                      labelStyle: TextStyle(
+                                          color: const Color(0xffe2e2e1),
+                                          fontSize: 22,
+                                          fontFamily: 'Fira-sans'),
+                                      errorText: snapshot.error),
+                                );
+                              }),
                         ],
                       ),
                     ),
@@ -164,11 +168,8 @@ class _LogInScreenState extends StateObserver<LogInScreen, Session, Changes> {
                               child: Text("ENTRAR"),
                               textColor: const Color(0xff221233),
                               color: Colors.greenAccent,
-                              onPressed: () {
-                                final formState = _formKey.currentState;
-                                formState.save();
-                                state.logIn(_email, _password);
-                              })
+                              onPressed: () => submit(),
+                              )
                         ],
                       ),
                     ),
@@ -198,11 +199,24 @@ class _LogInScreenState extends StateObserver<LogInScreen, Session, Changes> {
                   ),
                 ],
               ),
-              Text('${state.currentUser}')
             ],
           )),
         )
       ],
     ));
   }
+
+  @override
+  void dispose() {
+    $Provider.dispose<LoginBloc>();
+    super.dispose();
+  }
+
+  void submit() {
+    _bloc.showProgressBar(true);
+    _bloc.logIn().then((value) {
+      Navigator.pushNamed(context, '/sign_up');
+    });
+  }
+
 }

@@ -19,11 +19,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  observable_state:
   firebase_auth:
   cloud_firestore:
   firebase_core:
   firebase_storage:
+  rxdart:
+  dash:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -32,6 +33,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^1.1.3
+  dash_generator:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
