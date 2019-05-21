@@ -3,6 +3,9 @@ import 'package:igor_app/app_config.dart';
 import 'package:igor_app/src/screens/log_in.dart';
 import 'package:igor_app/src/screens/sign_up.dart';
 
+import 'src/screens/index_adventure.dart';
+import 'src/screens/register_adventure.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -31,6 +34,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => LogInScreen(),
         '/log_in': (context) => LogInScreen(),
         '/sign_up': (context) => SignUpScreen(),
+        '/register_adventure': (context) => RegisterAdventureScreen(),
+        '/index_adventure': (context) => IndexAdventureScreen(),
       },
     );
   }

@@ -61,6 +61,11 @@ flutter:
     - assets/log_in/Entrar.png
     - assets/log_in/Checked.png
     - assets/log_in/Backgrownd.png
+    - assets/adventures/miniatura_coast.png
+    - assets/adventures/miniatura_corvali.png
+    - assets/adventures/miniatura_heartlands.png
+    - assets/adventures/miniatura_krevast.png
+    - assets/adventures/miniatura_imagem_automática.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

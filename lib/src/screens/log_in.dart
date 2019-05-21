@@ -215,7 +215,7 @@ class _LogInScreenState extends State<LogInScreen> {
   void submit() {
     _bloc.showProgressBar(true);
     _bloc.logIn().then((value) {
-      Navigator.pushNamed(context, '/sign_up');
+      Navigator.pushNamed(context, '/index_adventure');
     });
   }
 

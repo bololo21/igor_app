@@ -247,4 +247,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     }
   }
+
+  @override
+  void dispose() {
+    $Provider.dispose<SignUpBloc>();
+    super.dispose();
+  }
 }
