@@ -66,6 +66,8 @@ flutter:
     - assets/adventures/miniatura_heartlands.png
     - assets/adventures/miniatura_krevast.png
     - assets/adventures/miniatura_imagem_automática.png
+    - assets/navbar/igor.png
+    - assets/navbar/Aventuras.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
