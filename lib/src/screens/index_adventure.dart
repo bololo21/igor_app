@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/adventures_bloc.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
-import 'package:igor_app/src/blocs/login_bloc.dart';
 import 'package:igor_app/src/models/adventure.dart';
 
 import '../../app_config.dart';
@@ -21,7 +20,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: IgorAppBar(),
-        drawer: IgorDrawer(),
+        drawer: IgorDrawer(context),
         body: Container(
           decoration: new BoxDecoration(color: const Color(0xff221233)),
           alignment: Alignment(0.0, 0.0),
@@ -91,12 +90,13 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                           SizedBox(height: 6 * appConfig.blockSizeVertical),
                           Container(
                             alignment: Alignment.topLeft,
-                            child: Text("próxima sessão ...",
+                            child: Text("próxima sessão 02/11",
                                 style: TextStyle(
                                     fontFamily: 'Fira-sans',
                                     color: const Color(0xffe2e2e1),
                                     fontSize: 12)),
                           ),
+                          SizedBox(height: 2 * appConfig.blockSizeVertical),
                           showProgressBar(adventuresList[index].id),
                         ],
                       ),
@@ -118,6 +118,11 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
 
   // TODO - implementar showProgressBar
   Widget showProgressBar(int id) {
-    return Text("");
+    return Stack(
+      children: <Widget>[
+        //Image.asset("assets/adventures/marcador_barra_de_progressão.png", width: 2 * appConfig.blockSize),
+        Image.asset("assets/adventures/barra_de_progressão_jogadas.png", width: 100 * appConfig.blockSize),
+      ]
+    );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:igor_app/app_config.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';

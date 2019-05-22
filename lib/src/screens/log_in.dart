@@ -9,7 +9,6 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
-  String _email, _password;
   bool x = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _bloc = $Provider.of<LoginBloc>();

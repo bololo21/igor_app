@@ -61,13 +61,21 @@ flutter:
     - assets/log_in/Entrar.png
     - assets/log_in/Checked.png
     - assets/log_in/Backgrownd.png
+
     - assets/adventures/miniatura_coast.png
     - assets/adventures/miniatura_corvali.png
     - assets/adventures/miniatura_heartlands.png
     - assets/adventures/miniatura_krevast.png
     - assets/adventures/miniatura_imagem_automática.png
-    - assets/navbar/igor.png
+    - assets/adventures/barra_de_progressão_jogadas.png
+    - assets/adventures/marcador_barra_de_progressão.png
+
+    - assets/navbar/Igor.png
     - assets/navbar/Aventuras.png
+    - assets/navbar/Configurações.png
+    - assets/navbar/Conta.png
+    - assets/navbar/Livros.png
+    - assets/navbar/Notificações.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

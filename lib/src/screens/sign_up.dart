@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:igor_app/app_config.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
@@ -16,8 +15,7 @@ TextEditingController usernameController = new TextEditingController();
 TextEditingController genderController = new TextEditingController();
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  String _email, _password, _username, _date, _gender;
-  bool x = false;
+  String _date, _gender;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _bloc = $Provider.of<SignUpBloc>();
 
