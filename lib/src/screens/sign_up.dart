@@ -204,6 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 color: Colors.greenAccent,
                                 onPressed: () {
                                   _bloc.signUp();
+                                  Navigator.pushNamed(context, '/index_adventure');
                                 })
                           ],
                         ),

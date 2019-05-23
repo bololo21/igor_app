@@ -69,8 +69,9 @@ flutter:
     - assets/adventures/miniatura_imagem_automática.png
     - assets/adventures/barra_de_progressão_jogadas.png
     - assets/adventures/marcador_barra_de_progressão.png
+    - assets/adventures/Botão_Criar_Nova_Aventura.png
 
-    - assets/navbar/igor.png
+    - assets/navbar/Igor.png
     - assets/navbar/Aventuras.png
     - assets/navbar/Configurações.png
     - assets/navbar/Conta.png

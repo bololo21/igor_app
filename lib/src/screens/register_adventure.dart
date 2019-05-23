@@ -52,7 +52,7 @@ class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
                               Row(children: <Widget>[
                                 GestureDetector(
                                   child: Icon(Icons.close, color: Colors.black12,),
-                                  onTap: () => Navigator.pushNamed(context, '/sign_up'),
+                                  onTap: () => Navigator.pushNamed(context, '/index_adventure'),
                                 ),
                                 SizedBox(width: 2 * appConfig.blockSize),
                                 Text("Criar Aventura",
@@ -116,6 +116,7 @@ class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
                                         color: Colors.teal,
                                         onPressed: () {
                                           _bloc.registerAdventure();
+                                          Navigator.pushNamed(context, '/index_adventure');
                                         })
                                   ],
                                 ),

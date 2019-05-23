@@ -19,6 +19,17 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: Container(
+          width: 17 * appConfig.blockSize,
+          height: 17 * appConfig.blockSize,
+          child: FloatingActionButton(
+            child: Image.asset('assets/adventures/Botão_Criar_Nova_Aventura.png'),
+            onPressed: () => Navigator.pushNamed(context, '/register_adventure'),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: IgorAppBar(),
         drawer: IgorDrawer(context),
         body: Container(
@@ -34,19 +45,19 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                       if (snapshot.hasData) {
                         List<DocumentSnapshot> docs = snapshot.data.documents;
                         List<Adventure> adventuresList =
-                            _bloc.mapToList(docList: docs);
+                        _bloc.mapToList(docList: docs);
                         if (adventuresList.isNotEmpty) {
                           return buildList(adventuresList);
                         } else {
-                          return Text("No Goals");
+                          return Text("Você ainda não criou nenhuma aventura :(", style: TextStyle(fontFamily: 'Fira-sans', color: const Color(0xffe2e2e1)));
                         }
                       } else {
-                        return Text("No Goals");
+                        return Text("Carregando...", style: TextStyle(fontFamily: 'Fira-sans', color: const Color(0xffe2e2e1)));
                       }
                     },
                   );
                 } else
-                  return Text("");
+                  return Text("Carregando...", style: TextStyle(fontFamily: 'Fira-sans', color: const Color(0xffe2e2e1)));
               }),
         ));
   }
@@ -105,7 +116,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                 ),
               ),
             ]),
-            onTap: () => print("aaa"),
+            onTap: () => print("view '${adventuresList[index].name}'"),
           );
         });
   }
@@ -118,11 +129,10 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
 
   // TODO - implementar showProgressBar
   Widget showProgressBar(int id) {
-    return Stack(
-      children: <Widget>[
-        //Image.asset("assets/adventures/marcador_barra_de_progressão.png", width: 2 * appConfig.blockSize),
-        Image.asset("assets/adventures/barra_de_progressão_jogadas.png", width: 100 * appConfig.blockSize),
-      ]
-    );
+    return Stack(children: <Widget>[
+      //Image.asset("assets/adventures/marcador_barra_de_progressão.png", width: 2 * appConfig.blockSize),
+      Image.asset("assets/adventures/barra_de_progressão_jogadas.png",
+          width: 100 * appConfig.blockSize),
+    ]);
   }
 }
