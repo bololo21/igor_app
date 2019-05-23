@@ -13,4 +13,8 @@ class FirebaseAuthProvider {
         .createUserWithEmailAndPassword(email: email, password: password);
   }
 
+  Future<void> logout() {
+    return _firebaseAuth.signOut();
+  }
+
 }

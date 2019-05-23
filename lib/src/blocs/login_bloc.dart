@@ -40,6 +40,10 @@ class LoginBloc extends Bloc {
     return _repository.authenticateUser(_email.value, _password.value);
   }
 
+  Future<void> logOut() {
+    return _repository.logout();
+  }
+
   void dispose() async {
     await _email.drain();
     _email.close();

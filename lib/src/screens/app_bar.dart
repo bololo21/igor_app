@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:igor_app/src/blocs/bloc_provider.dart';
+import 'package:igor_app/src/blocs/login_bloc.dart';
 
 import '../../app_config.dart';
+
+final _bloc = $Provider.of<LoginBloc>();
 
 class IgorAppBar extends AppBar {
   IgorAppBar({Key key})
@@ -27,7 +31,7 @@ class IgorDrawer extends Drawer {
             child: Container(
               color: const Color(0xff221233),
               child: Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
+                padding: const EdgeInsets.only(left: 25, right: 25, bottom: 35),
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: 10 * appConfig.blockSizeVertical),
@@ -130,6 +134,27 @@ class IgorDrawer extends Drawer {
                         ),
                       ),
                     ),
+                    Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  FlatButton(
+                                      child: Text("logout",
+                                          style: TextStyle(
+                                              color: const Color(0xffff3d55),
+                                              fontFamily: 'Fira-sans')),
+                                      onPressed: () {
+                                        _bloc.logOut();
+                                        return Navigator.pushNamed(context, '/log_in');
+                                      }),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                   ],
                 ),
               ),

@@ -18,6 +18,9 @@ class Repository {
     return _firestoreProvider.registerUserData(user.uid, username, date, gender);
   }
 
+  Future<void> logout() =>
+      _firebaseAuthProvider.logout();
+
   //adventures
 
   Future<void> registerAdventure(String userUid, String adventureName, String adventureDate, String description) =>
