@@ -18,6 +18,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         floatingActionButton: Container(
           width: 17 * appConfig.blockSize,
@@ -80,7 +81,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                     fit: BoxFit.fill,
                   ),
                 ),
-                child: Column(
+                child : Column(
                   children: <Widget>[
                     Container(
                       padding: EdgeInsets.fromLTRB(
@@ -88,6 +89,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                           3 * appConfig.blockSizeVertical,
                           15 * appConfig.blockSize,
                           3 * appConfig.blockSizeVertical),
+
                       child: Column(
                         children: <Widget>[
                           Container(
@@ -98,10 +100,10 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                                     color: const Color(0xffe2e2e1),
                                     fontSize: 24)),
                           ),
-                          SizedBox(height: 6 * appConfig.blockSizeVertical),
+                          SizedBox(height: 5 * appConfig.blockSizeVertical),
                           Container(
                             alignment: Alignment.topLeft,
-                            child: Text("próxima sessão 02/11",
+                            child: Text("Próxima sessão 02/11",
                                 style: TextStyle(
                                     fontFamily: 'Fira-sans',
                                     color: const Color(0xffe2e2e1),
@@ -112,14 +114,14 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                         ],
                       ),
                     ),
-                  ],
+                    ],
                 ),
               ),
-            ]),
+              ]),
             onTap: () => print("view '${adventuresList[index].name}'"),
           );
-        });
-  }
+          });
+    }
 
   @override
   void dispose() {
