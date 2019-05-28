@@ -16,6 +16,12 @@ class FirestoreProvider {
         .document().setData({'masterUid': userUid, 'createdAt': adventureDate, 'name': adventureName, 'description' : description });
   }
 
+  Future<void> createSessionData(String adventureName, String sessionDate) {
+    return _firestore
+        .collection('sessions')
+        .document().setData({'adventureName': adventureName, 'sessionDate': sessionDate});
+  }
+
   Future<void> registerPlayerData(String adventureUid, String playerUid) {
     return _firestore
         .collection('adventures')

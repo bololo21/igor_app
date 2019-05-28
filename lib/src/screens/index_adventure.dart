@@ -109,7 +109,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                                     color: const Color(0xffe2e2e1),
                                     fontSize: 12)),
                           ),
-                          SizedBox(height: 2 * appConfig.blockSizeVertical),
+                          SizedBox(height: appConfig.blockSizeVertical),
                           showProgressBar(adventuresList[index].id),
                         ],
                       ),
