@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>395661172517-bf6ag8r7inig07rd3qdlqml7p5mae9p3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.395661172517-bf6ag8r7inig07rd3qdlqml7p5mae9p3</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDmh8eHUOWysxOYpeCSYSB1j4xVkoEKmB8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>395661172517</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.private.igorApp</string>
+	<key>PROJECT_ID</key>
+	<string>igor-78</string>
+	<key>STORAGE_BUCKET</key>
+	<string>igor-78.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:395661172517:ios:d9fa91a4bf1dfaf4</string>
+	<key>DATABASE_URL</key>
+	<string>https://igor-78.firebaseio.com</string>
+</dict>
+</plist>
