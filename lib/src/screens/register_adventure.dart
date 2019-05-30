@@ -11,6 +11,7 @@ class RegisterAdventureScreen extends StatefulWidget {
 class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _bloc = $Provider.of<RegisterAdventureBloc>();
+  String _imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +99,45 @@ class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
                                                 errorText: snapshot.error),
                                           );
                                         }),
+                                    StreamBuilder(
+                                        stream: _bloc.imagePath,
+                                        builder:
+                                            (context, AsyncSnapshot<String> snapshot) {
+                                          return new FormField(
+                                            builder: (FormFieldState state) {
+                                              return InputDecorator(
+                                                decoration: InputDecoration(
+                                                  labelText: 'Imagem de Fundo',
+                                                ),
+                                                isEmpty: _imagePath == '',
+                                                child: new DropdownButtonHideUnderline(
+                                                  child: new DropdownButton(
+                                                    value: _imagePath,
+                                                    isDense: true,
+                                                    onChanged: (value){
+                                                      setState(() {
+                                                        _imagePath = value;
+                                                      });
+                                                      _bloc.changeImagePath(value);
+                                                    },
+                                                    items: <String>[
+                                                      'Coast',
+                                                      'Corvali',
+                                                      'Heartlands',
+                                                      'Krevast',
+                                                      'Padrão'
+                                                    ].map((String value) {
+                                                      return new DropdownMenuItem(
+                                                        value: value,
+                                                        child: new Text(value),
+                                                      );
+                                                    }).toList(),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }),
                                   ],
                                 ),
                               ),
@@ -116,6 +156,7 @@ class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
                                         color: Colors.teal,
                                         onPressed: () {
                                           _bloc.registerAdventure();
+                                          //Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: )));
                                           Navigator.pushNamed(context, '/index_adventure');
                                         })
                                   ],

@@ -25,6 +25,7 @@ dependencies:
   firebase_storage:
   rxdart:
   dash:
+  toast: ^0.1.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -62,16 +63,19 @@ flutter:
     - assets/log_in/Checked.png
     - assets/log_in/Backgrownd.png
 
-    - assets/adventures/miniatura_coast.png
-    - assets/adventures/miniatura_corvali.png
-    - assets/adventures/miniatura_heartlands.png
-    - assets/adventures/miniatura_krevast.png
-    - assets/adventures/miniatura_imagem_automática.png
+    - assets/adventures/Coast.png
+    - assets/adventures/Corvali.png
+    - assets/adventures/Heartlands.png
+    - assets/adventures/Krevast.png
+    - assets/adventures/Padrão.png
     - assets/adventures/barra_de_progressão_jogadas.png
     - assets/adventures/marcador_barra_de_progressão.png
     - assets/adventures/Botão_Criar_Nova_Aventura.png
+    - assets/adventures/andamento.png
+    - assets/adventures/jogadores.png
+    - assets/adventures/botão_adicionar_jogadores.png
+    - assets/adventures/botão_adicionar_sessões.png
 
-    - assets/navbar/Igor.png
     - assets/navbar/Aventuras.png
     - assets/navbar/Configurações.png
     - assets/navbar/Conta.png

@@ -176,16 +176,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     },
                                   );
                                 }),
-
-                            /*    TextFormField(
-                              onSaved: (input) => _gender = input,
-                              decoration: InputDecoration(
-                                  labelText: 'Sexo',
-                                  labelStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontFamily: 'Fira-sans')),
-                            ),*/
                           ],
                         ),
                       ),

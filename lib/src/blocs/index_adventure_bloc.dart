@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash/dash.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:igor_app/src/models/adventure.dart';
 
 import '../resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class AdventuresBloc extends Bloc {
+class IndexAdventureBloc extends Bloc {
   final _repository = Repository();
   final _name = BehaviorSubject<String>();
   final _description = BehaviorSubject<String>();
@@ -32,7 +31,7 @@ class AdventuresBloc extends Bloc {
   List mapToList({List<DocumentSnapshot> docList}) {
       List<Adventure> adventureList = [];
       docList.forEach((document) {
-        Adventure adventure = Adventure(document.data["name"], document.data["description"], document.data["createdAt"], document.data["masterUid"]);
+        Adventure adventure = Adventure(document.documentID ,document.data["name"], document.data["description"], document.data["createdAt"], document.data["masterUid"], document.data["imagePath"]);
         adventureList.add(adventure);
       });
       return adventureList;
@@ -48,6 +47,6 @@ class AdventuresBloc extends Bloc {
     _showProgress.close();
   }
 
-  static Bloc instance() => AdventuresBloc();
+  static Bloc instance() => IndexAdventureBloc();
 
 }

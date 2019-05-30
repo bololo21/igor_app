@@ -1,15 +1,14 @@
 class Adventure {
+  final String _id;
   final String _name;
   final String _description;
   final String _createdAt;
   final String _masterUid;
-  int _id;
+  final String _imagePath;
 
-  Adventure(this._name, this._description, this._createdAt, this._masterUid){
-    this._id = DateTime.now().millisecondsSinceEpoch;
-  }
+  Adventure(this._id, this._name, this._description, this._createdAt, this._masterUid, this._imagePath);
 
-  String get name => _name;
+  String get id => _id;  String get name => _name;
 
   String get description => _description;
 
@@ -17,5 +16,5 @@ class Adventure {
 
   String get masterUid => _masterUid;
 
-  int get id => _id;
+  String get imagePath => _imagePath;
 }

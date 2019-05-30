@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:igor_app/src/blocs/adventures_bloc.dart';
+import 'package:igor_app/src/blocs/index_adventure_bloc.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
 import 'package:igor_app/src/models/adventure.dart';
+import 'package:igor_app/src/screens/view_adventure.dart';
 
 import '../../app_config.dart';
 import 'app_bar.dart';
@@ -14,7 +15,7 @@ class IndexAdventureScreen extends StatefulWidget {
 }
 
 class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
-  final _bloc = $Provider.of<AdventuresBloc>();
+  final _bloc = $Provider.of<IndexAdventureBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +77,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                 decoration: new BoxDecoration(
                   image: new DecorationImage(
                     image: new AssetImage(
-                        "assets/adventures/miniatura_krevast.png"),
+                        "assets/adventures/${adventuresList[index].imagePath}.png"),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -116,19 +117,19 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                 ),
               ),
             ]),
-            onTap: () => print("view '${adventuresList[index].name}'"),
+            onTap:() => Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: adventuresList[index].id.toString()))),
           );
         });
   }
 
   @override
   void dispose() {
-    $Provider.dispose<AdventuresBloc>();
+    $Provider.dispose<IndexAdventureBloc>();
     super.dispose();
   }
 
   // TODO - implementar showProgressBar
-  Widget showProgressBar(int id) {
+  Widget showProgressBar(String id) {
     return Stack(children: <Widget>[
       //Image.asset("assets/adventures/marcador_barra_de_progressão.png", width: 2 * appConfig.blockSize),
       Image.asset("assets/adventures/barra_de_progressão_jogadas.png",
