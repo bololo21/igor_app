@@ -29,6 +29,11 @@ class $Provider extends Provider {
           return BlocCache.getBlocInstance(
               "AdventuresBloc", () => AdventuresBloc.instance());
         }
+      case CreateSessionBloc:
+        {
+          return BlocCache.getBlocInstance(
+              "CreateSessionBloc", () => CreateSessionBloc.instance());
+        }
     }
     return null;
   }
@@ -53,6 +58,11 @@ class $Provider extends Provider {
       case AdventuresBloc:
         {
           BlocCache.dispose("AdventuresBloc");
+          break;
+        }
+      case CreateSessionBloc:
+        {
+          BlocCache.dispose("CreateSessionBloc");
           break;
         }
     }
