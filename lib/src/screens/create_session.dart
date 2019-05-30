@@ -13,9 +13,15 @@ class RegisterSessionScreen extends StatefulWidget {
 class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _bloc = $Provider.of<CreateSessionBloc>();
-  
+  int month = new DateTime.now().month;
+  int day = new DateTime.now().day;
+  String _dateButton = "";
+
   @override
   Widget build(BuildContext context) {
+    if(_dateButton == ""){
+      _dateButton = day.toString() + "/" + month.toString();
+    }
     appConfig.setConfig(context);
     return Scaffold(
         body: Stack(
@@ -106,25 +112,14 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             MaterialButton(
-                                child: Text("DATA"),
+                                child: Text(_dateButton),
                                 textColor: const Color(0xffe2e2e1),
                                 color: Colors.teal,
                                 onPressed: () {
                                   _selectDate(context);
                                 }),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          right: 20.0,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            MaterialButton(
-                                child: Text("PRONTO"),
+                                MaterialButton(
+                                child: Text("CRIAR"),
                                 textColor: const Color(0xffe2e2e1),
                                 color: Colors.teal,
                                 onPressed: () {
@@ -133,12 +128,6 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                       context, '/index_adventure');
                                 })
                           ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          right: 20.0,
                         ),
                       ),
                     ],
@@ -166,10 +155,12 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
       lastDate: new DateTime(2020),
     );
     if (picked != null) {
-      //DateTime _date;
-  //String _dateFormated = DateFormat('dd/MM').format(_date);
       String _dateFormated =  DateFormat('dd/MM/yyyy').format(picked);
-      _bloc.changeDate(_dateFormated.toString());
+      _bloc.changeDate(_dateFormated);
+      _dateFormated = DateFormat('dd/MM').format(picked);
+      setState(() {
+        _dateButton = _dateFormated;
+      });
     }
   }
 }
