@@ -1,9 +1,11 @@
 import 'package:dash/dash.dart';
-import 'adventures_bloc.dart';
+import 'package:igor_app/src/blocs/add_user_bloc.dart';
+import 'index_adventure_bloc.dart';
 import 'sign_up_bloc.dart';
 import 'login_bloc.dart';
 import 'register_adventure_bloc.dart';
 import 'create_session_bloc.dart';
+import 'view_adventure_bloc.dart';
 
 part 'bloc_provider.g.dart';
 
@@ -13,6 +15,8 @@ part 'bloc_provider.g.dart';
 @BlocProvider.register(LoginBloc)
 @BlocProvider.register(SignUpBloc)
 @BlocProvider.register(RegisterAdventureBloc)
-@BlocProvider.register(AdventuresBloc)
+@BlocProvider.register(IndexAdventureBloc)
+@BlocProvider.register(ViewAdventureBloc)
+@BlocProvider.register(AddUserBloc)
 @BlocProvider.register(CreateSessionBloc)
 abstract class Provider {}

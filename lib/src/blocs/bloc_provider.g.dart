@@ -24,10 +24,20 @@ class $Provider extends Provider {
           return BlocCache.getBlocInstance(
               "RegisterAdventureBloc", () => RegisterAdventureBloc.instance());
         }
-      case AdventuresBloc:
+      case IndexAdventureBloc:
         {
           return BlocCache.getBlocInstance(
-              "AdventuresBloc", () => AdventuresBloc.instance());
+              "IndexAdventureBloc", () => IndexAdventureBloc.instance());
+        }
+      case ViewAdventureBloc:
+        {
+          return BlocCache.getBlocInstance(
+              "ViewAdventureBloc", () => ViewAdventureBloc.instance());
+        }
+      case AddUserBloc:
+        {
+          return BlocCache.getBlocInstance(
+              "AddUserBloc", () => AddUserBloc.instance());
         }
       case CreateSessionBloc:
         {
@@ -55,9 +65,19 @@ class $Provider extends Provider {
           BlocCache.dispose("RegisterAdventureBloc");
           break;
         }
-      case AdventuresBloc:
+      case IndexAdventureBloc:
         {
-          BlocCache.dispose("AdventuresBloc");
+          BlocCache.dispose("IndexAdventureBloc");
+          break;
+        }
+      case ViewAdventureBloc:
+        {
+          BlocCache.dispose("ViewAdventureBloc");
+          break;
+        }
+      case AddUserBloc:
+        {
+          BlocCache.dispose("AddUserBloc");
           break;
         }
       case CreateSessionBloc:

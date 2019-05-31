@@ -17,7 +17,7 @@ class IgorAppBar extends AppBar {
                 onPressed: () => print('popop'))
           ],
           title: Container(
-              child: new Image.asset('assets/navbar/Igor.png',
+              child: new Image.asset('assets/log_in/Igor.png',
                   fit: BoxFit.cover, width: 20 * appConfig.blockSize)),
           centerTitle: true,
           backgroundColor: const Color(0xff221233),
