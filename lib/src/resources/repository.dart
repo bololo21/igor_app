@@ -27,8 +27,8 @@ class Repository {
   Future<void> registerAdventure(String userUid, String masterUsername, String adventureName, String adventureDate, String description, String imagePath) =>
       _firestoreProvider.registerAdventureData(userUid, masterUsername, adventureName, adventureDate, description, imagePath);
 
-  Future<void> createSession(String adventureName, String sessionDate) =>
-      _firestoreProvider.createSessionData(adventureName, sessionDate);
+  Future<void> createSession(String adventureUid, String sessionName, String sessionDate) =>
+      _firestoreProvider.createSessionData(adventureUid, sessionName, sessionDate);
 
   Future<void> registerPlayerData(String adventureUid, String playerUid) =>
       _firestoreProvider.registerPlayerData(adventureUid, playerUid);

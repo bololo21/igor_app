@@ -24,10 +24,10 @@ class FirestoreProvider {
     return adventure.collection('players').document(userUid).setData({'playerUsername': masterUsername});
   }
 
-  Future<void> createSessionData(String adventureName, String sessionDate) {
+  Future<void> createSessionData(String adventureUid, String sessionName, String sessionDate) {
     return _firestore
         .collection('sessions')
-        .document().setData({'adventureName': adventureName, 'sessionDate': sessionDate});
+        .document().setData({'adventureUid': adventureUid, 'sessionName': sessionName, 'sessionDate': sessionDate});
   }
 
   Future<void> registerPlayerData(String adventureUid, String playerUid) {

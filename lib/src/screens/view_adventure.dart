@@ -5,6 +5,7 @@ import 'package:igor_app/src/blocs/view_adventure_bloc.dart';
 import 'package:igor_app/src/models/adventure.dart';
 import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/add_user.dart';
+import 'package:igor_app/src/screens/create_session.dart';
 
 import '../../app_config.dart';
 import 'app_bar.dart';
@@ -223,7 +224,9 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
     if (aba == 1) {
       return FloatingActionButton(
         child: Image.asset('assets/adventures/botão_adicionar_sessões.png'),
-        onPressed: () => print("adicionar sessões"),
+        onPressed: () => Navigator.push( context,
+          MaterialPageRoute(
+          builder: (context) => RegisterSessionScreen(adventureUid: widget.adventureUid))),
         backgroundColor: Colors.transparent,
         elevation: 0,
       );

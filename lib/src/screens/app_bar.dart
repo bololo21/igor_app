@@ -116,25 +116,6 @@ class IgorDrawer extends Drawer {
                     ),
                     SizedBox(height: 3 * appConfig.blockSizeVertical),
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, '/create_session'),
-                      child: Container(
-                        color: Colors.transparent,
-                        width: 100 * appConfig.blockSize,
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset('assets/navbar/Aventuras.png',
-                                height: 5 * appConfig.blockSizeVertical,
-                                width: 5 * appConfig.blockSizeVertical),
-                            SizedBox(width: 4 * appConfig.blockSize),
-                            Text("Criar Sessão",
-                                style:
-                                TextStyle(color: const Color(0xffff3d55))),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 3 * appConfig.blockSizeVertical),
-                    GestureDetector(
                       onTap: () => print(
                           "Configurações"), //Navigator.pushNamed(context, '/index_configuration'),
                       child: Container(

@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUpScreen(),
         '/register_adventure': (context) => RegisterAdventureScreen(),
         '/index_adventure': (context) => IndexAdventureScreen(),
-        '/create_session': (context) => RegisterSessionScreen()
+        '/create_session': (context) => RegisterSessionScreen(adventureUid: null,)
       },
     );
   }

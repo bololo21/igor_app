@@ -6,6 +6,8 @@ import 'package:igor_app/src/blocs/create_session_bloc.dart';
 import 'package:intl/intl.dart';
 
 class RegisterSessionScreen extends StatefulWidget {
+  final String adventureUid;
+  const RegisterSessionScreen({Key key, @required this.adventureUid}) : super(key: key);
   @override
   _RegisterSessionScreenState createState() => _RegisterSessionScreenState();
 }
@@ -84,11 +86,11 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                         child: Column(
                           children: <Widget>[
                             StreamBuilder(
-                                stream: _bloc.name,
+                                stream: _bloc.sessionName,
                                 builder:
                                     (context, AsyncSnapshot<String> snapshot) {
                                   return TextField(
-                                    onChanged: _bloc.changeName,
+                                    onChanged: _bloc.changesessionName,
                                     decoration: InputDecoration(
                                         labelText:
                                             'De um nome à próxima sessão',
@@ -123,6 +125,7 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 textColor: const Color(0xffe2e2e1),
                                 color: Colors.teal,
                                 onPressed: () {
+                                  _bloc.changeadventureName(widget.adventureUid);
                                   _bloc.createSession();
                                   Navigator.pushNamed(
                                       context, '/index_adventure');
