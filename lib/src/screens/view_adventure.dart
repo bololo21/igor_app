@@ -7,7 +7,6 @@ import 'package:igor_app/src/models/session.dart';
 import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
-import 'package:igor_app/src/screens/sessions.dart';
 import '../../app_config.dart';
 import 'app_bar.dart';
 
