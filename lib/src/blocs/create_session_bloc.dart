@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash/dash.dart';
 import '../resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,13 +16,17 @@ class CreateSessionBloc extends Bloc {
   Observable<String> get date => _date.stream;
 
   // Change data
-  Function(String) get changeadventureName => _adventureUid.sink.add;
-  Function(String) get changesessionName => _sessionName.sink.add;
+  Function(String) get changeAdventureName => _adventureUid.sink.add;
+  Function(String) get changeSessionName => _sessionName.sink.add;
   Function(String) get changeDate => _date.sink.add;
 
 
-  Future<void> createSession() async {
-    return _repository.createSession(_adventureUid.value, _sessionName.value, _date.value);
+  Future<void> createSession(String adventureUid) {
+    return _repository.createSession(adventureUid, _sessionName.value, _date.value);
+  }
+
+  Stream<QuerySnapshot> getSessions(String adventureUid) {
+    return _repository.getSessions(adventureUid);
   }
 
   void dispose() async {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash/dash.dart';
 import 'package:igor_app/src/models/adventure.dart';
+import 'package:igor_app/src/models/session.dart';
 import 'package:igor_app/src/models/user.dart';
 
 import '../resources/repository.dart';
@@ -47,6 +48,19 @@ class ViewAdventureBloc extends Bloc {
       userList.add(user);
     });
     return userList;
+  }
+
+  List mapToSessionList({List<DocumentSnapshot> docList}) {
+    List<Session> sessionList = [];
+    docList.forEach((document) {
+      Session session = Session(document.documentID, document.data["sessionName"], document.data["adventureUid"], document.data["sessionDate"]);
+      sessionList.add(session);
+    });
+    return sessionList;
+  }
+
+  Stream<QuerySnapshot> getSessions(String adventureUid) {
+    return _repository.getSessions(adventureUid);
   }
 
   static Bloc instance() => ViewAdventureBloc();

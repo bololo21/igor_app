@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:igor_app/app_config.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
 import 'package:igor_app/src/blocs/create_session_bloc.dart';
+import 'package:igor_app/src/screens/view_adventure.dart';
 import 'package:intl/intl.dart';
 
 class RegisterSessionScreen extends StatefulWidget {
@@ -68,8 +69,7 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                               Icons.close,
                               color: Colors.black12,
                             ),
-                            onTap: () => Navigator.pushNamed(
-                                context, '/index_adventure'),
+                            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: widget.adventureUid))),
                           ),
                           SizedBox(width: 2 * appConfig.blockSize),
                           Text(
@@ -90,7 +90,7 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 builder:
                                     (context, AsyncSnapshot<String> snapshot) {
                                   return TextField(
-                                    onChanged: _bloc.changesessionName,
+                                    onChanged: _bloc.changeSessionName,
                                     decoration: InputDecoration(
                                         labelText:
                                             'De um nome à próxima sessão',
@@ -125,10 +125,9 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 textColor: const Color(0xffe2e2e1),
                                 color: Colors.teal,
                                 onPressed: () {
-                                  _bloc.changeadventureName(widget.adventureUid);
-                                  _bloc.createSession();
-                                  Navigator.pushNamed(
-                                      context, '/index_adventure');
+                                  //_bloc.changeAdventureName(widget.adventureUid);
+                                  _bloc.createSession(widget.adventureUid);
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: widget.adventureUid)));
                                 })
                           ],
                         ),
