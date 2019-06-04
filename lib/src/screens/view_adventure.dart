@@ -6,7 +6,7 @@ import 'package:igor_app/src/models/adventure.dart';
 import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
-
+import 'package:igor_app/src/screens/sessions.dart';
 import '../../app_config.dart';
 import 'app_bar.dart';
 
@@ -148,18 +148,26 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
               padding: EdgeInsets.only(left: 15),
               child: Row(
                 children: <Widget>[
-                  Text("ver mais",
-                      style: TextStyle(
-                          fontFamily: 'Fira-sans', color: Colors.teal)),
-                  Icon(Icons.arrow_drop_down, color: Colors.teal),
-                ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(),
+                    child: Divider(color: Colors.grey[800]),
+                  ),
+                Container(
+                  height: 5 * appConfig.blockSizeVertical,
+                  width: 30 * appConfig.blockSize,
+                  child: MaterialButton(
+                    child: Text("Sessões",
+                        style:
+                            TextStyle(fontFamily: 'Fira-sans', fontSize: 16)),
+                    highlightColor: Colors.blue,
+                    splashColor: Colors.green,
+                    onPressed:() => Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => SessionsScreen(adventureUid: adventure.id))),                  
+                    )
+                )],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
-              child: Divider(color: Colors.grey[800]),
-            ),
-            showSessions(adventure),
+
           ],
         ),
       );
@@ -202,10 +210,6 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
     }
   }
 
-  Widget showSessions(Adventure adventure) {
-    return Text("");
-  }
-
   Color pickColor(Adventure adventure) {
     if (adventure.imagePath == 'Coast') {
       return const Color(0xfff9a073);
@@ -224,9 +228,11 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
     if (aba == 1) {
       return FloatingActionButton(
         child: Image.asset('assets/adventures/botão_adicionar_sessões.png'),
-        onPressed: () => Navigator.push( context,
-          MaterialPageRoute(
-          builder: (context) => RegisterSessionScreen(adventureUid: widget.adventureUid))),
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    RegisterSessionScreen(adventureUid: widget.adventureUid))),
         backgroundColor: Colors.transparent,
         elevation: 0,
       );

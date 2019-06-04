@@ -1,4 +1,3 @@
-import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:igor_app/src/models/user.dart';
 
@@ -45,6 +44,10 @@ class FirestoreProvider {
 
   Stream<DocumentSnapshot> getAdventureData(String adventureUid) {
     return _firestore.collection('adventures').document(adventureUid).snapshots();
+  }
+
+  Stream<QuerySnapshot> getSessionDate(String adventureUid) {
+    return  _firestore.collection('sessions').where('adventureUid', isEqualTo: adventureUid).snapshots();
   }
 
   Stream<QuerySnapshot> getUsersData() {

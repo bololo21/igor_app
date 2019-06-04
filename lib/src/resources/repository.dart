@@ -39,6 +39,9 @@ class Repository {
   Stream<DocumentSnapshot> getAdventureData(String adventureUid) =>
       _firestoreProvider.getAdventureData(adventureUid);
 
+  Stream<QuerySnapshot> getSessionDate(String adventureUid) =>
+    _firestoreProvider.getSessionDate(adventureUid);
+
   Stream<QuerySnapshot> getUsersData() =>
       _firestoreProvider.getUsersData();
 

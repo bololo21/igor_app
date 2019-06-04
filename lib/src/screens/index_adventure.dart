@@ -5,7 +5,6 @@ import 'package:igor_app/src/blocs/index_adventure_bloc.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
 import 'package:igor_app/src/models/adventure.dart';
 import 'package:igor_app/src/screens/view_adventure.dart';
-
 import '../../app_config.dart';
 import 'app_bar.dart';
 
@@ -19,7 +18,6 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         floatingActionButton: Container(
           width: 17 * appConfig.blockSize,
@@ -103,7 +101,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                           SizedBox(height: 5 * appConfig.blockSizeVertical),
                           Container(
                             alignment: Alignment.topLeft,
-                            child: Text("próxima sessão 02/11",
+                            child: Text("Próxima sessão: 02/11" ,
                                 style: TextStyle(
                                     fontFamily: 'Fira-sans',
                                     color: const Color(0xffe2e2e1),
