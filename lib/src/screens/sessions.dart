@@ -21,7 +21,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
         body: StreamBuilder(
         stream: loadSessions(widget.adventureUid),
         builder: (context, snapshots) {
-        if (snapshots.hasData)
+        if(snapshots.hasData)
           return Scaffold(
               backgroundColor: const Color(0xfffafafa),
               body: ListView(
