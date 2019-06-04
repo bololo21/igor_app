@@ -22,26 +22,6 @@ class Repository {
   Future<void> logout() =>
       _firebaseAuthProvider.logout();
 
-  //adventures
-
-  Future<void> registerAdventure(String userUid, String masterUsername, String adventureName, String adventureDate, String description, String imagePath) =>
-      _firestoreProvider.registerAdventureData(userUid, masterUsername, adventureName, adventureDate, description, imagePath);
-
-  Future<void> createSession(String adventureUid, String sessionName, String sessionDate) =>
-      _firestoreProvider.createSessionData(adventureUid, sessionName, sessionDate);
-
-  Future<void> registerPlayerData(String adventureUid, String playerUid) =>
-      _firestoreProvider.registerPlayerData(adventureUid, playerUid);
-
-  Stream<QuerySnapshot> myAdventures(String userUid) =>
-      _firestoreProvider.myAdventures(userUid);
-
-  Stream<DocumentSnapshot> getAdventureData(String adventureUid) =>
-      _firestoreProvider.getAdventureData(adventureUid);
-
-  Stream<QuerySnapshot> getSessionDate(String adventureUid) =>
-    _firestoreProvider.getSessionDate(adventureUid);
-
   Stream<QuerySnapshot> getUsersData() =>
       _firestoreProvider.getUsersData();
 
@@ -52,5 +32,27 @@ class Repository {
 
   Future<void> addUserToAdventure(User user, String adventureUid) =>
       _firestoreProvider.addUserToAdventure(user, adventureUid);
+
+  Future<void> registerPlayerData(String adventureUid, String playerUid) =>
+      _firestoreProvider.registerPlayerData(adventureUid, playerUid);
+
+
+  //adventures
+
+  Future<void> registerAdventure(String userUid, String masterUsername, String adventureName, String adventureDate, String description, String imagePath) =>
+      _firestoreProvider.registerAdventureData(userUid, masterUsername, adventureName, adventureDate, description, imagePath);
+
+  Future<void> createSession(String adventureUid, String sessionName, String sessionDate) =>
+      _firestoreProvider.createSessionData(adventureUid, sessionName, sessionDate);
+
+  Stream<QuerySnapshot> myAdventures(String userUid) =>
+      _firestoreProvider.myAdventures(userUid);
+
+  Stream<DocumentSnapshot> getAdventureData(String adventureUid) =>
+      _firestoreProvider.getAdventureData(adventureUid);
+
+  Stream<QuerySnapshot> getSessions(String adventureUid) =>
+    _firestoreProvider.getSessions(adventureUid);
+
 
 }
