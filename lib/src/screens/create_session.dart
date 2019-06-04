@@ -125,8 +125,7 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 textColor: const Color(0xffe2e2e1),
                                 color: Colors.teal,
                                 onPressed: () {
-                                  _bloc.changeadventureName(widget.adventureUid);
-                                  _bloc.createSession();
+                                  _bloc.createSession(widget.adventureUid);
                                   Navigator.pushNamed(
                                       context, '/index_adventure');
                                 })

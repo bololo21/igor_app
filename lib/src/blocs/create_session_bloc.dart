@@ -20,8 +20,8 @@ class CreateSessionBloc extends Bloc {
   Function(String) get changeDate => _date.sink.add;
 
 
-  Future<void> createSession() async {
-    return _repository.createSession(_adventureUid.value, _sessionName.value, _date.value);
+  Future<void> createSession(String adventureUid) {
+    return _repository.createSession(adventureUid, _sessionName.value, _date.value);
   }
 
   void dispose() async {
