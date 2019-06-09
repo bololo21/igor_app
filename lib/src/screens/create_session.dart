@@ -16,16 +16,9 @@ class RegisterSessionScreen extends StatefulWidget {
 class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _bloc = $Provider.of<CreateSessionBloc>();
-  int month = new DateTime.now().month;
-  int day = new DateTime.now().day;
-  String _dateButton = "";
-
+  String _dateButton = DateFormat('dd/MM').format(DateTime.now());
   @override
   Widget build(BuildContext context) {
-    if(_dateButton == ""){
-      _dateButton = day.toString() + "/" + month.toString();
-    }
-    appConfig.setConfig(context);
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -125,7 +118,8 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 textColor: const Color(0xffe2e2e1),
                                 color: Colors.teal,
                                 onPressed: () {
-                                  //_bloc.changeAdventureName(widget.adventureUid);
+                                  if (_dateButton == DateFormat('dd/MM').format(DateTime.now()))
+                                    _bloc.changeDate(DateFormat('dd/MM/yyyy').format(DateTime.now()));
                                   _bloc.createSession(widget.adventureUid);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: widget.adventureUid)));
                                 })
@@ -157,11 +151,11 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
       lastDate: new DateTime(2020),
     );
     if (picked != null) {
-      String _dateFormated =  DateFormat('dd/MM/yyyy').format(picked);
-      _bloc.changeDate(_dateFormated);
-      _dateFormated = DateFormat('dd/MM').format(picked);
+      String _dateFormatted =  DateFormat('dd/MM/yyyy').format(picked);
+      _bloc.changeDate(_dateFormatted);
+      _dateFormatted = DateFormat('dd/MM').format(picked);
       setState(() {
-        _dateButton = _dateFormated;
+        _dateButton = _dateFormatted;
       });
     }
   }
