@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash/dash.dart';
 import 'package:igor_app/src/models/adventure.dart';
-
 import '../resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 

@@ -1,8 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../app_config.dart';
 import 'app_bar.dart';
+import 'package:igor_app/src/blocs/sessions_bloc.dart';
 import 'package:igor_app/app_config.dart';
+import 'package:igor_app/src/blocs/bloc_provider.dart';
+
 
 class SessionsScreen extends StatefulWidget {
   final String adventureUid;
@@ -13,13 +15,14 @@ class SessionsScreen extends StatefulWidget {
 }
 
 class _SessionsScreenState extends State<SessionsScreen> {
+  final _bloc = $Provider.of<SessionsBloc>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: IgorAppBar(),
         drawer: IgorDrawer(context),
         body: StreamBuilder(
-        stream: loadSessions(widget.adventureUid),
+        stream: _bloc.getSessions(widget.adventureUid),
         builder: (context, snapshots) {
         if(snapshots.hasData)
           return Scaffold(
@@ -56,9 +59,5 @@ class _SessionsScreenState extends State<SessionsScreen> {
                     )).toList())
               );
         }));
-        }
-
-
-  loadSessions(id) =>  Firestore.instance.collection("sessions").where("adventureUid", isEqualTo: id).snapshots();
-  
+        }  
 }

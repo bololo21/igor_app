@@ -46,7 +46,7 @@ class FirestoreProvider {
     return _firestore.collection('adventures').document(adventureUid).snapshots();
   }
 
-  Stream<QuerySnapshot> getSessionDate(String adventureUid) {
+  Stream<QuerySnapshot> getSessions(String adventureUid) {
     return  _firestore.collection('sessions').where('adventureUid', isEqualTo: adventureUid).snapshots();
   }
 

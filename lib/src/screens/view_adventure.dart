@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
 import 'package:igor_app/src/blocs/view_adventure_bloc.dart';
 import 'package:igor_app/src/models/adventure.dart';
+import 'package:igor_app/src/models/session.dart';
 import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
-import 'package:igor_app/src/screens/sessions.dart';
 import '../../app_config.dart';
 import 'app_bar.dart';
 
@@ -145,29 +145,55 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                     style: TextStyle(fontFamily: 'Fira-sans', fontSize: 16),
                     textAlign: TextAlign.justify)),
             Container(
-              padding: EdgeInsets.only(left: 15),
-              child: Row(
-                children: <Widget>[
-                  Padding(
+                padding: EdgeInsets.only(left: 15),
+                child: Padding(
                     padding: const EdgeInsets.symmetric(),
-                    child: Divider(color: Colors.grey[800]),
-                  ),
-                Container(
-                  height: 5 * appConfig.blockSizeVertical,
-                  width: 30 * appConfig.blockSize,
-                  child: MaterialButton(
-                    child: Text("Sessões",
-                        style:
-                            TextStyle(fontFamily: 'Fira-sans', fontSize: 16)),
-                    highlightColor: Colors.blue,
-                    splashColor: Colors.green,
-                    onPressed:() => Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => SessionsScreen(adventureUid: adventure.id))),                  
-                    )
-                )],
-              ),
-            ),
+                    child: Column(
+                      children: <Widget>[
+                        Divider(color: Colors.grey[800]),
+                        StreamBuilder(
+                            stream: _bloc.getSessions(widget.adventureUid),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                List<DocumentSnapshot> docs =
+                                    snapshot.data.documents;
+                                List<Session> sessionList =
+                                    _bloc.mapToSessionList(docList: docs);
 
+                                if (sessionList.isEmpty)
+                                  return Text(
+                                      "Ainda não há sessões para esta aventura :(");
+                                else
+                                  return Container(
+                                    height: 33 * appConfig.blockSizeVertical,
+                                    width: 82 * appConfig.blockSize,
+                                    child: ListView(
+                                      children: sessionList.map((session) {
+                                        return Row(
+                                          children: <Widget>[
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(session.date,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Fira-sans',
+                                                        fontWeight:
+                                                            FontWeight.bold))),
+                                            SizedBox(
+                                                width: 2 * appConfig.blockSize),
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(session.name)),
+                                            SizedBox(height: 10),
+                                          ],
+                                        );
+                                      }).toList(),
+                                    ),
+                                  );
+                              } else
+                                return Text("Carregando...");
+                            })
+                      ],
+                    ))),
           ],
         ),
       );
@@ -204,7 +230,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
               ),
             );
           } else
-            return Text("");
+            return Text("Carregando...");
         },
       );
     }

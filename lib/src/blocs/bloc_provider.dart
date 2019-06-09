@@ -6,6 +6,7 @@ import 'login_bloc.dart';
 import 'register_adventure_bloc.dart';
 import 'create_session_bloc.dart';
 import 'view_adventure_bloc.dart';
+import 'sessions_bloc.dart';
 
 part 'bloc_provider.g.dart';
 
@@ -19,4 +20,5 @@ part 'bloc_provider.g.dart';
 @BlocProvider.register(ViewAdventureBloc)
 @BlocProvider.register(AddUserBloc)
 @BlocProvider.register(CreateSessionBloc)
+@BlocProvider.register(SessionsBloc)
 abstract class Provider {}
