@@ -1,0 +1,229 @@
+import 'package:flutter/material.dart';
+import 'package:igor_app/src/blocs/add_character_bloc.dart';
+import 'package:igor_app/src/blocs/bloc_provider.dart';
+import 'package:igor_app/src/models/adventure.dart';
+
+import '../../app_config.dart';
+
+class AddCharacterScreen extends StatefulWidget {
+  final String adventureUid;
+  final String userUid;
+  const AddCharacterScreen({Key key, @required this.adventureUid, @required this.userUid}) : super(key: key);
+
+  @override
+  _AddCharacterScreenState createState() => _AddCharacterScreenState();
+}
+
+class _AddCharacterScreenState extends State<AddCharacterScreen> {
+  final _bloc = $Provider.of<AddCharacterBloc>();
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+          children: <Widget>[
+            new Container(
+              decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  image: new AssetImage("assets/log_in/Backgrownd.webp"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10 * appConfig.blockSizeVertical,
+                      ),
+                      Container(
+                        decoration: new BoxDecoration(
+                            color: const Color(0xffe2e2e1),
+                            borderRadius: new BorderRadius.only(
+                                topLeft: const Radius.circular(5.0),
+                                topRight: const Radius.circular(5.0))),
+                        padding: EdgeInsets.fromLTRB(2 * appConfig.blockSize, 1 * appConfig.blockSizeVertical,
+                            2 * appConfig.blockSize, 2 * appConfig.blockSizeVertical),
+                        margin: EdgeInsets.fromLTRB(
+                            2 * appConfig.blockSize, 0, 2 * appConfig.blockSize, 0),
+                        //color: const Color(0xffe2e2e1),
+                        child: Form(
+                          child: Column(
+                            children: <Widget>[
+
+                              Row(children: <Widget>[
+                                GestureDetector(
+                                  child: Icon(Icons.close, color: Colors.black12,),
+                                  onTap: () => Navigator.pushNamed(context, '/index_adventure'),
+                                ),
+                                SizedBox(width: 2 * appConfig.blockSize),
+                                Text("Criar Personagem",
+                                  style: TextStyle(color: Colors.teal),),
+                              ],),
+
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 20.0,
+                                  right: 20.0,
+                                ),
+
+                                child: Column(
+                                  children: <Widget>[
+
+                                    StreamBuilder(
+                                        stream: _bloc.characterName,
+                                        builder:
+                                            (context, AsyncSnapshot<String> snapshot) {
+                                          return TextField(
+                                            onChanged: _bloc.changeCharacterName,
+                                            decoration: InputDecoration(
+                                                labelText: 'Nome do Personagem',
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 22,
+                                                    fontFamily: 'Fira-sans'),
+                                                errorText: snapshot.error),
+                                          );
+                                        }),
+                                    StreamBuilder(
+                                        stream: _bloc.characterClass,
+                                        builder:
+                                            (context, AsyncSnapshot<String> snapshot) {
+                                          return TextField(
+                                            onChanged: _bloc.changeCharacterClass,
+                                            decoration: InputDecoration(
+                                                labelText: 'Classe do Personagem',
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 22,
+                                                    fontFamily: 'Fira-sans'),
+                                                errorText: snapshot.error),
+                                          );
+                                        }),
+                                    StreamBuilder(
+                                        stream: _bloc.characterRace,
+                                        builder:
+                                            (context, AsyncSnapshot<String> snapshot) {
+                                          return TextField(
+                                            onChanged: _bloc.changeCharacterRace,
+                                            decoration: InputDecoration(
+                                                labelText: 'Raça do Personagem',
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 22,
+                                                    fontFamily: 'Fira-sans'),
+                                                errorText: snapshot.error),
+                                          );
+                                        }),
+
+                                    StreamBuilder(
+                                        stream: _bloc.attack,
+                                        builder:
+                                            (context, AsyncSnapshot<String> snapshot) {
+                                          return TextField(
+                                            keyboardType: TextInputType.number,
+                                            onChanged: _bloc.changeAttack,
+                                            decoration: InputDecoration(
+                                                labelText: 'Ataque do Personagem',
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 22,
+                                                    fontFamily: 'Fira-sans'),
+                                                errorText: snapshot.error),
+                                          );
+                                        }),
+
+                                    StreamBuilder(
+                                        stream: _bloc.defense,
+                                        builder:
+                                            (context, AsyncSnapshot<String> snapshot) {
+                                          return TextField(
+                                            keyboardType: TextInputType.number,
+                                            onChanged: _bloc.changeDefense,
+                                            decoration: InputDecoration(
+                                                labelText: 'Defesa do Personagem',
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 22,
+                                                    fontFamily: 'Fira-sans'),
+                                                errorText: snapshot.error),
+                                          );
+                                        }),
+
+                                    StreamBuilder(
+                                        stream: _bloc.life,
+                                        builder:
+                                            (context, AsyncSnapshot<String> snapshot) {
+                                          return TextField(
+                                            keyboardType: TextInputType.number,
+                                            onChanged: _bloc.changeLife,
+                                            decoration: InputDecoration(
+                                                labelText: 'Vida do Personagem',
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 22,
+                                                    fontFamily: 'Fira-sans'),
+                                                errorText: snapshot.error),
+                                          );
+                                        }),
+
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 2 * appConfig.blockSizeVertical),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 20.0,
+                                  right: 20.0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    MaterialButton(
+                                        child: Text("PRONTO"),
+                                        textColor: const Color(0xffe2e2e1),
+                                        color: Colors.teal,
+                                        onPressed: () {
+                                          _bloc.addCharacterToAdventure(widget.userUid, widget.adventureUid);
+                                          //Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: )));
+                                          Navigator.pushNamed(context, '/index_adventure');
+                                        })
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 59 * appConfig.blockSizeVertical),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+
+            )
+          ],
+        ));
+  }
+
+
+  @override
+  void dispose() {
+    $Provider.dispose<AddCharacterBloc>();
+    super.dispose();
+  }
+
+  Color pickColor(Adventure adventure) {
+    if (adventure.imagePath == 'Coast') {
+      return const Color(0xfff9a073);
+    } else if (adventure.imagePath == 'Corvali') {
+      return const Color(0xff0f857e);
+    } else if (adventure.imagePath == 'Heartlands') {
+      return const Color(0xff1a3f51);
+    } else if (adventure.imagePath == 'Krevast') {
+      return const Color(0xff6c203e);
+    } else {
+      return const Color(0xff1e2843);
+    }
+  }
+}

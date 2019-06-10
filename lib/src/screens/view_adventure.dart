@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
 import 'package:igor_app/src/blocs/view_adventure_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
 import '../../app_config.dart';
+import 'add_character.dart';
 import 'app_bar.dart';
 
 class ViewAdventureScreen extends StatefulWidget {
@@ -21,7 +23,7 @@ class ViewAdventureScreen extends StatefulWidget {
 
 class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
   final _bloc = $Provider.of<ViewAdventureBloc>();
-  String imagePath = 'assets/adventures/andamento.png';
+  String imagePath = 'assets/adventures/andamento.webp';
   int aba = 1;
 
   @override
@@ -30,7 +32,24 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
         floatingActionButton: Container(
           width: 17 * appConfig.blockSize,
           height: 17 * appConfig.blockSize,
-          child: returnButton(),
+          child: StreamBuilder(
+            stream: FirebaseAuth.instance.onAuthStateChanged,
+            builder: (context, currentUser) {
+              if (currentUser.hasData) {
+                return StreamBuilder(
+                    stream: _bloc.getAdventureData(widget.adventureUid),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        Adventure adventure =
+                            _bloc.mapToAdventure(document: snapshot.data);
+                        return returnButton(currentUser.data.uid, adventure);
+                      } else
+                        return Text("");
+                    });
+              } else
+                return Text("");
+            },
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: IgorAppBar(),
@@ -67,7 +86,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(
-                            "assets/adventures/${adventure.imagePath}.png"))),
+                            "assets/adventures/${adventure.imagePath}.webp"))),
                 width: 100 * appConfig.blockSize,
                 height: 17 * appConfig.blockSizeVertical,
               ),
@@ -99,7 +118,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onPressed: () => setState(() {
-                          imagePath = 'assets/adventures/andamento.png';
+                          imagePath = 'assets/adventures/andamento.webp';
                           aba = 1;
                         }),
                   )),
@@ -117,7 +136,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onPressed: () => setState(() {
-                          imagePath = 'assets/adventures/jogadores.png';
+                          imagePath = 'assets/adventures/jogadores.webp';
                           aba = 2;
                         }),
                   )),
@@ -250,29 +269,45 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
     }
   }
 
-  FloatingActionButton returnButton() {
-    if (aba == 1) {
-      return FloatingActionButton(
-        child: Image.asset('assets/adventures/botão_adicionar_sessões.png'),
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    RegisterSessionScreen(adventureUid: widget.adventureUid))),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      );
+  Widget returnButton(String currentUserUid, Adventure adventure) {
+    if (currentUserUid == adventure.masterUid) {
+      if (aba == 1) {
+        return FloatingActionButton(
+          child: Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RegisterSessionScreen(
+                      adventureUid: widget.adventureUid))),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        );
+      } else {
+        return FloatingActionButton(
+          child: Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AddUserScreen(adventureUid: widget.adventureUid))),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        );
+      }
     } else {
-      return FloatingActionButton(
-        child: Image.asset('assets/adventures/botão_adicionar_jogadores.png'),
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    AddUserScreen(adventureUid: widget.adventureUid))),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      );
+      if (aba == 1)
+        return Text("");
+      else
+        return FloatingActionButton(
+          child: Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AddCharacterScreen(adventureUid: widget.adventureUid, userUid: currentUserUid))),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        );
     }
   }
 }

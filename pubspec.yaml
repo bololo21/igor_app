@@ -55,33 +55,28 @@ flutter:
         - asset: assets/fonts/FiraSans-Regular.otf
 
   assets:
-    - assets/log_in/Atention.png
-    - assets/log_in/Unchecked.png
-    - assets/log_in/Igor.png
-    - assets/log_in/Google.png
-    - assets/log_in/Facebook.png
-    - assets/log_in/Entrar.png
-    - assets/log_in/Checked.png
-    - assets/log_in/Backgrownd.png
+    - assets/log_in/Igor.webp
+    - assets/log_in/Google.webp
+    - assets/log_in/Backgrownd.webp
 
-    - assets/adventures/Coast.png
-    - assets/adventures/Corvali.png
-    - assets/adventures/Heartlands.png
-    - assets/adventures/Krevast.png
-    - assets/adventures/Padrão.png
-    - assets/adventures/barra_de_progressão_jogadas.png
-    - assets/adventures/marcador_barra_de_progressão.png
-    - assets/adventures/Botão_Criar_Nova_Aventura.png
-    - assets/adventures/andamento.png
-    - assets/adventures/jogadores.png
-    - assets/adventures/botão_adicionar_jogadores.png
-    - assets/adventures/botão_adicionar_sessões.png
+    - assets/adventures/Coast.webp
+    - assets/adventures/Corvali.webp
+    - assets/adventures/Heartlands.webp
+    - assets/adventures/Krevast.webp
+    - assets/adventures/Padrão.webp
+    - assets/adventures/barra_de_progressão_jogadas.webp
+    - assets/adventures/marcador_barra_de_progressão.webp
+    - assets/adventures/Botão_Criar_Nova_Aventura.webp
+    - assets/adventures/andamento.webp
+    - assets/adventures/jogadores.webp
+    - assets/adventures/botão_adicionar_jogadores.webp
+    - assets/adventures/botão_adicionar_sessões.webp
 
-    - assets/navbar/Aventuras.png
-    - assets/navbar/Configurações.png
-    - assets/navbar/Conta.png
-    - assets/navbar/Livros.png
-    - assets/navbar/Notificações.png
+    - assets/navbar/Aventuras.webp
+    - assets/navbar/Configurações.webp
+    - assets/navbar/Conta.webp
+    - assets/navbar/Livros.webp
+    - assets/navbar/Notificações.webp
 
   # To add assets to your application, add an assets section, like this:
   # assets:

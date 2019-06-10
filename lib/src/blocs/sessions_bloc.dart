@@ -18,7 +18,6 @@ class SessionsBloc extends Bloc {
   Function(String) get changeDescription => _date.sink.add;
 
   Stream<QuerySnapshot> getSessions(String adventureUid) {
-    //var currentUser = await FirebaseAuth.instance.currentUser();
     return _repository.getSessions(adventureUid);
   }
 

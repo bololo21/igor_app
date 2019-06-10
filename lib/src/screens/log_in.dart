@@ -23,7 +23,7 @@ class _LogInScreenState extends State<LogInScreen> {
         new Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(
-              image: new AssetImage("assets/log_in/Backgrownd.png"),
+              image: new AssetImage("assets/log_in/Backgrownd.webp"),
               fit: BoxFit.cover,
             ),
           ),
@@ -36,7 +36,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 height: 12 * appConfig.blockSizeVertical,
               ),
               Image(
-                image: AssetImage('assets/log_in/Igor.png'),
+                image: AssetImage('assets/log_in/Igor.webp'),
                 width: 50 * appConfig.blockSize,
               ),
               SizedBox(
@@ -45,7 +45,7 @@ class _LogInScreenState extends State<LogInScreen> {
               GestureDetector(
                 onTap: () => print('Pega no gooogle ${appConfig.height}'),
                 child: Image(
-                  image: AssetImage('assets/log_in/Google.png'),
+                  image: AssetImage('assets/log_in/Google.webp'),
                   width: 50 * appConfig.blockSize,
                 ),
               ),

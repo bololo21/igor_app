@@ -28,7 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         new Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(
-              image: new AssetImage("assets/log_in/Backgrownd.png"),
+              image: new AssetImage("assets/log_in/Backgrownd.webp"),
               fit: BoxFit.cover,
             ),
           ),
@@ -41,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 12 * appConfig.blockSizeVertical,
               ),
               Image(
-                image: AssetImage('assets/log_in/Igor.png'),
+                image: AssetImage('assets/log_in/Igor.webp'),
                 width: 50 * appConfig.blockSize,
               ),
               SizedBox(

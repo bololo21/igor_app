@@ -14,10 +14,10 @@ class IgorAppBar extends AppBar {
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.more_vert, color: Colors.amber[200]),
-                onPressed: () => print('popop'))
+                onPressed: () => print('pipip'))
           ],
           title: Container(
-              child: new Image.asset('assets/log_in/Igor.png',
+              child: new Image.asset('assets/log_in/Igor.webp',
                   fit: BoxFit.cover, width: 20 * appConfig.blockSize)),
           centerTitle: true,
           backgroundColor: const Color(0xff221233),
@@ -43,7 +43,7 @@ class IgorDrawer extends Drawer {
                         width: 100 * appConfig.blockSize,
                         child: Row(
                           children: <Widget>[
-                            Image.asset('assets/navbar/Aventuras.png',
+                            Image.asset('assets/navbar/Aventuras.webp',
                                 height: 5 * appConfig.blockSizeVertical,
                                 width: 5 * appConfig.blockSizeVertical),
                             SizedBox(width: 4 * appConfig.blockSize),
@@ -63,7 +63,7 @@ class IgorDrawer extends Drawer {
                         width: 100 * appConfig.blockSize,
                         child: Row(
                           children: <Widget>[
-                            Image.asset('assets/navbar/Livros.png',
+                            Image.asset('assets/navbar/Livros.webp',
                                 height: 5 * appConfig.blockSizeVertical,
                                 width: 5 * appConfig.blockSizeVertical),
                             SizedBox(width: 4 * appConfig.blockSize),
@@ -83,7 +83,7 @@ class IgorDrawer extends Drawer {
                         width: 100 * appConfig.blockSize,
                         child: Row(
                           children: <Widget>[
-                            Image.asset('assets/navbar/Conta.png',
+                            Image.asset('assets/navbar/Conta.webp',
                                 height: 5 * appConfig.blockSizeVertical,
                                 width: 5 * appConfig.blockSizeVertical),
                             SizedBox(width: 4 * appConfig.blockSize),
@@ -103,7 +103,7 @@ class IgorDrawer extends Drawer {
                         width: 100 * appConfig.blockSize,
                         child: Row(
                           children: <Widget>[
-                            Image.asset('assets/navbar/Notificações.png',
+                            Image.asset('assets/navbar/Notificações.webp',
                                 height: 5 * appConfig.blockSizeVertical,
                                 width: 5 * appConfig.blockSizeVertical),
                             SizedBox(width: 4 * appConfig.blockSize),
@@ -123,7 +123,7 @@ class IgorDrawer extends Drawer {
                         width: 100 * appConfig.blockSize,
                         child: Row(
                           children: <Widget>[
-                            Image.asset('assets/navbar/Configurações.png',
+                            Image.asset('assets/navbar/Configurações.webp',
                                 height: 5 * appConfig.blockSizeVertical,
                                 width: 5 * appConfig.blockSizeVertical),
                             SizedBox(width: 4 * appConfig.blockSize),

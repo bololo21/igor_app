@@ -22,7 +22,7 @@ class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
             new Container(
               decoration: new BoxDecoration(
                 image: new DecorationImage(
-                  image: new AssetImage("assets/log_in/Backgrownd.png"),
+                  image: new AssetImage("assets/log_in/Backgrownd.webp"),
                   fit: BoxFit.cover,
                 ),
               ),

@@ -23,8 +23,10 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
           width: 17 * appConfig.blockSize,
           height: 17 * appConfig.blockSize,
           child: FloatingActionButton(
-            child: Image.asset('assets/adventures/Botão_Criar_Nova_Aventura.png'),
-            onPressed: () => Navigator.pushNamed(context, '/register_adventure'),
+            child:
+                Image.asset('assets/adventures/Botão_Criar_Nova_Aventura.webp'),
+            onPressed: () =>
+                Navigator.pushNamed(context, '/register_adventure'),
             backgroundColor: Colors.transparent,
             elevation: 0,
           ),
@@ -37,27 +39,52 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
           alignment: Alignment(0.0, 0.0),
           child: StreamBuilder(
               stream: FirebaseAuth.instance.onAuthStateChanged,
-              builder: (context, snapshot2) {
-                if (snapshot2.hasData) {
-                  return StreamBuilder(
-                    stream: _bloc.myAdventures(snapshot2.data.uid),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List<DocumentSnapshot> docs = snapshot.data.documents;
-                        List<Adventure> adventuresList =
-                        _bloc.mapToList(docList: docs);
-                        if (adventuresList.isNotEmpty) {
-                          return buildList(adventuresList);
-                        } else {
-                          return Text("Você ainda não criou nenhuma aventura :(", style: TextStyle(fontFamily: 'Fira-sans', color: const Color(0xffe2e2e1)));
-                        }
-                      } else {
-                        return Text("Carregando...", style: TextStyle(fontFamily: 'Fira-sans', color: const Color(0xffe2e2e1)));
-                      }
-                    },
-                  );
+              builder: (context, currentUser) {
+                if (currentUser.hasData) {
+                  return
+                      StreamBuilder(
+                        stream: _bloc.myMasterAdventures(currentUser.data.uid),
+                        builder: (context, masterSnapshot) {
+                          return StreamBuilder(
+                            stream: _bloc.myPlayerAdventures(currentUser.data.uid),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData && masterSnapshot.hasData) {
+                                List<DocumentSnapshot> masterDocs =
+                                    masterSnapshot.data.documents;
+                                List<Adventure> masterAdventuresList =
+                                _bloc.mapToList(docList: masterDocs);
+                                List<DocumentSnapshot> docs =
+                                    snapshot.data.documents;
+                                List<Adventure> adventuresList =
+                                _bloc.mapToList(docList: docs);
+                                if (masterAdventuresList.isNotEmpty || adventuresList.isNotEmpty) {
+                                  List<Adventure> finalList = new List.from(masterAdventuresList)..addAll(adventuresList);
+                                  return buildList(finalList);
+                                } else {
+                                  return Text(
+                                      "Você ainda não criou nenhuma aventura2 :(",
+                                      style: TextStyle(
+                                          fontFamily: 'Fira-sans',
+                                          color: const Color(0xffe2e2e1)));
+                                }
+                              } else {
+                                return Text("Carregando...",
+                                    style: TextStyle(
+                                        fontFamily: 'Fira-sans',
+                                        color: const Color(0xffe2e2e1)));
+                              }
+                            },
+                          );
+
+                        },
+                      );
+
+
                 } else
-                  return Text("Carregando...", style: TextStyle(fontFamily: 'Fira-sans', color: const Color(0xffe2e2e1)));
+                  return Text("Carregando...",
+                      style: TextStyle(
+                          fontFamily: 'Fira-sans',
+                          color: const Color(0xffe2e2e1)));
               }),
         ));
   }
@@ -76,7 +103,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                 decoration: new BoxDecoration(
                   image: new DecorationImage(
                     image: new AssetImage(
-                        "assets/adventures/${adventuresList[index].imagePath}.png"),
+                        "assets/adventures/${adventuresList[index].imagePath}.webp"),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -101,7 +128,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                           SizedBox(height: 5 * appConfig.blockSizeVertical),
                           Container(
                             alignment: Alignment.topLeft,
-                            child: Text("Próxima sessão: 02/11" ,
+                            child: Text("Próxima sessão: 02/11",
                                 style: TextStyle(
                                     fontFamily: 'Fira-sans',
                                     color: const Color(0xffe2e2e1),
@@ -116,7 +143,11 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                 ),
               ),
             ]),
-            onTap:() => Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: adventuresList[index].id.toString()))),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ViewAdventureScreen(
+                        adventureUid: adventuresList[index].id.toString()))),
           );
         });
   }
@@ -130,8 +161,8 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
   // TODO - implementar showProgressBar
   Widget showProgressBar(String id) {
     return Stack(children: <Widget>[
-      //Image.asset("assets/adventures/marcador_barra_de_progressão.png", width: 2 * appConfig.blockSize),
-      Image.asset("assets/adventures/barra_de_progressão_jogadas.png",
+      //Image.asset("assets/adventures/marcador_barra_de_progressão.webp", width: 2 * appConfig.blockSize),
+      Image.asset("assets/adventures/barra_de_progressão_jogadas.webp",
           width: 100 * appConfig.blockSize),
     ]);
   }

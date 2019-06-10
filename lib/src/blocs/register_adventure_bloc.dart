@@ -46,16 +46,4 @@ class RegisterAdventureBloc extends Bloc {
 
   static Bloc instance() => RegisterAdventureBloc();
 
-/*bool validateFields() {
-    if (_email.value != null &&
-        _email.value.isNotEmpty &&
-        _password.value != null &&
-        _password.value.isNotEmpty &&
-        _email.value.contains('@') &&
-        _password.value.length > 8) {
-      return true;
-    } else {
-      return false;
-    }
-  }*/
 }

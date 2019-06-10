@@ -21,16 +21,18 @@ class IndexAdventureBloc extends Bloc {
 
   Function(String) get changeDescription => _description.sink.add;
 
-  Stream<QuerySnapshot> myAdventures(String masterUid) {
-    //var currentUser = await FirebaseAuth.instance.currentUser();
-    return _repository.myAdventures(masterUid);
+  Stream<QuerySnapshot> myMasterAdventures(String masterUid) {
+    return _repository.myMasterAdventures(masterUid);
   }
 
-  //Convert map to goal list
+  Stream<QuerySnapshot> myPlayerAdventures(String currentUser) {
+    return _repository.myPlayerAdventures(currentUser);
+  }
+
   List mapToList({List<DocumentSnapshot> docList}) {
       List<Adventure> adventureList = [];
       docList.forEach((document) {
-        Adventure adventure = Adventure(document.documentID ,document.data["name"], document.data["description"], document.data["createdAt"], document.data["masterUid"], document.data["imagePath"]);
+        Adventure adventure = Adventure(document.documentID, document.data["name"], document.data["description"], document.data["createdAt"], document.data["masterUid"], document.data["imagePath"]);
         adventureList.add(adventure);
       });
       return adventureList;
