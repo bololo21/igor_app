@@ -84,10 +84,10 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
           children: <Widget>[
             Positioned(
               child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                            "assets/adventures/${adventure.imagePath}.webp"))),
+                // decoration: BoxDecoration(
+                //     image: DecorationImage(
+                //         image: AssetImage(
+                //             "assets/adventures/${adventure.imagePath}.webp"))),
                 width: 100 * appConfig.blockSize,
                 height: 17 * appConfig.blockSizeVertical,
               ),
@@ -256,12 +256,12 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                               width: 5 *
                                                   appConfig.blockSizeVertical,
                                             )
-                                          : GestureDetector( //IMPLEMENTAR FUNCAO
-                                          onTap:() =>  
-                                          Navigator.push( context,
-                                             MaterialPageRoute(
-                                                  builder: (context) => ViewCharacterScreen(adventureUid: widget.adventureUid,
-                                                    userid: user.id))),
+                                           : GestureDetector( //IMPLEMENTAR FUNCAO
+                                           onTap:() =>  
+                                           Navigator.push( context,
+                                              MaterialPageRoute(
+                                                   builder: (context) => ViewCharacterScreen(adventureUid: widget.adventureUid,
+                                                     userid: user.id))),
                                             child: Container(
                                               height: 5 *
                                                   appConfig.blockSizeVertical,

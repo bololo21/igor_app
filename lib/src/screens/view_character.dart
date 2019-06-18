@@ -31,8 +31,8 @@ class _ViewCharacterScreenState extends State<ViewCharacterScreen> {
         appBar: IgorAppBar(),
         drawer: IgorDrawer(context),
         floatingActionButton: Container(
-        height: 20 * appConfig.blockSizeVertical,
-        width: 100 * appConfig.blockSize,
+        height: 70 * appConfig.blockSizeVertical,
+        width: 90 * appConfig.blockSize,
           child: StreamBuilder(
             stream: FirebaseAuth.instance.onAuthStateChanged,
             builder: (context, currentUser) {
