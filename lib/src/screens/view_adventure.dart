@@ -8,6 +8,7 @@ import 'package:igor_app/src/models/player.dart';
 import 'package:igor_app/src/models/session.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
+import 'package:igor_app/src/screens/view_character.dart';
 import '../../app_config.dart';
 import 'add_character.dart';
 import 'app_bar.dart';
@@ -255,7 +256,13 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                               width: 5 *
                                                   appConfig.blockSizeVertical,
                                             )
-                                          : Container(
+                                          : GestureDetector( //IMPLEMENTAR FUNCAO
+                                          onTap:() =>  
+                                          Navigator.push( context,
+                                             MaterialPageRoute(
+                                                  builder: (context) => ViewCharacterScreen(
+                                                    userid: user.id))),
+                                            child: Container(
                                               height: 5 *
                                                   appConfig.blockSizeVertical,
                                               width: 5 *
@@ -266,6 +273,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                                       fit: BoxFit.fill,
                                                       image: new ExactAssetImage(
                                                           'assets/players/${user.avatar}.webp'))))
+                                          ),
                                     ],
                                   ),
                                   SizedBox(width: 5 * appConfig.blockSize),
