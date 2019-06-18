@@ -69,6 +69,15 @@ class FirestoreProvider {
         .snapshots();
   }
 
+  Stream<DocumentSnapshot> getCharacterData(String adventureUid, String userid) {
+    return _firestore
+        .collection('adventures')
+        .document(adventureUid)
+        .collection('players')
+        .document(userid)
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> getSessions(String adventureUid) {
     return _firestore
         .collection('sessions')

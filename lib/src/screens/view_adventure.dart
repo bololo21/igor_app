@@ -260,7 +260,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                           onTap:() =>  
                                           Navigator.push( context,
                                              MaterialPageRoute(
-                                                  builder: (context) => ViewCharacterScreen(
+                                                  builder: (context) => ViewCharacterScreen(adventureUid: widget.adventureUid,
                                                     userid: user.id))),
                                             child: Container(
                                               height: 5 *

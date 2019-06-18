@@ -28,6 +28,9 @@ class Repository {
 
   Stream<DocumentSnapshot> getUserData(String userUid) =>
       _firestoreProvider.getUserData(userUid);
+  
+  Stream<DocumentSnapshot> getCharacterData(String adventureUid, String userid) =>
+      _firestoreProvider.getCharacterData(adventureUid, userid);
 
   Stream<QuerySnapshot> getUsersInAdventure(String adventureUid) =>
       _firestoreProvider.getUsersInAdventure(adventureUid);
