@@ -20,7 +20,13 @@ class AddUserBloc extends Bloc {
   }
 
   Adventure mapToAdventure({DocumentSnapshot document}) {
-    Adventure adventure = Adventure(document.documentID, document.data["name"], document.data["description"], document.data["createdAt"], document.data["masterUid"], document.data["imagePath"]);
+    Adventure adventure = Adventure(
+        document.documentID,
+        document.data["name"],
+        document.data["description"],
+        document.data["createdAt"],
+        document.data["masterUid"],
+        document.data["imagePath"]);
     return adventure;
   }
 
@@ -39,7 +45,10 @@ class AddUserBloc extends Bloc {
   List mapToList({List<DocumentSnapshot> docList}) {
     List<User> userList = [];
     docList.forEach((document) {
-      User user = User(document.documentID, document.data["username"]);
+      User user = User(
+        document.documentID,
+        document.data["username"]
+      );
       userList.add(user);
     });
     return userList;
@@ -52,5 +61,4 @@ class AddUserBloc extends Bloc {
   }
 
   static Bloc instance() => AddUserBloc();
-
 }

@@ -43,9 +43,10 @@ class Repository {
           String characterRace,
           String attack,
           String defense,
-          String life) =>
+          String life,
+          String avatar) =>
       _firestoreProvider.addCharacterToAdventure(userUid, adventureUid,
-          characterName, characterClass, characterRace, attack, defense, life);
+          characterName, characterClass, characterRace, attack, defense, life, avatar);
 
   //adventures
 

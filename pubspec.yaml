@@ -78,6 +78,15 @@ flutter:
     - assets/navbar/Livros.webp
     - assets/navbar/Notificações.webp
 
+    - assets/players/p1.webp
+    - assets/players/p2.webp
+    - assets/players/p3.webp
+    - assets/players/p4.webp
+    - assets/players/p5.webp
+    - assets/players/p6.webp
+    - assets/players/p7.webp
+    - assets/players/p8.webp
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

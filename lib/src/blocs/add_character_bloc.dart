@@ -11,6 +11,7 @@ class AddCharacterBloc extends Bloc {
   final _attack = BehaviorSubject<String>();
   final _defense = BehaviorSubject<String>();
   final _life = BehaviorSubject<String>();
+  final _avatar = BehaviorSubject<String>();
 
   Observable<String> get characterName => _characterName.stream;
 
@@ -36,6 +37,10 @@ class AddCharacterBloc extends Bloc {
 
   Function(String) get changeLife => _life.sink.add;
 
+  Observable<String> get avatar => _avatar.stream;
+
+  Function(String) get changeAvatar => _avatar.sink.add;
+
   Future<void> addCharacterToAdventure(String userUid, String adventureUid) {
     return _repository.addCharacterToAdventure(
         userUid,
@@ -45,7 +50,8 @@ class AddCharacterBloc extends Bloc {
         _characterRace.value,
         _attack.value,
         _defense.value,
-        _life.value);
+        _life.value,
+        _avatar.value);
   }
 
   //dispose all open sink
@@ -62,6 +68,8 @@ class AddCharacterBloc extends Bloc {
     _defense.close();
     await _life.drain();
     _life.close();
+    await _avatar.drain();
+    _avatar.close();
   }
 
   static Bloc instance() => AddCharacterBloc();

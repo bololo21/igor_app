@@ -91,7 +91,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                   children: usersList.map((User user) {
                     return Column(
                       children: <Widget>[
-
                         Container(
                           width: 100 * appConfig.blockSize,
                           height: 6 * appConfig.blockSizeVertical,

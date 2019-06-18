@@ -97,7 +97,16 @@ class FirestoreProvider {
         .document(adventureUid)
         .collection('players')
         .document(user.id)
-        .setData({'playerUsername': user.username});
+        .setData({
+      'playerUsername': user.username,
+      'characterName': '',
+      'characterRace': '',
+      'characterClass': '',
+      'attack': '',
+      'defense': '',
+      'life': '',
+      'avatar': ''
+    });
   }
 
   Future<void> addCharacterToAdventure(
@@ -108,7 +117,8 @@ class FirestoreProvider {
       String characterRace,
       String attack,
       String defense,
-      String life) {
+      String life,
+      String avatar) {
     return _firestore
         .collection('adventures')
         .document(adventureUid)
@@ -120,7 +130,8 @@ class FirestoreProvider {
       'characterRace': characterRace,
       'attack': attack,
       'defense': defense,
-      'life': life
+      'life': life,
+      'avatar': avatar
     });
   }
 }

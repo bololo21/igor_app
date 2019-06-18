@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
 import 'package:igor_app/src/blocs/view_adventure_bloc.dart';
 import 'package:igor_app/src/models/adventure.dart';
+import 'package:igor_app/src/models/player.dart';
 import 'package:igor_app/src/models/session.dart';
-import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
 import '../../app_config.dart';
@@ -222,31 +222,89 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<DocumentSnapshot> docs = snapshot.data.documents;
-            List<User> usersInAdventureList =
-                _bloc.mapToUserList(docList: docs);
-            return Container(
-              height: 33 * appConfig.blockSizeVertical,
-              width: 82 * appConfig.blockSize,
-              child: ListView(
-                children: usersInAdventureList.map((user) {
-                  return Column(
-                    children: <Widget>[
-                      adventure.masterUid == user.id
-                          ? Container(
+            List<Player> usersInAdventureList =
+                _bloc.mapToPlayerList(docList: docs);
+            Player master = usersInAdventureList
+                .firstWhere((player) => player.id == adventure.masterUid);
+            usersInAdventureList.remove(master);
+            return Column(
+              children: <Widget>[
+                showMasterCard(master),
+                Container(
+                  height: 33 * appConfig.blockSizeVertical,
+                  width: 82 * appConfig.blockSize,
+                  child: ListView(
+                    children: usersInAdventureList.map((user) {
+                      return Column(
+                        children: <Widget>[
+                          Container(
                               alignment: Alignment.topLeft,
-                              child: Text(user.username,
-                                  style: TextStyle(
-                                      fontFamily: 'Fira-sans',
-                                      fontWeight: FontWeight.bold)))
-                          : Container(
-                              alignment: Alignment.topLeft,
-                              child: Text(user.username,
-                                  style: TextStyle(fontFamily: 'Fira-sans'))),
-                      SizedBox(height: 10),
-                    ],
-                  );
-                }).toList(),
-              ),
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(width: 2 * appConfig.blockSize),
+                                  Column(
+                                    children: <Widget>[
+                                      user.avatar == ""
+                                          ? Container(
+                                              decoration: new BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.grey,
+                                              ),
+                                              height: 5 *
+                                                  appConfig.blockSizeVertical,
+                                              width: 5 *
+                                                  appConfig.blockSizeVertical,
+                                            )
+                                          : Container(
+                                              height: 5 *
+                                                  appConfig.blockSizeVertical,
+                                              width: 5 *
+                                                  appConfig.blockSizeVertical,
+                                              decoration: new BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: new DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image: new ExactAssetImage(
+                                                          'assets/players/${user.avatar}.webp'))))
+                                    ],
+                                  ),
+                                  SizedBox(width: 5 * appConfig.blockSize),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                          width: 60 * appConfig.blockSize,
+                                          alignment: Alignment.topLeft,
+                                          child: user.characterName == ""
+                                              ? Text("Personagem não definido",
+                                                  style: TextStyle(
+                                                      color: Colors.black38,
+                                                      fontFamily: 'Fira-sans',
+                                                      fontStyle:
+                                                          FontStyle.italic))
+                                              : Text(user.characterName,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Fira-sans',
+                                                      fontWeight:
+                                                          FontWeight.bold))),
+                                      Container(
+                                        width: 60 * appConfig.blockSize,
+                                        alignment: Alignment.topLeft,
+                                        child: Text(user.username,
+                                            style: TextStyle(
+                                                fontFamily: 'Fira-sans',
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                          SizedBox(height: 1 * appConfig.blockSizeVertical),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             );
           } else
             return Text("Carregando...");
@@ -284,7 +342,8 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
         );
       } else {
         return FloatingActionButton(
-          child: Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
+          child:
+              Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -299,15 +358,63 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
         return Text("");
       else
         return FloatingActionButton(
-          child: Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
+          child:
+              Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      AddCharacterScreen(adventureUid: widget.adventureUid, userUid: currentUserUid))),
+                  builder: (context) => AddCharacterScreen(
+                      adventureUid: widget.adventureUid,
+                      userUid: currentUserUid))),
           backgroundColor: Colors.transparent,
           elevation: 0,
         );
     }
+  }
+
+  Widget showMasterCard(Player master) {
+    return Container(
+      width: 82 * appConfig.blockSize,
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Container(
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey,
+                    ),
+                    height: 7 * appConfig.blockSizeVertical,
+                    width: 7 * appConfig.blockSizeVertical,
+                  ),
+                ],
+              ),
+              SizedBox(width: 5 * appConfig.blockSize),
+              Row(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text("Mestre ",
+                        style: TextStyle(
+                            fontFamily: 'Fira-sans',
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text(master.username,
+                        style: TextStyle(
+                            fontFamily: 'Fira-sans',
+                            fontStyle: FontStyle.italic)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 1 * appConfig.blockSizeVertical),
+        ],
+      ),
+    );
   }
 }
