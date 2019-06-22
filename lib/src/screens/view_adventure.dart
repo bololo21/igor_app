@@ -12,6 +12,7 @@ import 'package:igor_app/src/screens/view_character.dart';
 import '../../app_config.dart';
 import 'add_character.dart';
 import 'app_bar.dart';
+import 'dice.dart';
 
 class ViewAdventureScreen extends StatefulWidget {
   final String adventureUid;
@@ -31,7 +32,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: Container(
-          width: 17 * appConfig.blockSize,
+          width: 30 * appConfig.blockSize,
           height: 17 * appConfig.blockSize,
           child: StreamBuilder(
             stream: FirebaseAuth.instance.onAuthStateChanged,
@@ -326,15 +327,30 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
   Widget returnButton(String currentUserUid, Adventure adventure) {
     if (currentUserUid == adventure.masterUid) {
       if (aba == 1) {
-        return FloatingActionButton(
-          child: Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RegisterSessionScreen(
-                      adventureUid: widget.adventureUid))),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+        return Row(
+          children: <Widget>[
+            FloatingActionButton(
+              heroTag: null,
+              child: Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RegisterSessionScreen(
+                          adventureUid: widget.adventureUid))),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+            FloatingActionButton(
+              heroTag: null,
+              child: Image.asset('assets/adventures/espadas.webp'),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DiceRolling())),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+          ],
         );
       } else {
         return FloatingActionButton(

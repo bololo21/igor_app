@@ -26,6 +26,7 @@ dependencies:
   rxdart:
   dash:
   toast: ^0.1.3
+  d20:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -71,6 +72,7 @@ flutter:
     - assets/adventures/jogadores.webp
     - assets/adventures/botão_adicionar_jogadores.webp
     - assets/adventures/botão_adicionar_sessões.webp
+    - assets/adventures/espadas.webp
 
     - assets/navbar/Aventuras.webp
     - assets/navbar/Configurações.webp
