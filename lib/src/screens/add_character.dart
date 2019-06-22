@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/add_character_bloc.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
-import 'package:igor_app/src/models/adventure.dart';
 
 import '../../app_config.dart';
 import 'view_adventure.dart';
@@ -27,13 +26,8 @@ class _AddCharacterScreenState extends State<AddCharacterScreen> {
     return Scaffold(
         body: Stack(
       children: <Widget>[
-        new Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage("assets/log_in/Backgrownd.webp"),
-              fit: BoxFit.cover,
-            ),
-          ),
+        Container(
+          color: appConfig.themeColor,
         ),
         SingleChildScrollView(
           child: Center(
@@ -71,7 +65,7 @@ class _AddCharacterScreenState extends State<AddCharacterScreen> {
                           ),
                           SizedBox(width: 2 * appConfig.blockSize),
                           Text("Criar Personagem",
-                              style: TextStyle(color: Colors.teal)),
+                              style: TextStyle(color: appConfig.themeColor)),
                         ],
                       ),
                       Padding(
@@ -245,7 +239,7 @@ class _AddCharacterScreenState extends State<AddCharacterScreen> {
                             MaterialButton(
                                 child: Text("PRONTO"),
                                 textColor: const Color(0xffe2e2e1),
-                                color: Colors.teal,
+                                color: appConfig.themeColor,
                                 onPressed: () {
                                   _bloc.addCharacterToAdventure(
                                       widget.userUid, widget.adventureUid);
@@ -278,17 +272,4 @@ class _AddCharacterScreenState extends State<AddCharacterScreen> {
     super.dispose();
   }
 
-  Color pickColor(Adventure adventure) {
-    if (adventure.imagePath == 'Coast') {
-      return const Color(0xfff9a073);
-    } else if (adventure.imagePath == 'Corvali') {
-      return const Color(0xff0f857e);
-    } else if (adventure.imagePath == 'Heartlands') {
-      return const Color(0xff1a3f51);
-    } else if (adventure.imagePath == 'Krevast') {
-      return const Color(0xff6c203e);
-    } else {
-      return const Color(0xff1e2843);
-    }
-  }
 }

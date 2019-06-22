@@ -61,6 +61,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
             if (snapshot.hasData) {
               Adventure adventure =
                   _bloc.mapToAdventure(document: snapshot.data);
+              appConfig.setThemeColor(adventure);
               return showAdventureData(adventure);
             } else {
               return Text("Carregando...",
@@ -79,15 +80,15 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
 
   Widget showAdventureData(Adventure adventure) {
     return Container(
-        decoration: new BoxDecoration(color: pickColor(adventure)),
+        decoration: new BoxDecoration(color: appConfig.themeColor),
         child: Stack(
           children: <Widget>[
             Positioned(
               child: Container(
-                // decoration: BoxDecoration(
-                //     image: DecorationImage(
-                //         image: AssetImage(
-                //             "assets/adventures/${adventure.imagePath}.webp"))),
+                 decoration: BoxDecoration(
+                     image: DecorationImage(
+                         image: AssetImage(
+                             "assets/adventures/${adventure.imagePath}.webp"))),
                 width: 100 * appConfig.blockSize,
                 height: 17 * appConfig.blockSizeVertical,
               ),
@@ -256,12 +257,12 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                               width: 5 *
                                                   appConfig.blockSizeVertical,
                                             )
-                                           : GestureDetector( //IMPLEMENTAR FUNCAO
+                                           : GestureDetector(
                                            onTap:() =>  
                                            Navigator.push( context,
                                               MaterialPageRoute(
                                                    builder: (context) => ViewCharacterScreen(adventureUid: widget.adventureUid,
-                                                     userid: user.id))),
+                                                     userUid: user.id))),
                                             child: Container(
                                               height: 5 *
                                                   appConfig.blockSizeVertical,
@@ -272,7 +273,8 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                                   image: new DecorationImage(
                                                       fit: BoxFit.fill,
                                                       image: new ExactAssetImage(
-                                                          'assets/players/${user.avatar}.webp'))))
+                                                          'assets/players/${user.avatar}.webp')))
+                                            )
                                           ),
                                     ],
                                   ),
@@ -318,20 +320,6 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
             return Text("Carregando...");
         },
       );
-    }
-  }
-
-  Color pickColor(Adventure adventure) {
-    if (adventure.imagePath == 'Coast') {
-      return const Color(0xfff9a073);
-    } else if (adventure.imagePath == 'Corvali') {
-      return const Color(0xff0f857e);
-    } else if (adventure.imagePath == 'Heartlands') {
-      return const Color(0xff1a3f51);
-    } else if (adventure.imagePath == 'Krevast') {
-      return const Color(0xff6c203e);
-    } else {
-      return const Color(0xff1e2843);
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/add_user_bloc.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
-import 'package:igor_app/src/models/adventure.dart';
 import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/view_adventure.dart';
 import 'package:toast/toast.dart';
@@ -61,18 +60,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   Widget buildList(List<User> userList) {
     return Stack(children: <Widget>[
-      StreamBuilder(
-        stream: _bloc.getAdventureData(widget.adventureUid),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            Adventure adventure = _bloc.mapToAdventure(document: snapshot.data);
-            return Container(
-              color: pickColor(adventure),
-            );
-          } else
-            return Text("");
-        },
-      ),
+      Container(color: appConfig.themeColor),
       Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -170,19 +158,5 @@ class _AddUserScreenState extends State<AddUserScreen> {
   void dispose() {
     $Provider.dispose<AddUserBloc>();
     super.dispose();
-  }
-
-  Color pickColor(Adventure adventure) {
-    if (adventure.imagePath == 'Coast') {
-      return const Color(0xfff9a073);
-    } else if (adventure.imagePath == 'Corvali') {
-      return const Color(0xff0f857e);
-    } else if (adventure.imagePath == 'Heartlands') {
-      return const Color(0xff1a3f51);
-    } else if (adventure.imagePath == 'Krevast') {
-      return const Color(0xff6c203e);
-    } else {
-      return const Color(0xff1e2843);
-    }
   }
 }

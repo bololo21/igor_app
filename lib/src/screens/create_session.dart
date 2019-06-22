@@ -22,13 +22,8 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
     return Scaffold(
         body: Stack(
       children: <Widget>[
-        new Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage("assets/log_in/Backgrownd.webp"),
-              fit: BoxFit.cover,
-            ),
-          ),
+        Container(
+          color: appConfig.themeColor,
         ),
         SingleChildScrollView(
           child: Center(
@@ -67,7 +62,7 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                           SizedBox(width: 2 * appConfig.blockSize),
                           Text(
                             "Criar Sessão",
-                            style: TextStyle(color: Colors.teal),
+                            style: TextStyle(color: appConfig.themeColor),
                           ),
                         ],
                       ),
@@ -109,14 +104,14 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                             MaterialButton(
                                 child: Text(_dateButton),
                                 textColor: const Color(0xffe2e2e1),
-                                color: Colors.teal,
+                                color: appConfig.themeColor,
                                 onPressed: () {
                                   _selectDate(context);
                                 }),
                                 MaterialButton(
                                 child: Text("CRIAR"),
                                 textColor: const Color(0xffe2e2e1),
-                                color: Colors.teal,
+                                color: appConfig.themeColor,
                                 onPressed: () {
                                   if (_dateButton == DateFormat('dd/MM').format(DateTime.now()))
                                     _bloc.changeDate(DateFormat('dd/MM/yyyy').format(DateTime.now()));

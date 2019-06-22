@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash/dash.dart';
 import 'package:igor_app/src/models/adventure.dart';
 import 'package:igor_app/src/models/player.dart';
-import 'package:igor_app/src/models/session.dart';
-import 'package:igor_app/src/models/user.dart';
 
 import '../resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -71,6 +69,20 @@ class ViewCharacterBloc extends Bloc {
     return _repository.getCharacterData(adventureUid, userid);
   }
 
+  Stream<DocumentSnapshot> getAdventureData(String adventureUid) {
+    return _repository.getAdventureData(adventureUid);
+  }
+
+  Adventure mapToAdventure({DocumentSnapshot document}) {
+    Adventure adventure = Adventure(
+        document.documentID,
+        document.data["name"],
+        document.data["description"],
+        document.data["createdAt"],
+        document.data["masterUid"],
+        document.data["imagePath"]);
+    return adventure;
+  }
 
   Player mapToPlayer(DocumentSnapshot document) {
       Player player = Player(
