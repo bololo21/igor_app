@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash/dash.dart';
 import 'package:igor_app/src/models/adventure.dart';
+import 'package:igor_app/src/models/invite.dart';
 import 'package:igor_app/src/models/user.dart';
 
 import '../resources/repository.dart';
@@ -38,8 +39,12 @@ class AddUserBloc extends Bloc {
     return _repository.getUsersInAdventure(adventureUid);
   }
 
-  Future<void> addUserToAdventure(User user, String adventureUid) {
-    return _repository.addUserToAdventure(user, adventureUid);
+  Stream<QuerySnapshot> getInvitedUsers(String adventureUid) {
+    return _repository.getInvitedUsers(adventureUid);
+  }
+
+  Future<void> inviteUser(User user, String adventureUid){
+    return _repository.inviteUser(user, adventureUid);
   }
 
   List mapToList({List<DocumentSnapshot> docList}) {
@@ -52,6 +57,19 @@ class AddUserBloc extends Bloc {
       userList.add(user);
     });
     return userList;
+  }
+
+  List mapToInviteList({List<DocumentSnapshot> docList}) {
+    List<Invite> inviteList = [];
+    docList.forEach((document) {
+      Invite invite = Invite(
+          document.data["userUid"],
+          document.data["adventureUid"],
+          document.documentID
+      );
+      inviteList.add(invite);
+    });
+    return inviteList;
   }
 
   //dispose all open sink

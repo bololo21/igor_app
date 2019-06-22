@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/add_user_bloc.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
+import 'package:igor_app/src/models/invite.dart';
 import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/view_adventure.dart';
 import 'package:toast/toast.dart';
@@ -21,24 +22,42 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   List<User> usersList = [];
   List<User> usersInAdventureList = [];
+  List<Invite> invitesList = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder(
       stream: _bloc.getUsersData(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List<DocumentSnapshot> docs = snapshot.data.documents;
-          usersList = _bloc.mapToList(docList: docs);
+      builder: (context, usersSnapshot) {
+        if (usersSnapshot.hasData) {
+          List<DocumentSnapshot> usersDocs = usersSnapshot.data.documents;
+          usersList = _bloc.mapToList(docList: usersDocs);
           if (usersList.isNotEmpty) {
             return StreamBuilder(
               stream: _bloc.getUsersInAdventure(widget.adventureUid),
-              builder: (context, snapshot2) {
-                if (snapshot2.hasData) {
-                  List<DocumentSnapshot> docs2 = snapshot2.data.documents;
-                  usersInAdventureList = _bloc.mapToList(docList: docs2);
-                  return buildList(usersList);
+              builder: (context, usersInAdventureSnapshot) {
+                if (usersInAdventureSnapshot.hasData) {
+                  List<DocumentSnapshot> usersInAdventureDocs =
+                      usersInAdventureSnapshot.data.documents;
+                  usersInAdventureList =
+                      _bloc.mapToList(docList: usersInAdventureDocs);
+                  return StreamBuilder(
+                    stream: _bloc.getInvitedUsers(widget.adventureUid),
+                    builder: (context, invitedUsersSnapshot) {
+                      if (invitedUsersSnapshot.hasData) {
+                        List<DocumentSnapshot> invitedUsersDocs =
+                            invitedUsersSnapshot.data.documents;
+                        invitesList =
+                            _bloc.mapToInviteList(docList: invitedUsersDocs);
+
+                        return buildList(usersList);
+                      }
+                      else {
+                        return Text("Carregando...");
+                      }
+                    },
+                  );
                 } else {
                   return Text("Carregando...");
                 }
@@ -91,11 +110,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                   color: Colors.transparent,
                                   height: 6 * appConfig.blockSizeVertical,
                                   width: 100 * appConfig.blockSize,
-                                  child: (usersInAdventureList
-                                      .any((userIn) => user.id == userIn.id)) ?
-                                  Text(user.username, style: TextStyle(color: Colors.black12))
-                                  :
-                                  Text(user.username),
+                                  child: (usersInAdventureList.any((userIn) =>
+                                              user.id == userIn.id) ||
+                                          invitesList.any((invite) =>
+                                              user.id == invite.userUid))
+                                      ? Text(user.username,
+                                          style:
+                                              TextStyle(color: Colors.black12))
+                                      : Text(user.username),
                                 ),
                                 onTap: () {
                                   if (usersInAdventureList
@@ -105,10 +127,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         context,
                                         duration: Toast.LENGTH_LONG,
                                         gravity: Toast.BOTTOM);
-                                  else {
-                                    _bloc.addUserToAdventure(
-                                        user, widget.adventureUid);
-                                    Toast.show("Jogador adicionado!", context,
+                                  else if (invitesList.any((invite) =>
+                                  user.id == invite.userUid)) {
+                                    Toast.show("Este jogador já foi convidado!",
+                                        context,
+                                        duration: Toast.LENGTH_LONG,
+                                        gravity: Toast.BOTTOM);
+                                  } else {
+                                    _bloc.inviteUser(user, widget.adventureUid);
+                                    Toast.show("Jogador convidado!", context,
                                         duration: Toast.LENGTH_LONG,
                                         gravity: Toast.BOTTOM);
                                   }
@@ -118,7 +145,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                           ),
                         ),
                         Divider(color: Colors.black12),
-
                       ],
                     );
                   }).toList(),

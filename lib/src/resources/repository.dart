@@ -35,8 +35,14 @@ class Repository {
   Stream<QuerySnapshot> getUsersInAdventure(String adventureUid) =>
       _firestoreProvider.getUsersInAdventure(adventureUid);
 
+  Stream<QuerySnapshot> getInvitedUsers(String adventureUid) =>
+      _firestoreProvider.getInvitedUsers(adventureUid);
+
   Future<void> addUserToAdventure(User user, String adventureUid) =>
       _firestoreProvider.addUserToAdventure(user, adventureUid);
+
+  Future<void> inviteUser(User user, String adventureUid) =>
+      _firestoreProvider.inviteUser(user, adventureUid);
 
   Future<void> addCharacterToAdventure(
           String userUid,
@@ -79,4 +85,10 @@ class Repository {
 
   Stream<QuerySnapshot> getSessions(String adventureUid) =>
       _firestoreProvider.getSessions(adventureUid);
+
+  Stream<QuerySnapshot> getInvites(String userUid) =>
+      _firestoreProvider.getInvites(userUid);
+
+  deleteInvite(String inviteUid) =>
+      _firestoreProvider.deleteInvite(inviteUid);
 }

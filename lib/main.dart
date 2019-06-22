@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:igor_app/src/screens/index_invites.dart';
 import 'src/screens/log_in.dart';
 import 'src/screens/sign_up.dart';
 import 'src/screens/index_adventure.dart';
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUpScreen(),
         '/register_adventure': (context) => RegisterAdventureScreen(),
         '/index_adventure': (context) => IndexAdventureScreen(),
+        '/index_invites': (context) => IndexInvitesScreen(),
+
       },
     );
   }

@@ -16,6 +16,10 @@ class FirestoreProvider {
     return _firestore.collection('users').document(userUid).snapshots();
   }
 
+  deleteInvite(String inviteId) {
+     return _firestore.collection('invites').document(inviteId).delete();
+  }
+
   Future<void> registerAdventureData(
       String userUid,
       String masterUsername,
@@ -85,6 +89,13 @@ class FirestoreProvider {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getInvites(String userUid) {
+    return _firestore
+        .collection('invites')
+        .where('userUid', isEqualTo: userUid)
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> getUsersData() {
     return _firestore.collection('users').snapshots();
   }
@@ -94,6 +105,13 @@ class FirestoreProvider {
         .collection('adventures')
         .document(adventureUid)
         .collection('players')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getInvitedUsers(String adventureUid) {
+    return _firestore
+        .collection('invites')
+        .where('adventureUid', isEqualTo: adventureUid)
         .snapshots();
   }
 
@@ -115,6 +133,12 @@ class FirestoreProvider {
       'defense': '',
       'life': '',
       'avatar': ''
+    });
+  }
+
+  Future<void> inviteUser(User user, String adventureUid) {
+    return _firestore.collection('invites').document().setData({
+      'adventureUid': adventureUid, 'userUid': user.id
     });
   }
 

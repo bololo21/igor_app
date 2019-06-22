@@ -134,6 +134,24 @@ class IgorDrawer extends Drawer {
                         ),
                       ),
                     ),
+                    SizedBox(height: 3 * appConfig.blockSizeVertical),
+                    GestureDetector(
+                      onTap: () =>
+                        Navigator.pushNamed(context, '/index_invites'),
+                      child: Container(
+                        color: Colors.transparent,
+                        width: 100 * appConfig.blockSize,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.mail_outline, color: const Color(0xffff3d55), size: 5*appConfig.blockSizeVertical,),
+                            SizedBox(width: 4 * appConfig.blockSize),
+                            Text("Convites",
+                                style:
+                                TextStyle(color: const Color(0xffff3d55))),
+                          ],
+                        ),
+                      ),
+                    ),
                     Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
