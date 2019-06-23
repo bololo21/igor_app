@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:igor_app/src/screens/dice.dart';
 import 'package:igor_app/src/screens/index_invites.dart';
 import 'src/screens/log_in.dart';
 import 'src/screens/sign_up.dart';
@@ -35,10 +34,7 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUpScreen(),
         '/register_adventure': (context) => RegisterAdventureScreen(),
         '/index_adventure': (context) => IndexAdventureScreen(),
-        '/index_invites': (context) => IndexInvitesScreen(),
-        '/dice_rolling': (context) => DiceRolling(),
-
-
+        '/index_invites': (context) => IndexInvitesScreen()
       },
     );
   }

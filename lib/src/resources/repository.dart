@@ -28,8 +28,9 @@ class Repository {
 
   Stream<DocumentSnapshot> getUserData(String userUid) =>
       _firestoreProvider.getUserData(userUid);
-  
-  Stream<DocumentSnapshot> getCharacterData(String adventureUid, String userid) =>
+
+  Stream<DocumentSnapshot> getCharacterData(
+          String adventureUid, String userid) =>
       _firestoreProvider.getCharacterData(adventureUid, userid);
 
   Stream<QuerySnapshot> getUsersInAdventure(String adventureUid) =>
@@ -54,8 +55,16 @@ class Repository {
           String defense,
           String life,
           String avatar) =>
-      _firestoreProvider.addCharacterToAdventure(userUid, adventureUid,
-          characterName, characterClass, characterRace, attack, defense, life, avatar);
+      _firestoreProvider.addCharacterToAdventure(
+          userUid,
+          adventureUid,
+          characterName,
+          characterClass,
+          characterRace,
+          attack,
+          defense,
+          life,
+          avatar);
 
   //adventures
 
@@ -89,6 +98,17 @@ class Repository {
   Stream<QuerySnapshot> getInvites(String userUid) =>
       _firestoreProvider.getInvites(userUid);
 
-  deleteInvite(String inviteUid) =>
-      _firestoreProvider.deleteInvite(inviteUid);
+  deleteInvite(String inviteUid) => _firestoreProvider.deleteInvite(inviteUid);
+
+  Future<void> insertIntoSessionLog(
+          String sessionUid, int diceValue, String playerName) =>
+      _firestoreProvider.insertIntoSessionLog(sessionUid, diceValue, playerName);
+
+  Stream<DocumentSnapshot> getCurrentUserPlayer(
+          String userUid, String adventureUid) =>
+      _firestoreProvider.getCurrentUserPlayer(userUid, adventureUid);
+
+  Stream<QuerySnapshot> getSessionLog(String sessionUid) {
+   return  _firestoreProvider.getSessionLog(sessionUid);
+  }
 }

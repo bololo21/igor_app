@@ -8,11 +8,11 @@ import 'package:igor_app/src/models/player.dart';
 import 'package:igor_app/src/models/session.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
+import 'package:igor_app/src/screens/session_log.dart';
 import 'package:igor_app/src/screens/view_character.dart';
 import '../../app_config.dart';
 import 'add_character.dart';
 import 'app_bar.dart';
-import 'dice.dart';
 
 class ViewAdventureScreen extends StatefulWidget {
   final String adventureUid;
@@ -32,7 +32,6 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: Container(
-          width: 30 * appConfig.blockSize,
           height: 17 * appConfig.blockSize,
           child: StreamBuilder(
             stream: FirebaseAuth.instance.onAuthStateChanged,
@@ -53,7 +52,6 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
             },
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: IgorAppBar(),
         drawer: IgorDrawer(context),
         body: StreamBuilder(
@@ -86,10 +84,10 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
           children: <Widget>[
             Positioned(
               child: Container(
-                 decoration: BoxDecoration(
-                     image: DecorationImage(
-                         image: AssetImage(
-                             "assets/adventures/${adventure.imagePath}.webp"))),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                            "assets/adventures/${adventure.imagePath}.webp"))),
                 width: 100 * appConfig.blockSize,
                 height: 17 * appConfig.blockSizeVertical,
               ),
@@ -193,13 +191,25 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                       children: sessionList.map((session) {
                                         return Row(
                                           children: <Widget>[
-                                            Container(
-                                                alignment: Alignment.topLeft,
-                                                child: Text(session.date,
-                                                    style: TextStyle(
-                                                        fontFamily: 'Fira-sans',
-                                                        fontWeight:
-                                                            FontWeight.bold))),
+                                            GestureDetector(
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SessionLogScreen(
+                                                              sessionUid:
+                                                                  session.id,
+                                                              adventureUid: session
+                                                                  .adventureUid))),
+                                              child: Container(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Text(session.date,
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Fira-sans',
+                                                          fontWeight: FontWeight
+                                                              .bold))),
+                                            ),
                                             SizedBox(
                                                 width: 2 * appConfig.blockSize),
                                             Container(
@@ -258,25 +268,29 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                               width: 5 *
                                                   appConfig.blockSizeVertical,
                                             )
-                                           : GestureDetector(
-                                           onTap:() =>  
-                                           Navigator.push( context,
-                                              MaterialPageRoute(
-                                                   builder: (context) => ViewCharacterScreen(adventureUid: widget.adventureUid,
-                                                     userUid: user.id))),
-                                            child: Container(
-                                              height: 5 *
-                                                  appConfig.blockSizeVertical,
-                                              width: 5 *
-                                                  appConfig.blockSizeVertical,
-                                              decoration: new BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: new DecorationImage(
-                                                      fit: BoxFit.fill,
-                                                      image: new ExactAssetImage(
-                                                          'assets/players/${user.avatar}.webp')))
-                                            )
-                                          ),
+                                          : GestureDetector(
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ViewCharacterScreen(
+                                                              adventureUid: widget
+                                                                  .adventureUid,
+                                                              userUid:
+                                                                  user.id))),
+                                              child: Container(
+                                                  height: 5 *
+                                                      appConfig
+                                                          .blockSizeVertical,
+                                                  width: 5 *
+                                                      appConfig
+                                                          .blockSizeVertical,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new ExactAssetImage(
+                                                              'assets/players/${user.avatar}.webp'))))),
                                     ],
                                   ),
                                   SizedBox(width: 5 * appConfig.blockSize),
@@ -328,10 +342,12 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
     if (currentUserUid == adventure.masterUid) {
       if (aba == 1) {
         return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             FloatingActionButton(
               heroTag: null,
-              child: Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
+              child:
+                  Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -340,29 +356,24 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
               backgroundColor: Colors.transparent,
               elevation: 0,
             ),
+          ],
+        );
+      } else {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
             FloatingActionButton(
-              heroTag: null,
-              child: Image.asset('assets/adventures/espadas.webp'),
+              child: Image.asset(
+                  'assets/adventures/botão_adicionar_jogadores.webp'),
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DiceRolling())),
+                      builder: (context) =>
+                          AddUserScreen(adventureUid: widget.adventureUid))),
               backgroundColor: Colors.transparent,
               elevation: 0,
             ),
           ],
-        );
-      } else {
-        return FloatingActionButton(
-          child:
-              Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      AddUserScreen(adventureUid: widget.adventureUid))),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
         );
       }
     } else {

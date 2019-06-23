@@ -17,7 +17,7 @@ class FirestoreProvider {
   }
 
   deleteInvite(String inviteId) {
-     return _firestore.collection('invites').document(inviteId).delete();
+    return _firestore.collection('invites').document(inviteId).delete();
   }
 
   Future<void> registerAdventureData(
@@ -38,7 +38,7 @@ class FirestoreProvider {
     return adventure
         .collection('players')
         .document(userUid)
-        .setData({'playerUsername': masterUsername});
+        .setData({'playerUsername': masterUsername, 'characterName': "MESTRE"});
   }
 
   Future<void> createSessionData(
@@ -73,7 +73,8 @@ class FirestoreProvider {
         .snapshots();
   }
 
-  Stream<DocumentSnapshot> getCharacterData(String adventureUid, String userid) {
+  Stream<DocumentSnapshot> getCharacterData(
+      String adventureUid, String userid) {
     return _firestore
         .collection('adventures')
         .document(adventureUid)
@@ -137,9 +138,10 @@ class FirestoreProvider {
   }
 
   Future<void> inviteUser(User user, String adventureUid) {
-    return _firestore.collection('invites').document().setData({
-      'adventureUid': adventureUid, 'userUid': user.id
-    });
+    return _firestore
+        .collection('invites')
+        .document()
+        .setData({'adventureUid': adventureUid, 'userUid': user.id});
   }
 
   Future<void> addCharacterToAdventure(
@@ -166,5 +168,33 @@ class FirestoreProvider {
       'life': life,
       'avatar': avatar
     });
+  }
+
+  Future<void> insertIntoSessionLog(
+      String sessionUid, int diceValue, String playerName) {
+    return _firestore
+        .collection('sessions')
+        .document(sessionUid)
+        .collection('logs')
+        .document()
+        .setData({'characterName': playerName, 'diceValue': diceValue, 'timestamp': DateTime.now()});
+  }
+
+  Stream<DocumentSnapshot> getCurrentUserPlayer(
+      String userUid, String adventureUid) {
+    return _firestore
+        .collection('adventures')
+        .document(adventureUid)
+        .collection('players')
+        .document(userUid)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getSessionLog(String sessionUid) {
+    return _firestore
+        .collection('sessions')
+        .document(sessionUid)
+        .collection('logs')
+        .snapshots();
   }
 }
