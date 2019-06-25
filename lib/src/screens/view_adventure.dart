@@ -24,10 +24,21 @@ class ViewAdventureScreen extends StatefulWidget {
   _ViewAdventureScreenState createState() => _ViewAdventureScreenState();
 }
 
-class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
+class _ViewAdventureScreenState extends State<ViewAdventureScreen>
+    with SingleTickerProviderStateMixin {
   final _bloc = $Provider.of<ViewAdventureBloc>();
-  String imagePath = 'assets/adventures/andamento.webp';
-  int aba = 1;
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(vsync: this, length: 2, initialIndex: 0);
+    _tabController.addListener(_handleTabIndex);
+  }
+
+  void _handleTabIndex() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +54,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         Adventure adventure =
-                        _bloc.mapToAdventure(document: snapshot.data);
+                            _bloc.mapToAdventure(document: snapshot.data);
                         return returnButton(currentUser.data.uid, adventure);
                       } else
                         return Text("");
@@ -60,7 +71,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Adventure adventure =
-              _bloc.mapToAdventure(document: snapshot.data);
+                  _bloc.mapToAdventure(document: snapshot.data);
               appConfig.setThemeColor(adventure);
               return showAdventureData(adventure);
             } else {
@@ -75,19 +86,21 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
   @override
   void dispose() {
     $Provider.dispose<ViewAdventureBloc>();
+    _tabController.removeListener(_handleTabIndex);
+    _tabController.dispose();
     super.dispose();
   }
 
   Widget returnButton(String currentUserUid, Adventure adventure) {
     if (currentUserUid == adventure.masterUid) {
-      if (aba == 1) {
+      if (_tabController.index == 0) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             FloatingActionButton(
               heroTag: null,
               child:
-              Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
+                  Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -117,12 +130,12 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
         );
       }
     } else {
-      if (aba == 1)
+      if (_tabController.index == 0)
         return Text("");
       else
         return FloatingActionButton(
           child:
-          Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
+              Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -141,6 +154,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
         child: Stack(
           children: <Widget>[
             Positioned(
+              top: 0,
               child: Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
@@ -149,63 +163,49 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                 width: 100 * appConfig.blockSize,
                 height: 17 * appConfig.blockSizeVertical,
               ),
-              top: 0,
             ),
             Positioned(
-              child: Text(
-                "${adventure.name}",
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              top: 15 * appConfig.blockSizeVertical,
+              left: 5 * appConfig.blockSize,
+              right: 5 * appConfig.blockSize,
+              child: Container(
+                decoration: new BoxDecoration(
+                    color: const Color(0xffe2e2e1),
+                    borderRadius: new BorderRadius.all(Radius.circular(7.0))),
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: <Widget>[
+                      TabBar(
+                        controller: _tabController,
+                        labelColor: appConfig.themeColor,
+                        indicatorColor: appConfig.themeColor,
+                        unselectedLabelColor: Colors.grey,
+                        tabs: [
+                          Tab(
+                              child: Text("ANDAMENTO",
+                                  style: TextStyle(
+                                      fontFamily: 'Fira-sans', fontSize: 16))),
+                          Tab(
+                              child: Text("JOGADORES",
+                                  style: TextStyle(
+                                      fontFamily: 'Fira-sans', fontSize: 16))),
+                        ],
+                      ),
+                      Container(
+                        height: 55 * appConfig.blockSizeVertical,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: <Widget>[
+                            showDetails(adventure),
+                            showPlayers(adventure),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              top: 4 * appConfig.blockSizeVertical,
-              left: 15 * appConfig.blockSize,
-            ),
-            Positioned(
-              child: Image.asset(imagePath),
-              top: 8 * appConfig.blockSizeVertical,
-              bottom: 22 * appConfig.blockSizeVertical,
-              left: 1 * appConfig.blockSize,
-              right: 1 * appConfig.blockSize,
-            ),
-            Positioned(
-              child: Container(
-                  height: 5 * appConfig.blockSizeVertical,
-                  width: 40 * appConfig.blockSize,
-                  child: MaterialButton(
-                    child: Text("ANDAMENTO",
-                        style:
-                        TextStyle(fontFamily: 'Fira-sans', fontSize: 16)),
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onPressed: () => setState(() {
-                      imagePath = 'assets/adventures/andamento.webp';
-                      aba = 1;
-                    }),
-                  )),
-              top: 16 * appConfig.blockSizeVertical,
-              left: 7 * appConfig.blockSize,
-            ),
-            Positioned(
-              child: Container(
-                  height: 5 * appConfig.blockSizeVertical,
-                  width: 40 * appConfig.blockSize,
-                  child: MaterialButton(
-                    child: Text("JOGADORES",
-                        style:
-                        TextStyle(fontFamily: 'Fira-sans', fontSize: 16)),
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onPressed: () => setState(() {
-                      imagePath = 'assets/adventures/jogadores.webp';
-                      aba = 2;
-                    }),
-                  )),
-              top: 16 * appConfig.blockSizeVertical,
-              right: 7 * appConfig.blockSize,
-            ),
-            Positioned(
-              child: showTabContent(adventure),
-              top: 23 * appConfig.blockSizeVertical,
-              left: 9 * appConfig.blockSize,
             ),
           ],
         ));
@@ -257,113 +257,106 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
     );
   }
 
-  Widget showTabContent(Adventure adventure) {
-    if (aba == 1) {
-      return Container(
-        width: 80 * appConfig.blockSize,
-        child: Column(
-          children: <Widget>[
-            Container(
-                padding: EdgeInsets.all(20),
-                child: Text(adventure.description,
-                    style: TextStyle(fontFamily: 'Fira-sans', fontSize: 16),
-                    textAlign: TextAlign.justify)),
-            Container(
-                padding: EdgeInsets.only(left: 15),
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(),
-                    child: Column(
-                      children: <Widget>[
-                        Divider(color: Colors.grey[800]),
-                        StreamBuilder(
-                            stream: _bloc.getSessions(widget.adventureUid),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                List<DocumentSnapshot> docs =
-                                    snapshot.data.documents;
-                                List<Session> sessionList =
-                                _bloc.mapToSessionList(docList: docs);
+  Widget showDetails(Adventure adventure) {
+    return Container(
+      padding: EdgeInsets.all(7 * appConfig.blockSize),
+      child: Column(
+        children: <Widget>[
+          Container(
+              padding: EdgeInsets.only(bottom: 7 * appConfig.blockSize),
+              child: Text(adventure.description,
+                  style: TextStyle(fontFamily: 'Fira-sans', fontSize: 16),
+                  textAlign: TextAlign.justify)),
+          Divider(color: Colors.grey[800]),
+          Container(
+              padding: EdgeInsets.only(top: 5 * appConfig.blockSize),
+              child: SingleChildScrollView(
+                child: StreamBuilder(
+                    stream: _bloc.getSessions(widget.adventureUid),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<DocumentSnapshot> docs = snapshot.data.documents;
+                        List<Session> sessionList =
+                            _bloc.mapToSessionList(docList: docs);
 
-                                if (sessionList.isEmpty)
-                                  return Text(
-                                      "Ainda não há sessões para esta aventura :(");
-                                else
-                                  return Container(
-                                    height: 33 * appConfig.blockSizeVertical,
-                                    child: ListView(
-                                      children: sessionList.map((session) {
-                                        return Column(
+                        if (sessionList.isEmpty)
+                          return Text(
+                              "Ainda não há sessões para esta aventura :(");
+                        else
+                          return Container(
+                            height: 20 * appConfig.blockSizeVertical,
+                            child: ListView(
+                              children: sessionList.map((session) {
+                                return Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Row(
                                           children: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Row(
-                                                  children: <Widget>[
-                                                    Container(
-                                                        alignment:
-                                                        Alignment.topLeft,
-                                                        child: Text(session.date,
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                'Fira-sans',
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .bold))),
-                                                    SizedBox(
-                                                        width: 2 *
-                                                            appConfig.blockSize),
-                                                    Container(
-                                                        alignment:
-                                                        Alignment.topLeft,
-                                                        child: Text(session.name)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: <Widget>[
-                                                    GestureDetector(
-                                                      onTap: () => Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  SessionLogScreen(
-                                                                      sessionUid:
-                                                                      session
-                                                                          .id,
-                                                                      adventureUid:
-                                                                      session
-                                                                          .adventureUid))),
-                                                      child: Image.asset(
-                                                          'assets/adventures/espadas.webp',
-                                                          width: 5 *
-                                                              appConfig.blockSize),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 1 * appConfig.blockSizeVertical),
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(session.date,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Fira-sans',
+                                                        fontWeight:
+                                                            FontWeight.bold))),
+                                            SizedBox(
+                                                width: 2 * appConfig.blockSize),
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(session.name)),
                                           ],
-                                        );
-                                      }).toList(),
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SessionLogScreen(
+                                                              sessionUid:
+                                                                  session.id,
+                                                              adventureUid: session
+                                                                  .adventureUid))),
+                                              child: Image.asset(
+                                                  'assets/adventures/espadas.webp',
+                                                  width:
+                                                      5 * appConfig.blockSize),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  );
-                              } else
-                                return Text("Carregando...");
-                            })
-                      ],
-                    ))),
-          ],
-        ),
-      );
-    } else {
-      return StreamBuilder(
+                                    SizedBox(
+                                        height:
+                                            1 * appConfig.blockSizeVertical),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                      } else
+                        return Text("Carregando...");
+                    }),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget showPlayers(Adventure adventure) {
+    return Container(
+      padding: EdgeInsets.all(7 * appConfig.blockSize),
+      child: StreamBuilder(
         stream: _bloc.getUsersInAdventure(widget.adventureUid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<DocumentSnapshot> docs = snapshot.data.documents;
             List<Player> usersInAdventureList =
-            _bloc.mapToPlayerList(docList: docs);
+                _bloc.mapToPlayerList(docList: docs);
             Player master = usersInAdventureList
                 .firstWhere((player) => player.id == adventure.masterUid);
             usersInAdventureList.remove(master);
@@ -386,60 +379,60 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
                                     children: <Widget>[
                                       user.avatar == ""
                                           ? Container(
-                                        decoration: new BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.grey,
-                                        ),
-                                        height: 5 *
-                                            appConfig.blockSizeVertical,
-                                        width: 5 *
-                                            appConfig.blockSizeVertical,
-                                      )
-                                          : GestureDetector(
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ViewCharacterScreen(
-                                                          adventureUid: widget
-                                                              .adventureUid,
-                                                          userUid:
-                                                          user.id))),
-                                          child: Container(
-                                              height: 5 *
-                                                  appConfig
-                                                      .blockSizeVertical,
-                                              width: 5 *
-                                                  appConfig
-                                                      .blockSizeVertical,
                                               decoration: new BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: new DecorationImage(
-                                                      fit: BoxFit.fill,
-                                                      image: new ExactAssetImage(
-                                                          'assets/players/${user.avatar}.webp'))))),
+                                                shape: BoxShape.circle,
+                                                color: Colors.grey,
+                                              ),
+                                              height: 5 *
+                                                  appConfig.blockSizeVertical,
+                                              width: 5 *
+                                                  appConfig.blockSizeVertical,
+                                            )
+                                          : GestureDetector(
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ViewCharacterScreen(
+                                                              adventureUid: widget
+                                                                  .adventureUid,
+                                                              userUid:
+                                                                  user.id))),
+                                              child: Container(
+                                                  height: 5 *
+                                                      appConfig
+                                                          .blockSizeVertical,
+                                                  width: 5 *
+                                                      appConfig
+                                                          .blockSizeVertical,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new ExactAssetImage(
+                                                              'assets/players/${user.avatar}.webp'))))),
                                     ],
                                   ),
                                   SizedBox(width: 5 * appConfig.blockSize),
                                   Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                          width: 60 * appConfig.blockSize,
                                           alignment: Alignment.topLeft,
                                           child: user.characterName == ""
                                               ? Text("Personagem não definido",
-                                              style: TextStyle(
-                                                  color: Colors.black38,
-                                                  fontFamily: 'Fira-sans',
-                                                  fontStyle:
-                                                  FontStyle.italic))
+                                                  style: TextStyle(
+                                                      color: Colors.black38,
+                                                      fontFamily: 'Fira-sans',
+                                                      fontStyle:
+                                                          FontStyle.italic))
                                               : Text(user.characterName,
-                                              style: TextStyle(
-                                                  fontFamily: 'Fira-sans',
-                                                  fontWeight:
-                                                  FontWeight.bold))),
+                                                  style: TextStyle(
+                                                      fontFamily: 'Fira-sans',
+                                                      fontWeight:
+                                                          FontWeight.bold))),
                                       Container(
-                                        width: 60 * appConfig.blockSize,
                                         alignment: Alignment.topLeft,
                                         child: Text(user.username,
                                             style: TextStyle(
@@ -461,7 +454,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
           } else
             return Text("Carregando...");
         },
-      );
-    }
+      ),
+    );
   }
 }

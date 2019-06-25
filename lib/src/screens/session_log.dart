@@ -29,60 +29,25 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Container(
-        child: StreamBuilder(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              FirebaseUser currentUser = snapshot.data;
-              return StreamBuilder(
-                stream: _bloc.getCurrentUserPlayer(
-                    currentUser.uid, widget.adventureUid),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    currentPlayer = _bloc.mapToPlayer(snapshot.data);
-                    return FloatingActionButton(
-                        child: Image.asset('assets/adventures/espadas.webp',
-                            height: 5 * appConfig.blockSizeVertical),
-                        onPressed: () {
-                          setState(() {
-                            diceValue = d20.roll('1d20');
-                          });
-                          _bloc
-                              .insertIntoSessionLog(widget.sessionUid,
-                                  diceValue, currentPlayer.characterName)
-                              .then((log) => _scrollController.animateTo(
-                                  _scrollController.position.maxScrollExtent,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeOut));
-                        });
-                  } else
-                    return Text("");
-                },
-              );
-            } else
-              return Text("");
-          },
-        ),
-      ),
+      floatingActionButton: returnButton(),
       body: Container(
         height: appConfig.blockSizeVertical * 100,
         width: appConfig.blockSize * 100,
         color: appConfig.themeColor,
         child: Center(
-            child: Container(
-          height: appConfig.blockSizeVertical * 80,
-          width: appConfig.blockSize * 85,
-          decoration: new BoxDecoration(
-              color: const Color(0xffe2e2e1),
-              borderRadius: new BorderRadius.all(Radius.circular(7.0))),
-          child: StreamBuilder(
-              stream: _bloc.getSessionLog(widget.sessionUid),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<DocumentSnapshot> logs = snapshot.data.documents;
-                  List<Log> logsList = _bloc.mapToLogList(docList: logs);
-                  if (logsList.isNotEmpty) {
+            child: Stack(children: <Widget>[
+          Container(
+            height: appConfig.blockSizeVertical * 80,
+            width: appConfig.blockSize * 85,
+            decoration: new BoxDecoration(
+                color: const Color(0xffe2e2e1),
+                borderRadius: new BorderRadius.all(Radius.circular(7.0))),
+            child: StreamBuilder(
+                stream: _bloc.getSessionLog(widget.sessionUid),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<DocumentSnapshot> logs = snapshot.data.documents;
+                    List<Log> logsList = _bloc.mapToLogList(docList: logs);
                     return Column(
                       children: <Widget>[
                         Container(
@@ -98,45 +63,35 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                                   fontSize: 22,
                                   fontFamily: 'Fira-sans'),
                             )),
-                        Container(
-                            height: 70 * appConfig.blockSizeVertical,
-                            padding: EdgeInsets.only(
-                                left: 7 * appConfig.blockSize,
-                                right: 7 * appConfig.blockSize,
-                                bottom: 4 * appConfig.blockSizeVertical),
-                            child: buildList(logsList)),
+                        logsList.isNotEmpty
+                            ? Container(
+                                height: 70 * appConfig.blockSizeVertical,
+                                padding: EdgeInsets.only(
+                                    left: 7 * appConfig.blockSize,
+                                    right: 7 * appConfig.blockSize,
+                                    bottom: 4 * appConfig.blockSizeVertical),
+                                child: buildList(logsList))
+                            : Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Text(
+                                      "Aperte no botão para rodar o dado!"),
+                                ),
+                              ),
                       ],
                     );
-                  } else {
-                    return Column(
-                      children: <Widget>[
-                        Container(
-                            height: 10 * appConfig.blockSizeVertical,
-                            padding: EdgeInsets.only(
-                                top: 4 * appConfig.blockSizeVertical,
-                                left: 7 * appConfig.blockSize,
-                                right: 7 * appConfig.blockSize),
-                            child: Text(
-                              "Histórico de Jogadas",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                  fontFamily: 'Fira-sans'),
-                            )),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Text("Aperte no botão para rodar o dado!"),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                } else {
-                  return Text("");
-                }
-              }),
-        )),
+                  } else
+                    return Text("");
+                }),
+          ),
+          Positioned(
+            child: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () => Navigator.pop(context)),
+            top: 0,
+            left: 0,
+          )
+        ])),
       ),
     );
   }
@@ -157,6 +112,45 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                   "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()}!",
                   style: TextStyle(fontFamily: 'Fira-sans'));
             }),
+      ),
+    );
+  }
+
+  Widget returnButton() {
+    return Container(
+      child: StreamBuilder(
+        stream: FirebaseAuth.instance.onAuthStateChanged,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            FirebaseUser currentUser = snapshot.data;
+            return StreamBuilder(
+              stream: _bloc.getCurrentUserPlayer(
+                  currentUser.uid, widget.adventureUid),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  currentPlayer = _bloc.mapToPlayer(snapshot.data);
+                  return FloatingActionButton(
+                      child: Image.asset('assets/adventures/espadas.webp',
+                          height: 5 * appConfig.blockSizeVertical),
+                      onPressed: () {
+                        setState(() {
+                          diceValue = d20.roll('1d20');
+                        });
+                        _bloc
+                            .insertIntoSessionLog(widget.sessionUid, diceValue,
+                                currentPlayer.characterName)
+                            .then((log) => _scrollController.animateTo(
+                                _scrollController.position.maxScrollExtent,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeOut));
+                      });
+                } else
+                  return Text("");
+              },
+            );
+          } else
+            return Text("");
+        },
       ),
     );
   }

@@ -165,10 +165,10 @@ class _ViewCharacterScreenState extends State<ViewCharacterScreen> {
         ),
       ),
       Positioned(
-        child: IconButton(icon: Icon(Icons.close), onPressed: () => Navigator.pop(context)),
-        top: 40,
-        left: 40,
-      )
+    child: IconButton(icon: Icon(Icons.close), onPressed: () => Navigator.pop(context)),
+    top: 40,
+    left: 40,
+    )
     ]);
   }
 }
