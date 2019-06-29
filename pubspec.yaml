@@ -73,6 +73,7 @@ flutter:
     - assets/adventures/botão_adicionar_jogadores.webp
     - assets/adventures/botão_adicionar_sessões.webp
     - assets/adventures/espadas.webp
+    - assets/adventures/botão_espadas.webp
 
     - assets/navbar/Aventuras.webp
     - assets/navbar/Configurações.webp

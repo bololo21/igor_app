@@ -81,7 +81,11 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                       ],
                     );
                   } else
-                    return Text("");
+                    return Center(
+                      child: Text("Carregando...",
+                          style: TextStyle(
+                              fontFamily: 'Fira-sans')),
+                    );
                 }),
           ),
           Positioned(
@@ -130,26 +134,36 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                 if (snapshot.hasData) {
                   currentPlayer = _bloc.mapToPlayer(snapshot.data);
                   return FloatingActionButton(
-                      child: Image.asset('assets/adventures/espadas.webp',
-                          height: 5 * appConfig.blockSizeVertical),
-                      onPressed: () {
-                        setState(() {
-                          diceValue = d20.roll('1d20');
-                        });
-                        _bloc
-                            .insertIntoSessionLog(widget.sessionUid, diceValue,
-                                currentPlayer.characterName)
-                            .then((log) => _scrollController.animateTo(
-                                _scrollController.position.maxScrollExtent,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeOut));
+                    child: Image.asset('assets/adventures/botão_espadas.webp'),
+                    onPressed: () {
+                      setState(() {
+                        diceValue = d20.roll('1d20');
                       });
+                      _bloc
+                          .insertIntoSessionLog(widget.sessionUid, diceValue,
+                          currentPlayer.characterName)
+                          .then((log) => _scrollController.animateTo(
+                          _scrollController.position.maxScrollExtent,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut));
+                    },
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                  );
                 } else
-                  return Text("");
+                  return Center(
+                    child: Text("Carregando...",
+                    style: TextStyle(
+                    fontFamily: 'Fira-sans')),
+                  );
               },
             );
           } else
-            return Text("");
+              return Center(
+                child: Text("Carregando...",
+                   style: TextStyle(
+                       fontFamily: 'Fira-sans')),
+              );
         },
       ),
     );

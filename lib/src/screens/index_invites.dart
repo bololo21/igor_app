@@ -47,11 +47,17 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
                                     _bloc.mapToInviteList(docList: docs);
                                 return buildList(invitesList, currentUser);
                               } else
-                                return Text("Carregando...");
+                                return Text("Carregando...",
+                                    style: TextStyle(
+                                        fontFamily: 'Fira-sans',
+                                        color: const Color(0xffe2e2e1)));
                             },
                           );
                         } else {
-                          return Text("Carregando...");
+                          return Text("Carregando...",
+                              style: TextStyle(
+                                  fontFamily: 'Fira-sans',
+                                  color: const Color(0xffe2e2e1)));
                         }
                       });
                 } else
