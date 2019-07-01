@@ -9,5 +9,4 @@ class Invite {
   String get adventureUid => _adventureUid;
   String get inviteUid => _inviteUid;
 
-
 }

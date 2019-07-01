@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:igor_app/app_config.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
 import 'package:igor_app/src/blocs/create_session_bloc.dart';
+import 'package:igor_app/src/models/session.dart';
 import 'package:igor_app/src/screens/view_adventure.dart';
 import 'package:intl/intl.dart';
 
 class RegisterSessionScreen extends StatefulWidget {
   final String adventureUid;
-  const RegisterSessionScreen({Key key, @required this.adventureUid}) : super(key: key);
+  final Session session;
+  const RegisterSessionScreen({Key key, @required this.adventureUid, this.session}) : super(key: key);
   @override
   _RegisterSessionScreenState createState() => _RegisterSessionScreenState();
 }
@@ -17,6 +19,17 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _bloc = $Provider.of<CreateSessionBloc>();
   String _dateButton = DateFormat('dd/MM').format(DateTime.now());
+  TextEditingController _nameController = new TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.session != null) {
+      _nameController.text = widget.session.name;
+      _dateButton = widget.session.date;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,8 +73,13 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                             onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: widget.adventureUid))),
                           ),
                           SizedBox(width: 2 * appConfig.blockSize),
+                          widget.session == null ?
                           Text(
                             "Criar Sessão",
+                            style: TextStyle(color: appConfig.themeColor),
+                          ):
+                          Text(
+                            "Editar Sessão",
                             style: TextStyle(color: appConfig.themeColor),
                           ),
                         ],
@@ -78,6 +96,7 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 builder:
                                     (context, AsyncSnapshot<String> snapshot) {
                                   return TextField(
+                                    controller: _nameController,
                                     onChanged: _bloc.changeSessionName,
                                     decoration: InputDecoration(
                                         labelText:
@@ -113,9 +132,17 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 textColor: const Color(0xffe2e2e1),
                                 color: appConfig.themeColor,
                                 onPressed: () {
-                                  if (_dateButton == DateFormat('dd/MM').format(DateTime.now()))
-                                    _bloc.changeDate(DateFormat('dd/MM/yyyy').format(DateTime.now()));
-                                  _bloc.createSession(widget.adventureUid);
+                                  if (widget.session == null) {
+                                    if (_dateButton == DateFormat('dd/MM').format(DateTime.now()))
+                                      _bloc.changeDate(DateFormat('dd/MM/yyyy').format(DateTime.now()));
+                                    _bloc.createSession(widget.adventureUid);
+                                  }
+                                  else {
+                                    if (_dateButton == widget.session.date)
+                                      _bloc.changeDate(widget.session.date);
+                                    _bloc.changeSessionName(_nameController.text);
+                                    _bloc.updateSession(widget.session.id);
+                                  }
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: widget.adventureUid)));
                                 })
                           ],

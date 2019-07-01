@@ -134,6 +134,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  d20:
+    dependency: "direct main"
+    description:
+      name: d20
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0+test-github-actions-1"
   dart_style:
     dependency: transitive
     description:
@@ -291,6 +298,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.5"
+  math_expressions:
+    dependency: transitive
+    description:
+      name: math_expressions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   meta:
     dependency: transitive
     description:

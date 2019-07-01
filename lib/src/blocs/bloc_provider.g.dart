@@ -64,6 +64,11 @@ class $Provider extends Provider {
           return BlocCache.getBlocInstance(
               "InvitesBloc", () => InvitesBloc.instance());
         }
+      case SessionLogBloc:
+        {
+          return BlocCache.getBlocInstance(
+              "SessionLogBloc", () => SessionLogBloc.instance());
+        }
     }
     return null;
   }
@@ -123,6 +128,11 @@ class $Provider extends Provider {
       case InvitesBloc:
         {
           BlocCache.dispose("InvitesBloc");
+          break;
+        }
+      case SessionLogBloc:
+        {
+          BlocCache.dispose("SessionLogBloc");
           break;
         }
     }

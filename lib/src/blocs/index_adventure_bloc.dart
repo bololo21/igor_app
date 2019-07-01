@@ -29,6 +29,9 @@ class IndexAdventureBloc extends Bloc {
     return _repository.myPlayerAdventures(currentUser);
   }
 
+  deleteAdventure(String adventureUid) => _repository.deleteAdventure(adventureUid);
+
+
   List mapToList({List<DocumentSnapshot> docList}) {
       List<Adventure> adventureList = [];
       docList.forEach((document) {

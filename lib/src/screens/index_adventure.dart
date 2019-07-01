@@ -7,6 +7,7 @@ import 'package:igor_app/src/models/adventure.dart';
 import 'package:igor_app/src/screens/view_adventure.dart';
 import '../../app_config.dart';
 import 'app_bar.dart';
+import 'register_adventure.dart';
 
 class IndexAdventureScreen extends StatefulWidget {
   @override
@@ -41,45 +42,44 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
               stream: FirebaseAuth.instance.onAuthStateChanged,
               builder: (context, currentUser) {
                 if (currentUser.hasData) {
-                  return
-                      StreamBuilder(
-                        stream: _bloc.myMasterAdventures(currentUser.data.uid),
-                        builder: (context, masterSnapshot) {
-                          return StreamBuilder(
-                            stream: _bloc.myPlayerAdventures(currentUser.data.uid),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData && masterSnapshot.hasData) {
-                                List<DocumentSnapshot> masterDocs =
-                                    masterSnapshot.data.documents;
-                                List<Adventure> masterAdventuresList =
+                  return StreamBuilder(
+                    stream: _bloc.myMasterAdventures(currentUser.data.uid),
+                    builder: (context, masterSnapshot) {
+                      return StreamBuilder(
+                        stream: _bloc.myPlayerAdventures(currentUser.data.uid),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && masterSnapshot.hasData) {
+                            List<DocumentSnapshot> masterDocs =
+                                masterSnapshot.data.documents;
+                            List<Adventure> masterAdventuresList =
                                 _bloc.mapToList(docList: masterDocs);
-                                List<DocumentSnapshot> docs =
-                                    snapshot.data.documents;
-                                List<Adventure> adventuresList =
+                            List<DocumentSnapshot> docs =
+                                snapshot.data.documents;
+                            List<Adventure> adventuresList =
                                 _bloc.mapToList(docList: docs);
-                                if (masterAdventuresList.isNotEmpty || adventuresList.isNotEmpty) {
-                                  List<Adventure> finalList = new List.from(masterAdventuresList)..addAll(adventuresList);
-                                  return buildList(finalList);
-                                } else {
-                                  return Text(
-                                      "Você ainda não criou nenhuma aventura2 :(",
-                                      style: TextStyle(
-                                          fontFamily: 'Fira-sans',
-                                          color: const Color(0xffe2e2e1)));
-                                }
-                              } else {
-                                return Text("Carregando...",
-                                    style: TextStyle(
-                                        fontFamily: 'Fira-sans',
-                                        color: const Color(0xffe2e2e1)));
-                              }
-                            },
-                          );
-
+                            if (masterAdventuresList.isNotEmpty ||
+                                adventuresList.isNotEmpty) {
+                              List<Adventure> finalList =
+                                  new List.from(masterAdventuresList)
+                                    ..addAll(adventuresList);
+                              return buildList(finalList);
+                            } else {
+                              return Text(
+                                  "Você ainda não criou nenhuma aventura :(",
+                                  style: TextStyle(
+                                      fontFamily: 'Fira-sans',
+                                      color: const Color(0xffe2e2e1)));
+                            }
+                          } else {
+                            return Text("Carregando...",
+                                style: TextStyle(
+                                    fontFamily: 'Fira-sans',
+                                    color: const Color(0xffe2e2e1)));
+                          }
                         },
                       );
-
-
+                    },
+                  );
                 } else
                   return Text("Carregando...",
                       style: TextStyle(
@@ -117,13 +117,125 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                           3 * appConfig.blockSizeVertical),
                       child: Column(
                         children: <Widget>[
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(adventuresList[index].name,
-                                style: TextStyle(
-                                    fontFamily: 'Fira-sans',
-                                    color: const Color(0xffe2e2e1),
-                                    fontSize: 24)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                width: 56 * appConfig.blockSize,
+                                height: 4 * appConfig.blockSizeVertical,
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: <Widget>[
+                                    Container(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(adventuresList[index].name,
+                                          style: TextStyle(
+                                              fontFamily: 'Fira-sans',
+                                              color: const Color(0xffe2e2e1),
+                                              fontSize: 24)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              StreamBuilder(
+                                stream:
+                                    FirebaseAuth.instance.onAuthStateChanged,
+                                builder: (context, currentUserSnapshot) {
+                                  if (currentUserSnapshot.hasData &&
+                                      currentUserSnapshot.data.uid ==
+                                          adventuresList[index].masterUid) {
+                                    return Row(
+                                      children: <Widget>[
+                                        GestureDetector(
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RegisterAdventureScreen(
+                                                          adventure:
+                                                              adventuresList[
+                                                                  index]))),
+                                          child: Icon(Icons.edit,
+                                              color: const Color(0xffe2e2e1)),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                barrierDismissible: true,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Atenção!"),
+                                                    elevation: 0,
+                                                    backgroundColor:
+                                                        const Color(0xffffffff),
+                                                    content:
+                                                        SingleChildScrollView(
+                                                            child: ListBody(
+                                                      children: <Widget>[
+                                                        RichText(
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          text: new TextSpan(
+                                                            style:
+                                                                new TextStyle(
+                                                              fontSize: 16.0,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                            children: <
+                                                                TextSpan>[
+                                                              new TextSpan(
+                                                                  text:
+                                                                      'Tem certeza de que deseja excluir a aventura '),
+                                                              new TextSpan(
+                                                                  text: adventuresList[
+                                                                          index]
+                                                                      .name,
+                                                                  style: new TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                              new TextSpan(
+                                                                  text:
+                                                                  ', suas sessões e personagens?'),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          child: Text("NÃO")),
+                                                      FlatButton(
+                                                          onPressed: () {
+                                                            _bloc.deleteAdventure(
+                                                                adventuresList[
+                                                                        index]
+                                                                    .id);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text("SIM"))
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          child: Icon(Icons.delete_outline,
+                                              color: const Color(0xffe2e2e1)),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return Text("");
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                           SizedBox(height: 5 * appConfig.blockSizeVertical),
                           Container(

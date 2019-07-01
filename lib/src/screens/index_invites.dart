@@ -47,11 +47,17 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
                                     _bloc.mapToInviteList(docList: docs);
                                 return buildList(invitesList, currentUser);
                               } else
-                                return Text("Carregando...");
+                                return Text("Carregando...",
+                                    style: TextStyle(
+                                        fontFamily: 'Fira-sans',
+                                        color: const Color(0xffe2e2e1)));
                             },
                           );
                         } else {
-                          return Text("Carregando...");
+                          return Text("Carregando...",
+                              style: TextStyle(
+                                  fontFamily: 'Fira-sans',
+                                  color: const Color(0xffe2e2e1)));
                         }
                       });
                 } else
@@ -135,7 +141,7 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
                     SizedBox(height: 5 * appConfig.blockSizeVertical),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: Text("Mestre:  ${master.username}",
+                      child: Text("(mestre:  ${master.username})",
                           style: TextStyle(
                               fontFamily: 'Fira-sans',
                               color: const Color(0xffe2e2e1),
@@ -148,7 +154,8 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
           ),
         ),
         Positioned(
-          left: 2*appConfig.blockSize,
+          right: 2 * appConfig.blockSize,
+          top: 2 * appConfig.blockSizeVertical,
           child: IconButton(
               icon: Icon(Icons.check),
               onPressed: () {
@@ -160,7 +167,8 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
         ),
 
         Positioned(
-            right: 2*appConfig.blockSize,
+            right: 2 * appConfig.blockSize,
+            bottom: 2 * appConfig.blockSizeVertical,
             child:IconButton(
             icon: Icon(Icons.close),
             onPressed: () {

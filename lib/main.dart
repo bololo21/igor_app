@@ -34,8 +34,7 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUpScreen(),
         '/register_adventure': (context) => RegisterAdventureScreen(),
         '/index_adventure': (context) => IndexAdventureScreen(),
-        '/index_invites': (context) => IndexInvitesScreen(),
-
+        '/index_invites': (context) => IndexInvitesScreen()
       },
     );
   }

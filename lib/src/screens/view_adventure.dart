@@ -8,7 +8,9 @@ import 'package:igor_app/src/models/player.dart';
 import 'package:igor_app/src/models/session.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
+import 'package:igor_app/src/screens/session_log.dart';
 import 'package:igor_app/src/screens/view_character.dart';
+
 import '../../app_config.dart';
 import 'add_character.dart';
 import 'app_bar.dart';
@@ -22,16 +24,26 @@ class ViewAdventureScreen extends StatefulWidget {
   _ViewAdventureScreenState createState() => _ViewAdventureScreenState();
 }
 
-class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
+class _ViewAdventureScreenState extends State<ViewAdventureScreen>
+    with SingleTickerProviderStateMixin {
   final _bloc = $Provider.of<ViewAdventureBloc>();
-  String imagePath = 'assets/adventures/andamento.webp';
-  int aba = 1;
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(vsync: this, length: 2, initialIndex: 0);
+    _tabController.addListener(_handleTabIndex);
+  }
+
+  void _handleTabIndex() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: Container(
-          width: 17 * appConfig.blockSize,
           height: 17 * appConfig.blockSize,
           child: StreamBuilder(
             stream: FirebaseAuth.instance.onAuthStateChanged,
@@ -52,7 +64,6 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
             },
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: IgorAppBar(),
         drawer: IgorDrawer(context),
         body: StreamBuilder(
@@ -75,282 +86,51 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
   @override
   void dispose() {
     $Provider.dispose<ViewAdventureBloc>();
+    _tabController.removeListener(_handleTabIndex);
+    _tabController.dispose();
     super.dispose();
-  }
-
-  Widget showAdventureData(Adventure adventure) {
-    return Container(
-        decoration: new BoxDecoration(color: appConfig.themeColor),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              child: Container(
-                 decoration: BoxDecoration(
-                     image: DecorationImage(
-                         image: AssetImage(
-                             "assets/adventures/${adventure.imagePath}.webp"))),
-                width: 100 * appConfig.blockSize,
-                height: 17 * appConfig.blockSizeVertical,
-              ),
-              top: 0,
-            ),
-            Positioned(
-              child: Text(
-                "${adventure.name}",
-                style: TextStyle(color: Colors.white, fontSize: 22),
-              ),
-              top: 4 * appConfig.blockSizeVertical,
-              left: 15 * appConfig.blockSize,
-            ),
-            Positioned(
-              child: Image.asset(imagePath),
-              top: 8 * appConfig.blockSizeVertical,
-              bottom: 22 * appConfig.blockSizeVertical,
-              left: 1 * appConfig.blockSize,
-              right: 1 * appConfig.blockSize,
-            ),
-            Positioned(
-              child: Container(
-                  height: 5 * appConfig.blockSizeVertical,
-                  width: 40 * appConfig.blockSize,
-                  child: MaterialButton(
-                    child: Text("ANDAMENTO",
-                        style:
-                            TextStyle(fontFamily: 'Fira-sans', fontSize: 16)),
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onPressed: () => setState(() {
-                          imagePath = 'assets/adventures/andamento.webp';
-                          aba = 1;
-                        }),
-                  )),
-              top: 16 * appConfig.blockSizeVertical,
-              left: 7 * appConfig.blockSize,
-            ),
-            Positioned(
-              child: Container(
-                  height: 5 * appConfig.blockSizeVertical,
-                  width: 40 * appConfig.blockSize,
-                  child: MaterialButton(
-                    child: Text("JOGADORES",
-                        style:
-                            TextStyle(fontFamily: 'Fira-sans', fontSize: 16)),
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onPressed: () => setState(() {
-                          imagePath = 'assets/adventures/jogadores.webp';
-                          aba = 2;
-                        }),
-                  )),
-              top: 16 * appConfig.blockSizeVertical,
-              right: 7 * appConfig.blockSize,
-            ),
-            Positioned(
-              child: showTabContent(adventure),
-              top: 23 * appConfig.blockSizeVertical,
-              left: 9 * appConfig.blockSize,
-            ),
-          ],
-        ));
-  }
-
-  Widget showTabContent(Adventure adventure) {
-    if (aba == 1) {
-      return Container(
-        width: 80 * appConfig.blockSize,
-        child: Column(
-          children: <Widget>[
-            Container(
-                padding: EdgeInsets.all(20),
-                child: Text(adventure.description,
-                    style: TextStyle(fontFamily: 'Fira-sans', fontSize: 16),
-                    textAlign: TextAlign.justify)),
-            Container(
-                padding: EdgeInsets.only(left: 15),
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(),
-                    child: Column(
-                      children: <Widget>[
-                        Divider(color: Colors.grey[800]),
-                        StreamBuilder(
-                            stream: _bloc.getSessions(widget.adventureUid),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                List<DocumentSnapshot> docs =
-                                    snapshot.data.documents;
-                                List<Session> sessionList =
-                                    _bloc.mapToSessionList(docList: docs);
-
-                                if (sessionList.isEmpty)
-                                  return Text(
-                                      "Ainda não há sessões para esta aventura :(");
-                                else
-                                  return Container(
-                                    height: 33 * appConfig.blockSizeVertical,
-                                    width: 82 * appConfig.blockSize,
-                                    child: ListView(
-                                      children: sessionList.map((session) {
-                                        return Row(
-                                          children: <Widget>[
-                                            Container(
-                                                alignment: Alignment.topLeft,
-                                                child: Text(session.date,
-                                                    style: TextStyle(
-                                                        fontFamily: 'Fira-sans',
-                                                        fontWeight:
-                                                            FontWeight.bold))),
-                                            SizedBox(
-                                                width: 2 * appConfig.blockSize),
-                                            Container(
-                                                alignment: Alignment.topLeft,
-                                                child: Text(session.name)),
-                                            SizedBox(height: 10),
-                                          ],
-                                        );
-                                      }).toList(),
-                                    ),
-                                  );
-                              } else
-                                return Text("Carregando...");
-                            })
-                      ],
-                    ))),
-          ],
-        ),
-      );
-    } else {
-      return StreamBuilder(
-        stream: _bloc.getUsersInAdventure(widget.adventureUid),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<DocumentSnapshot> docs = snapshot.data.documents;
-            List<Player> usersInAdventureList =
-                _bloc.mapToPlayerList(docList: docs);
-            Player master = usersInAdventureList
-                .firstWhere((player) => player.id == adventure.masterUid);
-            usersInAdventureList.remove(master);
-            return Column(
-              children: <Widget>[
-                showMasterCard(master),
-                Container(
-                  height: 33 * appConfig.blockSizeVertical,
-                  width: 82 * appConfig.blockSize,
-                  child: ListView(
-                    children: usersInAdventureList.map((user) {
-                      return Column(
-                        children: <Widget>[
-                          Container(
-                              alignment: Alignment.topLeft,
-                              child: Row(
-                                children: <Widget>[
-                                  SizedBox(width: 2 * appConfig.blockSize),
-                                  Column(
-                                    children: <Widget>[
-                                      user.avatar == ""
-                                          ? Container(
-                                              decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.grey,
-                                              ),
-                                              height: 5 *
-                                                  appConfig.blockSizeVertical,
-                                              width: 5 *
-                                                  appConfig.blockSizeVertical,
-                                            )
-                                           : GestureDetector(
-                                           onTap:() =>  
-                                           Navigator.push( context,
-                                              MaterialPageRoute(
-                                                   builder: (context) => ViewCharacterScreen(adventureUid: widget.adventureUid,
-                                                     userUid: user.id))),
-                                            child: Container(
-                                              height: 5 *
-                                                  appConfig.blockSizeVertical,
-                                              width: 5 *
-                                                  appConfig.blockSizeVertical,
-                                              decoration: new BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: new DecorationImage(
-                                                      fit: BoxFit.fill,
-                                                      image: new ExactAssetImage(
-                                                          'assets/players/${user.avatar}.webp')))
-                                            )
-                                          ),
-                                    ],
-                                  ),
-                                  SizedBox(width: 5 * appConfig.blockSize),
-                                  Column(
-                                    children: <Widget>[
-                                      Container(
-                                          width: 60 * appConfig.blockSize,
-                                          alignment: Alignment.topLeft,
-                                          child: user.characterName == ""
-                                              ? Text("Personagem não definido",
-                                                  style: TextStyle(
-                                                      color: Colors.black38,
-                                                      fontFamily: 'Fira-sans',
-                                                      fontStyle:
-                                                          FontStyle.italic))
-                                              : Text(user.characterName,
-                                                  style: TextStyle(
-                                                      fontFamily: 'Fira-sans',
-                                                      fontWeight:
-                                                          FontWeight.bold))),
-                                      Container(
-                                        width: 60 * appConfig.blockSize,
-                                        alignment: Alignment.topLeft,
-                                        child: Text(user.username,
-                                            style: TextStyle(
-                                                fontFamily: 'Fira-sans',
-                                                fontStyle: FontStyle.italic)),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )),
-                          SizedBox(height: 1 * appConfig.blockSizeVertical),
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            );
-          } else
-            return Text("Carregando...");
-        },
-      );
-    }
   }
 
   Widget returnButton(String currentUserUid, Adventure adventure) {
     if (currentUserUid == adventure.masterUid) {
-      if (aba == 1) {
-        return FloatingActionButton(
-          child: Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RegisterSessionScreen(
-                      adventureUid: widget.adventureUid))),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+      if (_tabController.index == 0) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            FloatingActionButton(
+              heroTag: null,
+              child:
+                  Image.asset('assets/adventures/botão_adicionar_sessões.webp'),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RegisterSessionScreen(
+                          adventureUid: widget.adventureUid))),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+          ],
         );
       } else {
-        return FloatingActionButton(
-          child:
-              Image.asset('assets/adventures/botão_adicionar_jogadores.webp'),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      AddUserScreen(adventureUid: widget.adventureUid))),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            FloatingActionButton(
+              child: Image.asset(
+                  'assets/adventures/botão_adicionar_jogadores.webp'),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddUserScreen(adventureUid: widget.adventureUid))),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+          ],
         );
       }
     } else {
-      if (aba == 1)
+      if (_tabController.index == 0)
         return Text("");
       else
         return FloatingActionButton(
@@ -366,6 +146,69 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
           elevation: 0,
         );
     }
+  }
+
+  Widget showAdventureData(Adventure adventure) {
+    return Container(
+        decoration: new BoxDecoration(color: appConfig.themeColor),
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              top: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                            "assets/adventures/${adventure.imagePath}.webp"))),
+                width: 100 * appConfig.blockSize,
+                height: 17 * appConfig.blockSizeVertical,
+              ),
+            ),
+            Positioned(
+              top: 15 * appConfig.blockSizeVertical,
+              left: 5 * appConfig.blockSize,
+              right: 5 * appConfig.blockSize,
+              child: Container(
+                decoration: new BoxDecoration(
+                    color: const Color(0xffe2e2e1),
+                    borderRadius: new BorderRadius.all(Radius.circular(7.0))),
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: <Widget>[
+                      TabBar(
+                        controller: _tabController,
+                        labelColor: appConfig.themeColor,
+                        indicatorColor: appConfig.themeColor,
+                        unselectedLabelColor: Colors.grey,
+                        tabs: [
+                          Tab(
+                              child: Text("ANDAMENTO",
+                                  style: TextStyle(
+                                      fontFamily: 'Fira-sans', fontSize: 16))),
+                          Tab(
+                              child: Text("JOGADORES",
+                                  style: TextStyle(
+                                      fontFamily: 'Fira-sans', fontSize: 16))),
+                        ],
+                      ),
+                      Container(
+                        height: 55 * appConfig.blockSizeVertical,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: <Widget>[
+                            showDetails(adventure),
+                            showPlayers(adventure),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 
   Widget showMasterCard(Player master) {
@@ -410,6 +253,396 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen> {
           ),
           SizedBox(height: 1 * appConfig.blockSizeVertical),
         ],
+      ),
+    );
+  }
+
+  Widget showDetails(Adventure adventure) {
+    return Container(
+      padding: EdgeInsets.all(7 * appConfig.blockSize),
+      child: Column(
+        children: <Widget>[
+          Container(
+              padding: EdgeInsets.only(bottom: 7 * appConfig.blockSize),
+              child: Text(adventure.description,
+                  style: TextStyle(fontFamily: 'Fira-sans', fontSize: 16),
+                  textAlign: TextAlign.justify)),
+          Divider(color: Colors.grey[800]),
+          Container(
+              padding: EdgeInsets.only(top: 5 * appConfig.blockSize),
+              child: SingleChildScrollView(
+                child: StreamBuilder(
+                    stream: _bloc.getSessions(widget.adventureUid),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<DocumentSnapshot> docs = snapshot.data.documents;
+                        List<Session> sessionList =
+                            _bloc.mapToSessionList(docList: docs);
+
+                        if (sessionList.isEmpty)
+                          return Text(
+                              "Ainda não há sessões para esta aventura :(");
+                        else
+                          return Container(
+                            height: 20 * appConfig.blockSizeVertical,
+                            child: ListView(
+                              children: sessionList.map((session) {
+                                return Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(session.date,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Fira-sans',
+                                                        fontWeight:
+                                                            FontWeight.bold))),
+                                            SizedBox(
+                                                width: 2 * appConfig.blockSize),
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(session.name)),
+                                          ],
+                                        ),
+                                        StreamBuilder(
+                                          stream: FirebaseAuth
+                                              .instance.onAuthStateChanged,
+                                          builder:
+                                              (context, currentUserSnapshot) {
+                                            if (currentUserSnapshot.hasData) {
+                                              return Row(
+                                                children: <Widget>[
+                                                  currentUserSnapshot
+                                                              .data.uid ==
+                                                          adventure.masterUid
+                                                      ? Row(
+                                                          children: <Widget>[
+                                                            GestureDetector(
+                                                              onTap: () => Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => RegisterSessionScreen(
+                                                                            adventureUid:
+                                                                                session.adventureUid,
+                                                                            session:
+                                                                                session,
+                                                                          ))),
+                                                              child: Icon(
+                                                                  Icons.edit),
+                                                            ),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    barrierDismissible:
+                                                                        true,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return AlertDialog(
+                                                                        title: Text(
+                                                                            "Atenção!"),
+                                                                        elevation:
+                                                                            0,
+                                                                        backgroundColor:
+                                                                            const Color(0xffffffff),
+                                                                        content:
+                                                                            SingleChildScrollView(
+                                                                                child: ListBody(
+                                                                          children: <
+                                                                              Widget>[
+                                                                            RichText(
+                                                                              textAlign: TextAlign.center,
+                                                                              text: new TextSpan(
+                                                                                style: new TextStyle(
+                                                                                  fontSize: 16.0,
+                                                                                  color: Colors.black,
+                                                                                ),
+                                                                                children: <TextSpan>[
+                                                                                  new TextSpan(text: 'Tem certeza de que deseja excluir a sessão '),
+                                                                                  new TextSpan(text: session.name, style: new TextStyle(fontWeight: FontWeight.bold)),
+                                                                                  new TextSpan(text: ' desta aventura?'),
+                                                                                ],
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        )),
+                                                                        actions: <
+                                                                            Widget>[
+                                                                          FlatButton(
+                                                                              onPressed: () => Navigator.pop(context),
+                                                                              child: Text("NÃO")),
+                                                                          FlatButton(
+                                                                              onPressed: () {
+                                                                                _bloc.deleteSession(session.id);
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: Text("SIM"))
+                                                                        ],
+                                                                      );
+                                                                    });
+                                                              },
+                                                              child: Icon(Icons
+                                                                  .delete_outline),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      : Text(""),
+                                                  GestureDetector(
+                                                    onTap: () => Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                SessionLogScreen(
+                                                                    sessionUid:
+                                                                        session
+                                                                            .id,
+                                                                    adventureUid:
+                                                                        session
+                                                                            .adventureUid))),
+                                                    child: Image.asset(
+                                                        'assets/adventures/espadas.webp',
+                                                        width: 5 *
+                                                            appConfig
+                                                                .blockSize),
+                                                  ),
+                                                ],
+                                              );
+                                            } else {
+                                              return Text("");
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            1 * appConfig.blockSizeVertical),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                      } else
+                        return Text("Carregando...");
+                    }),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget showPlayers(Adventure adventure) {
+    return Container(
+      padding: EdgeInsets.all(7 * appConfig.blockSize),
+      child: StreamBuilder(
+        stream: _bloc.getUsersInAdventure(widget.adventureUid),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<DocumentSnapshot> docs = snapshot.data.documents;
+            List<Player> usersInAdventureList =
+                _bloc.mapToPlayerList(docList: docs);
+            Player master = usersInAdventureList
+                .firstWhere((player) => player.id == adventure.masterUid);
+            usersInAdventureList.remove(master);
+            return StreamBuilder(
+              stream: FirebaseAuth.instance.onAuthStateChanged,
+              builder: (context, currentUserSnapshot) {
+                if (currentUserSnapshot.hasData) {
+                  return Column(
+                    children: <Widget>[
+                      showMasterCard(master),
+                      Container(
+                        height: 33 * appConfig.blockSizeVertical,
+                        width: 82 * appConfig.blockSize,
+                        child: ListView(
+                          children: usersInAdventureList.map((user) {
+                            return Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        SizedBox(
+                                            width: 2 * appConfig.blockSize),
+                                        Column(
+                                          children: <Widget>[
+                                            user.avatar == ""
+                                                ? Container(
+                                                    decoration:
+                                                        new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    height: 5 *
+                                                        appConfig
+                                                            .blockSizeVertical,
+                                                    width: 5 *
+                                                        appConfig
+                                                            .blockSizeVertical,
+                                                  )
+                                                : GestureDetector(
+                                                    onTap: () => Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ViewCharacterScreen(
+                                                                    adventureUid:
+                                                                        widget
+                                                                            .adventureUid,
+                                                                    userUid: user
+                                                                        .id))),
+                                                    child: Container(
+                                                        height: 5 *
+                                                            appConfig
+                                                                .blockSizeVertical,
+                                                        width: 5 *
+                                                            appConfig
+                                                                .blockSizeVertical,
+                                                        decoration: new BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            image: new DecorationImage(
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                                image:
+                                                                    new ExactAssetImage('assets/players/${user.avatar}.webp'))))),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                            width: 5 * appConfig.blockSize),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: user.characterName == ""
+                                                    ? Text(
+                                                        "Personagem não definido",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black38,
+                                                            fontFamily:
+                                                                'Fira-sans',
+                                                            fontStyle: FontStyle
+                                                                .italic))
+                                                    : Text(user.characterName,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Fira-sans',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold))),
+                                            Container(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(user.username,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Fira-sans',
+                                                      fontStyle:
+                                                          FontStyle.italic)),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    currentUserSnapshot.data.uid == user.id ||
+                                            currentUserSnapshot.data.uid ==
+                                                adventure.masterUid
+                                        ? IconButton(
+                                            icon: Icon(
+                                                Icons.remove_circle_outline),
+                                            onPressed: () => showDialog(
+                                                context: context,
+                                                barrierDismissible: true,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Atenção!"),
+                                                    elevation: 0,
+                                                    backgroundColor:
+                                                        const Color(0xffffffff),
+                                                    content:
+                                                        SingleChildScrollView(
+                                                            child: ListBody(
+                                                      children: <Widget>[
+                                                        RichText(
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          text: new TextSpan(
+                                                            style:
+                                                                new TextStyle(
+                                                              fontSize: 16.0,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                            children: <
+                                                                TextSpan>[
+                                                              new TextSpan(
+                                                                  text:
+                                                                      'Tem certeza de que deseja excluir o personagem de '),
+                                                              new TextSpan(
+                                                                  text: user
+                                                                      .username,
+                                                                  style: new TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                              new TextSpan(
+                                                                  text:
+                                                                      ' desta aventura?'),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          child: Text("NÃO")),
+                                                      FlatButton(
+                                                          onPressed: () {
+                                                            _bloc
+                                                                .leaveAdventure(
+                                                                    user.id,
+                                                                    adventure
+                                                                        .id);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text("SIM"))
+                                                    ],
+                                                  );
+                                                }))
+                                        : Text(""),
+                                  ],
+                                ),
+                                SizedBox(
+                                    height: 1 * appConfig.blockSizeVertical),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  );
+                } else
+                  return Text("");
+              },
+            );
+          } else
+            return Text("Carregando...");
+        },
       ),
     );
   }

@@ -17,7 +17,7 @@ class FirestoreProvider {
   }
 
   deleteInvite(String inviteId) {
-     return _firestore.collection('invites').document(inviteId).delete();
+    return _firestore.collection('invites').document(inviteId).delete();
   }
 
   Future<void> registerAdventureData(
@@ -38,7 +38,20 @@ class FirestoreProvider {
     return adventure
         .collection('players')
         .document(userUid)
-        .setData({'playerUsername': masterUsername});
+        .setData({'playerUsername': masterUsername, 'characterName': "MESTRE"});
+  }
+
+  deleteAdventure(String adventureUid) {
+    _firestore
+        .collection('sessions')
+        .where('adventureUid', isEqualTo: adventureUid)
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
+      }
+    });
+    return _firestore.collection('adventures').document(adventureUid).delete();
   }
 
   Future<void> createSessionData(
@@ -48,6 +61,10 @@ class FirestoreProvider {
       'sessionName': sessionName,
       'sessionDate': sessionDate
     });
+  }
+
+  deleteSession(String sessionUid) {
+    return _firestore.collection('sessions').document(sessionUid).delete();
   }
 
   Stream<QuerySnapshot> myMasterAdventures(String userUid) {
@@ -73,12 +90,13 @@ class FirestoreProvider {
         .snapshots();
   }
 
-  Stream<DocumentSnapshot> getCharacterData(String adventureUid, String userid) {
+  Stream<DocumentSnapshot> getCharacterData(
+      String adventureUid, String userUid) {
     return _firestore
         .collection('adventures')
         .document(adventureUid)
         .collection('players')
-        .document(userid)
+        .document(userUid)
         .snapshots();
   }
 
@@ -137,9 +155,10 @@ class FirestoreProvider {
   }
 
   Future<void> inviteUser(User user, String adventureUid) {
-    return _firestore.collection('invites').document().setData({
-      'adventureUid': adventureUid, 'userUid': user.id
-    });
+    return _firestore
+        .collection('invites')
+        .document()
+        .setData({'adventureUid': adventureUid, 'userUid': user.id});
   }
 
   Future<void> addCharacterToAdventure(
@@ -166,5 +185,65 @@ class FirestoreProvider {
       'life': life,
       'avatar': avatar
     });
+  }
+
+  Future<void> insertIntoSessionLog(
+      String sessionUid, int diceValue, String playerName) {
+    return _firestore
+        .collection('sessions')
+        .document(sessionUid)
+        .collection('logs')
+        .document()
+        .setData({
+      'characterName': playerName,
+      'diceValue': diceValue,
+      'timestamp': DateTime.now()
+    });
+  }
+
+  Stream<DocumentSnapshot> getCurrentUserPlayer(
+      String userUid, String adventureUid) {
+    return _firestore
+        .collection('adventures')
+        .document(adventureUid)
+        .collection('players')
+        .document(userUid)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getSessionLog(String sessionUid) {
+    return _firestore
+        .collection('sessions')
+        .document(sessionUid)
+        .collection('logs')
+        .snapshots();
+  }
+
+  Future<void> updateAdventure(String adventureUid, String adventureName,
+      String description, String imagePath) {
+    return _firestore
+        .collection('adventures')
+        .document(adventureUid)
+        .updateData({
+      'name': adventureName,
+      'description': description,
+      'imagePath': imagePath
+    });
+  }
+
+  Future<void> updateSession(String sessionUid, String sessionName, String sessionDate) {
+    return _firestore.collection('sessions').document(sessionUid).updateData({
+      'sessionName': sessionName,
+      'sessionDate': sessionDate
+    });
+  }
+
+  Future<void> leaveAdventure(String playerUid, String adventureUid) {
+    var adventure = _firestore.collection('adventures').document(adventureUid);
+    adventure.updateData({
+      "players": FieldValue.arrayRemove([playerUid])
+    });
+    return adventure.collection('players').document(playerUid).delete();
+
   }
 }
