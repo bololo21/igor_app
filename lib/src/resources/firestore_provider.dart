@@ -188,7 +188,7 @@ class FirestoreProvider {
   }
 
   Future<void> insertIntoSessionLog(
-      String sessionUid, int diceValue, String playerName) {
+      String sessionUid, int diceValue, String playerName, String dice) {
     return _firestore
         .collection('sessions')
         .document(sessionUid)
@@ -197,6 +197,7 @@ class FirestoreProvider {
         .setData({
       'characterName': playerName,
       'diceValue': diceValue,
+      'dice': dice,
       'timestamp': DateTime.now()
     });
   }
