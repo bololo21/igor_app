@@ -13,8 +13,8 @@ class SessionLogBloc extends Bloc {
   }
 
   Future<void> insertIntoSessionLog(
-      String sessionUid, int diceValue, String playerName) {
-    return _repository.insertIntoSessionLog(sessionUid, diceValue, playerName);
+      String sessionUid, int diceValue, String playerName, String dice) {
+    return _repository.insertIntoSessionLog(sessionUid, diceValue, playerName, dice);
   }
 
   Player mapToPlayer(DocumentSnapshot document) {
@@ -35,7 +35,7 @@ class SessionLogBloc extends Bloc {
     List<Log> logList = [];
     docList.forEach((document) {
       Log log = Log(document.documentID, document.data["characterName"],
-          document.data["diceValue"], document.data["timestamp"]);
+          document.data["diceValue"], document.data['dice'], document.data["timestamp"]);
       logList.add(log);
     });
 
