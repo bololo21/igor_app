@@ -132,11 +132,8 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 textColor: const Color(0xffe2e2e1),
                                 color: appConfig.themeColor,
                                 onPressed: () {
-                                  if (widget.session == null) {
-                                    if (_dateButton == DateTime.now())
-                                      _bloc.changeDate(DateTime.now());
+                                  if (widget.session == null)
                                     _bloc.createSession(widget.adventureUid);
-                                  }
                                   else {
                                     if (_dateButton == widget.session.date)
                                       _bloc.changeDate(widget.session.date);
