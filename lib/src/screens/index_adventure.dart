@@ -137,104 +137,7 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                                   ],
                                 ),
                               ),
-                              StreamBuilder(
-                                stream:
-                                    FirebaseAuth.instance.onAuthStateChanged,
-                                builder: (context, currentUserSnapshot) {
-                                  if (currentUserSnapshot.hasData &&
-                                      currentUserSnapshot.data.uid ==
-                                          adventuresList[index].masterUid) {
-                                    return Row(
-                                      children: <Widget>[
-                                        GestureDetector(
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RegisterAdventureScreen(
-                                                          adventure:
-                                                              adventuresList[
-                                                                  index]))),
-                                          child: Icon(Icons.edit,
-                                              color: const Color(0xffe2e2e1)),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                barrierDismissible: true,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text("Atenção!"),
-                                                    elevation: 0,
-                                                    backgroundColor:
-                                                        const Color(0xffffffff),
-                                                    content:
-                                                        SingleChildScrollView(
-                                                            child: ListBody(
-                                                      children: <Widget>[
-                                                        RichText(
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          text: new TextSpan(
-                                                            style:
-                                                                new TextStyle(
-                                                              fontSize: 16.0,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            children: <
-                                                                TextSpan>[
-                                                              new TextSpan(
-                                                                  text:
-                                                                      'Tem certeza de que deseja excluir a aventura '),
-                                                              new TextSpan(
-                                                                  text: adventuresList[
-                                                                          index]
-                                                                      .name,
-                                                                  style: new TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold)),
-                                                              new TextSpan(
-                                                                  text:
-                                                                  ', suas sessões e personagens?'),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )),
-                                                    actions: <Widget>[
-                                                      FlatButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context),
-                                                          child: Text("NÃO")),
-                                                      FlatButton(
-                                                          onPressed: () {
-                                                            _bloc.deleteAdventure(
-                                                                adventuresList[
-                                                                        index]
-                                                                    .id);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Text("SIM"))
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                          child: Icon(Icons.delete_outline,
-                                              color: const Color(0xffe2e2e1)),
-                                        ),
-                                      ],
-                                    );
-                                  } else {
-                                    return Text("");
-                                  }
-                                },
-                              ),
+                              adminButtons(adventuresList[index])
                             ],
                           ),
                           SizedBox(height: 5 * appConfig.blockSizeVertical),
@@ -277,5 +180,103 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
       Image.asset("assets/adventures/barra_de_progressão_jogadas.webp",
           width: 100 * appConfig.blockSize),
     ]);
+  }
+
+  Widget adminButtons(Adventure adventure) {
+    return StreamBuilder(
+      stream:
+      FirebaseAuth.instance.onAuthStateChanged,
+      builder: (context, currentUserSnapshot) {
+        if (currentUserSnapshot.hasData &&
+            currentUserSnapshot.data.uid ==
+                adventure.masterUid) {
+          return Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            RegisterAdventureScreen(
+                                adventure:
+                                adventure))),
+                child: Icon(Icons.edit,
+                    color: const Color(0xffe2e2e1)),
+              ),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder:
+                          (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Atenção!"),
+                          elevation: 0,
+                          backgroundColor:
+                          const Color(0xffffffff),
+                          content:
+                          SingleChildScrollView(
+                              child: ListBody(
+                                children: <Widget>[
+                                  RichText(
+                                    textAlign:
+                                    TextAlign.center,
+                                    text: new TextSpan(
+                                      style:
+                                      new TextStyle(
+                                        fontSize: 16.0,
+                                        color:
+                                        Colors.black,
+                                      ),
+                                      children: <
+                                          TextSpan>[
+                                        new TextSpan(
+                                            text:
+                                            'Tem certeza de que deseja excluir a aventura '),
+                                        new TextSpan(
+                                            text: adventure
+                                                .name,
+                                            style: new TextStyle(
+                                                fontWeight:
+                                                FontWeight
+                                                    .bold)),
+                                        new TextSpan(
+                                            text:
+                                            ', suas sessões e personagens?'),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )),
+                          actions: <Widget>[
+                            FlatButton(
+                                onPressed: () =>
+                                    Navigator.pop(
+                                        context),
+                                child: Text("NÃO")),
+                            FlatButton(
+                                onPressed: () {
+                                  _bloc.deleteAdventure(
+                                      adventure
+                                          .id);
+                                  Navigator.pop(
+                                      context);
+                                },
+                                child: Text("SIM"))
+                          ],
+                        );
+                      });
+                },
+                child: Icon(Icons.delete_outline,
+                    color: const Color(0xffe2e2e1)),
+              ),
+            ],
+          );
+        } else {
+          return Text("");
+        }
+      },
+    );
   }
 }
