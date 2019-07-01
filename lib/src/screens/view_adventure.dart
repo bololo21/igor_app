@@ -447,7 +447,9 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen>
                         children: <Widget>[
                           RichText(
                             textAlign: TextAlign.center,
-                            text: new TextSpan(
+                            text:
+                            currentUserSnapshot.data.uid == player.id ?
+                            new TextSpan(
                               style: new TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.black,
@@ -455,7 +457,18 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen>
                               children: <TextSpan>[
                                 new TextSpan(
                                     text:
-                                        'Tem certeza de que deseja excluir o personagem de '),
+                                        'Tem certeza de que deseja sair desta aventura?'),
+                              ],
+                            ):
+                            new TextSpan(
+                              style: new TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              ),
+                              children: <TextSpan>[
+                                new TextSpan(
+                                    text:
+                                    'Tem certeza de que deseja excluir o personagem de '),
                                 new TextSpan(
                                     text: player.username,
                                     style: new TextStyle(
