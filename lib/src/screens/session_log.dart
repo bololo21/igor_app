@@ -7,6 +7,7 @@ import 'package:igor_app/src/blocs/bloc_provider.dart';
 import 'package:igor_app/src/blocs/session_log_bloc.dart';
 import 'package:igor_app/src/models/log.dart';
 import 'package:igor_app/src/models/player.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class SessionLogScreen extends StatefulWidget {
   final String sessionUid;
@@ -21,6 +22,7 @@ class SessionLogScreen extends StatefulWidget {
 
 class _SessionLogScreenState extends State<SessionLogScreen> {
   final _bloc = $Provider.of<SessionLogBloc>();
+  int currentValue = 20;
   D20 d20 = D20();
   int diceValue;
   Player currentPlayer;
@@ -113,7 +115,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return Text(
-                  "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()}!",
+                  "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()}! em um Dado d${logsList[index].dice}",
                   style: TextStyle(fontFamily: 'Fira-sans'));
             }),
       ),
@@ -133,22 +135,36 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   currentPlayer = _bloc.mapToPlayer(snapshot.data);
-                  return FloatingActionButton(
-                    child: Image.asset('assets/adventures/botão_espadas.webp'),
-                    onPressed: () {
-                      setState(() {
-                        diceValue = d20.roll('1d20');
-                      });
-                      _bloc
-                          .insertIntoSessionLog(widget.sessionUid, diceValue,
-                          currentPlayer.characterName)
-                          .then((log) => _scrollController.animateTo(
-                          _scrollController.position.maxScrollExtent,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut));
-                    },
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
+                  return Row(
+                    children: <Widget>[
+
+                      NumberPicker.integer(
+                          initialValue: currentValue,
+                          minValue: 0,
+                          maxValue: 100,
+                          onChanged: (newValue) =>
+                              setState(() => currentValue = newValue)),
+                      Text("Current number: $currentValue"),
+
+
+                      FloatingActionButton(
+                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d${currentValue}');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName, currentValue.toString())
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                    ],
                   );
                 } else
                   return Center(
