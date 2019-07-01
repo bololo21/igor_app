@@ -309,24 +309,49 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen>
                                                 child: Text(session.name)),
                                           ],
                                         ),
-                                        Row(
-                                          children: <Widget>[
-                                            GestureDetector(
-                                              onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SessionLogScreen(
-                                                              sessionUid:
-                                                                  session.id,
-                                                              adventureUid: session
-                                                                  .adventureUid))),
-                                              child: Image.asset(
-                                                  'assets/adventures/espadas.webp',
-                                                  width:
-                                                      5 * appConfig.blockSize),
-                                            ),
-                                          ],
+                                        StreamBuilder(
+                                          stream: FirebaseAuth.instance.onAuthStateChanged,
+                                          builder: (context, currentUserSnapshot){
+                                            if (currentUserSnapshot.hasData) {
+                                              return Row(
+                                                children: <Widget>[
+                                                  GestureDetector(
+                                                    onTap: () => Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                SessionLogScreen(
+                                                                    sessionUid:
+                                                                    session.id,
+                                                                    adventureUid: session
+                                                                        .adventureUid))),
+                                                    child: Image.asset(
+                                                        'assets/adventures/espadas.webp',
+                                                        width:
+                                                        5 * appConfig.blockSize),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () => Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                SessionLogScreen(
+                                                                    sessionUid:
+                                                                    session.id,
+                                                                    adventureUid: session
+                                                                        .adventureUid))),
+                                                    child: Image.asset(
+                                                        'assets/adventures/espadas.webp',
+                                                        width:
+                                                        5 * appConfig.blockSize),
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                            else {
+                                              return Text("");
+                                            }
+                                          },
                                         ),
                                       ],
                                     ),

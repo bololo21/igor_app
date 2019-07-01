@@ -100,6 +100,10 @@ class Repository {
 
   deleteInvite(String inviteUid) => _firestoreProvider.deleteInvite(inviteUid);
 
+  deleteSession(String sessionUid) => _firestoreProvider.deleteSession(sessionUid);
+
+  deleteAdventure(String adventureUid) => _firestoreProvider.deleteAdventure(adventureUid);
+
   Future<void> insertIntoSessionLog(
           String sessionUid, int diceValue, String playerName) =>
       _firestoreProvider.insertIntoSessionLog(sessionUid, diceValue, playerName);

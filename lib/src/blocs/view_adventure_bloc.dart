@@ -60,7 +60,6 @@ class ViewAdventureBloc extends Bloc {
     return userList;
   }
 
-
   List mapToPlayerList({List<DocumentSnapshot> docList}) {
     List<Player> playerList = [];
     docList.forEach((document) {
@@ -96,6 +95,8 @@ class ViewAdventureBloc extends Bloc {
   Stream<QuerySnapshot> getSessions(String adventureUid) {
     return _repository.getSessions(adventureUid);
   }
+
+  deleteSession(String sessionUid) => _repository.deleteSession(sessionUid);
 
   static Bloc instance() => ViewAdventureBloc();
 }

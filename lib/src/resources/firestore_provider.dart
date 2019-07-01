@@ -41,6 +41,19 @@ class FirestoreProvider {
         .setData({'playerUsername': masterUsername, 'characterName': "MESTRE"});
   }
 
+  deleteAdventure(String adventureUid) {
+    _firestore
+        .collection('sessions')
+        .where('adventureUid', isEqualTo: adventureUid)
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
+      }
+    });
+    return _firestore.collection('adventures').document(adventureUid).delete();
+  }
+
   Future<void> createSessionData(
       String adventureUid, String sessionName, String sessionDate) {
     return _firestore.collection('sessions').document().setData({
@@ -48,6 +61,10 @@ class FirestoreProvider {
       'sessionName': sessionName,
       'sessionDate': sessionDate
     });
+  }
+
+  deleteSession(String sessionUid) {
+    return _firestore.collection('sessions').document(sessionUid).delete();
   }
 
   Stream<QuerySnapshot> myMasterAdventures(String userUid) {
@@ -177,7 +194,11 @@ class FirestoreProvider {
         .document(sessionUid)
         .collection('logs')
         .document()
-        .setData({'characterName': playerName, 'diceValue': diceValue, 'timestamp': DateTime.now()});
+        .setData({
+      'characterName': playerName,
+      'diceValue': diceValue,
+      'timestamp': DateTime.now()
+    });
   }
 
   Stream<DocumentSnapshot> getCurrentUserPlayer(
