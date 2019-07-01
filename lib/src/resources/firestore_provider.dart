@@ -53,6 +53,8 @@ class FirestoreProvider {
 
   Future<void> createSessionData(
       String adventureUid, String sessionName, DateTime sessionDate) {
+    if (sessionDate == null) sessionDate = DateTime.now();
+    if (sessionName == null) sessionName = "Sessão sem nome";
     return _firestore.collection('sessions').document().setData({
       'adventureUid': adventureUid,
       'sessionName': sessionName,
@@ -211,6 +213,9 @@ class FirestoreProvider {
       String adventureDate,
       String description,
       String imagePath) {
+    if (adventureName == null) adventureName = "Aventura sem nome";
+    if (description == null) description = "Aventura sem descrição";
+    if (imagePath == null) imagePath = "Padrão";
     var adventure = _firestore.collection('adventures').document();
     adventure.setData({
       'masterUid': userUid,
