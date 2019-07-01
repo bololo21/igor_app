@@ -18,7 +18,7 @@ class RegisterSessionScreen extends StatefulWidget {
 class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _bloc = $Provider.of<CreateSessionBloc>();
-  String _dateButton = DateFormat('dd/MM').format(DateTime.now());
+  DateTime _dateButton = DateTime.now();
   TextEditingController _nameController = new TextEditingController();
 
   @override
@@ -121,7 +121,7 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             MaterialButton(
-                                child: Text(_dateButton),
+                                child: Text(DateFormat('dd/MM').format(_dateButton)),
                                 textColor: const Color(0xffe2e2e1),
                                 color: appConfig.themeColor,
                                 onPressed: () {
@@ -133,8 +133,8 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
                                 color: appConfig.themeColor,
                                 onPressed: () {
                                   if (widget.session == null) {
-                                    if (_dateButton == DateFormat('dd/MM').format(DateTime.now()))
-                                      _bloc.changeDate(DateFormat('dd/MM/yyyy').format(DateTime.now()));
+                                    if (_dateButton == DateTime.now())
+                                      _bloc.changeDate(DateTime.now());
                                     _bloc.createSession(widget.adventureUid);
                                   }
                                   else {
@@ -173,11 +173,9 @@ class _RegisterSessionScreenState extends State<RegisterSessionScreen> {
       lastDate: new DateTime(2020),
     );
     if (picked != null) {
-      String _dateFormatted =  DateFormat('dd/MM/yyyy').format(picked);
-      _bloc.changeDate(_dateFormatted);
-      _dateFormatted = DateFormat('dd/MM').format(picked);
+      _bloc.changeDate(picked);
       setState(() {
-        _dateButton = _dateFormatted;
+        _dateButton = picked;
       });
     }
   }

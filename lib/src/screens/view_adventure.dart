@@ -10,6 +10,7 @@ import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
 import 'package:igor_app/src/screens/session_log.dart';
 import 'package:igor_app/src/screens/view_character.dart';
+import 'package:intl/intl.dart';
 
 import '../../app_config.dart';
 import 'add_character.dart';
@@ -559,7 +560,7 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen>
                     children: <Widget>[
                       Container(
                           alignment: Alignment.topLeft,
-                          child: Text(session.date,
+                          child: Text(DateFormat('dd/MM/yyyy').format(session.date),
                               style: TextStyle(
                                   fontFamily: 'Fira-sans',
                                   fontWeight: FontWeight.bold))),
