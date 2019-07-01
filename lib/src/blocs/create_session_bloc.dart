@@ -8,16 +8,16 @@ class CreateSessionBloc extends Bloc {
   final _repository = Repository();
   final _adventureUid = BehaviorSubject<String>();
   final _sessionName = BehaviorSubject<String>();
-  final _date = BehaviorSubject<String>();
+  final _date = BehaviorSubject<DateTime>();
 
   Observable<String> get adventureName => _adventureUid.stream;
   Observable<String> get sessionName => _sessionName.stream;
-  Observable<String> get date => _date.stream;
+  Observable<DateTime> get date => _date.stream;
 
   // Change data
   Function(String) get changeAdventureName => _adventureUid.sink.add;
   Function(String) get changeSessionName => _sessionName.sink.add;
-  Function(String) get changeDate => _date.sink.add;
+  Function(DateTime) get changeDate => _date.sink.add;
 
   Future<void> createSession(String adventureUid) {
     return _repository.createSession(adventureUid, _sessionName.value, _date.value);

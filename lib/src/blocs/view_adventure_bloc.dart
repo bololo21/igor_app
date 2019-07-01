@@ -86,7 +86,7 @@ class ViewAdventureBloc extends Bloc {
           document.documentID,
           document.data["sessionName"],
           document.data["adventureUid"],
-          document.data["sessionDate"]);
+          document.data["sessionDate"].toDate());
       sessionList.add(session);
     });
     return sessionList;
