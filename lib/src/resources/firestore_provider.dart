@@ -91,12 +91,12 @@ class FirestoreProvider {
   }
 
   Stream<DocumentSnapshot> getCharacterData(
-      String adventureUid, String userid) {
+      String adventureUid, String userUid) {
     return _firestore
         .collection('adventures')
         .document(adventureUid)
         .collection('players')
-        .document(userid)
+        .document(userUid)
         .snapshots();
   }
 
@@ -217,5 +217,33 @@ class FirestoreProvider {
         .document(sessionUid)
         .collection('logs')
         .snapshots();
+  }
+
+  Future<void> updateAdventure(String adventureUid, String adventureName,
+      String description, String imagePath) {
+    return _firestore
+        .collection('adventures')
+        .document(adventureUid)
+        .updateData({
+      'name': adventureName,
+      'description': description,
+      'imagePath': imagePath
+    });
+  }
+
+  Future<void> updateSession(String sessionUid, String sessionName, String sessionDate) {
+    return _firestore.collection('sessions').document(sessionUid).updateData({
+      'sessionName': sessionName,
+      'sessionDate': sessionDate
+    });
+  }
+
+  Future<void> leaveAdventure(String playerUid, String adventureUid) {
+    var adventure = _firestore.collection('adventures').document(adventureUid);
+    adventure.updateData({
+      "players": FieldValue.arrayRemove([playerUid])
+    });
+    return adventure.collection('players').document(playerUid).delete();
+
   }
 }

@@ -98,5 +98,8 @@ class ViewAdventureBloc extends Bloc {
 
   deleteSession(String sessionUid) => _repository.deleteSession(sessionUid);
 
+  Future<void> leaveAdventure(String playerUid, String adventureUid) =>
+    _repository.leaveAdventure(playerUid, adventureUid);
+
   static Bloc instance() => ViewAdventureBloc();
 }

@@ -100,19 +100,37 @@ class Repository {
 
   deleteInvite(String inviteUid) => _firestoreProvider.deleteInvite(inviteUid);
 
-  deleteSession(String sessionUid) => _firestoreProvider.deleteSession(sessionUid);
+  deleteSession(String sessionUid) =>
+      _firestoreProvider.deleteSession(sessionUid);
 
-  deleteAdventure(String adventureUid) => _firestoreProvider.deleteAdventure(adventureUid);
+  deleteAdventure(String adventureUid) =>
+      _firestoreProvider.deleteAdventure(adventureUid);
 
   Future<void> insertIntoSessionLog(
           String sessionUid, int diceValue, String playerName) =>
-      _firestoreProvider.insertIntoSessionLog(sessionUid, diceValue, playerName);
+      _firestoreProvider.insertIntoSessionLog(
+          sessionUid, diceValue, playerName);
 
   Stream<DocumentSnapshot> getCurrentUserPlayer(
           String userUid, String adventureUid) =>
       _firestoreProvider.getCurrentUserPlayer(userUid, adventureUid);
 
   Stream<QuerySnapshot> getSessionLog(String sessionUid) {
-   return  _firestoreProvider.getSessionLog(sessionUid);
+    return _firestoreProvider.getSessionLog(sessionUid);
+  }
+
+  Future<void> updateAdventure(String adventureUid, String adventureName,
+      String description, String imagePath) {
+    return _firestoreProvider.updateAdventure(
+        adventureUid, adventureName, description, imagePath);
+  }
+
+  Future<void> updateSession(String sessionUid, String sessionName, String sessionDate) {
+    return _firestoreProvider.updateSession(
+        sessionUid, sessionName, sessionDate);
+  }
+
+  Future<void> leaveAdventure(String playerUid, String adventureUid) {
+    return _firestoreProvider.leaveAdventure(playerUid, adventureUid);
   }
 }

@@ -33,6 +33,10 @@ class RegisterAdventureBloc extends Bloc {
     return currentUserData.listen((user) => _repository.registerAdventure(currentUser.uid, user.data["username"], _name.value, DateTime.now().toString(), _description.value, _imagePath.value));
   }
 
+  Future<void> updateAdventure(String adventureUid) {
+    return _repository.updateAdventure(adventureUid, _name.value, _description.value, _imagePath.value);
+  }
+
   Stream<DocumentSnapshot> getUserData(String userUid) => _repository.getUserData(userUid);
 
   void dispose() async {
