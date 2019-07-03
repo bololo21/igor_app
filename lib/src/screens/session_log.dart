@@ -181,7 +181,8 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                       children: <Widget>[
                         SizedBox(width: 25),
                         FloatingActionButton(
-                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        child: Text("D4", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
+                        //Image.asset('assets/adventures/botão_espadas.webp'),
                         onPressed: () {
                           setState(() {
                             diceValue = dquatro();
@@ -198,7 +199,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         elevation: 0,
                       ),
                      FloatingActionButton(
-                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        child: Text("D6", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
                             diceValue = dseis();
@@ -215,7 +216,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         elevation: 0,
                       ),
                       FloatingActionButton(
-                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        child: Text("D8", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
                             diceValue = doito();
@@ -232,7 +233,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         elevation: 0,
                       ),
                      FloatingActionButton(
-                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        child: Text("D10", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
                             diceValue = ddez();
@@ -248,8 +249,8 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         backgroundColor: Colors.transparent,
                         elevation: 0,
                       ),
-                                              FloatingActionButton(
-                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        FloatingActionButton(
+                        child: Text("D12", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
                             diceValue = ddoze();
@@ -266,7 +267,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         elevation: 0,
                       ),
                      FloatingActionButton(
-                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        child: Text("D20", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
                             diceValue = d20.roll('1d20');
