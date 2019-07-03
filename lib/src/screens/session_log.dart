@@ -105,7 +105,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
   int dseis(){
     Random rnd = new Random();
     int min = 1;
-    int max = 6;
+    int max = 7;
     int r = min + rnd.nextInt(max - min);
     return r;
   }
@@ -113,14 +113,14 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
   int dquatro(){
     Random rnd = new Random();
     int min = 1;
-    int max = 4;
+    int max = 5;
     int r = min + rnd.nextInt(max - min);
     return r;
   }
   int doito(){
     Random rnd = new Random();
     int min = 1;
-    int max = 8;
+    int max = 9;
     int r = min + rnd.nextInt(max - min);
     return r;
   }
@@ -128,7 +128,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
   int ddez(){
     Random rnd = new Random();
     int min = 1;
-    int max = 10;
+    int max = 11;
     int r = min + rnd.nextInt(max - min);
     return r;
   }
@@ -136,7 +136,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
   int ddoze(){
     Random rnd = new Random();
     int min = 1;
-    int max = 12;
+    int max = 13;
     int r = min + rnd.nextInt(max - min);
     return r;
   }
@@ -184,7 +184,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Image.asset('assets/adventures/botão_espadas.webp'),
                         onPressed: () {
                           setState(() {
-                            diceValue = d20.roll('1d20');
+                            diceValue = dquatro();
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
@@ -201,7 +201,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Image.asset('assets/adventures/botão_espadas.webp'),
                         onPressed: () {
                           setState(() {
-                            diceValue = d20.roll('1d20');
+                            diceValue = dseis();
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
@@ -218,7 +218,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Image.asset('assets/adventures/botão_espadas.webp'),
                         onPressed: () {
                           setState(() {
-                            diceValue = d20.roll('1d20');
+                            diceValue = doito();
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
@@ -235,7 +235,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Image.asset('assets/adventures/botão_espadas.webp'),
                         onPressed: () {
                           setState(() {
-                            diceValue = d20.roll('1d20');
+                            diceValue = ddez();
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
@@ -252,7 +252,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Image.asset('assets/adventures/botão_espadas.webp'),
                         onPressed: () {
                           setState(() {
-                            diceValue = d20.roll('1d20');
+                            diceValue = ddoze();
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
