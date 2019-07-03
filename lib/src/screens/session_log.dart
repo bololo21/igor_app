@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:d20/d20.dart';
+import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:igor_app/app_config.dart';
@@ -22,6 +23,7 @@ class SessionLogScreen extends StatefulWidget {
 class _SessionLogScreenState extends State<SessionLogScreen> {
   final _bloc = $Provider.of<SessionLogBloc>();
   D20 d20 = D20();
+
   int diceValue;
   Player currentPlayer;
   ScrollController _scrollController = new ScrollController();
@@ -100,6 +102,46 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
     );
   }
 
+  int dseis(){
+    Random rnd = new Random();
+    int min = 1;
+    int max = 6;
+    int r = min + rnd.nextInt(max - min);
+    return r;
+  }
+
+  int dquatro(){
+    Random rnd = new Random();
+    int min = 1;
+    int max = 4;
+    int r = min + rnd.nextInt(max - min);
+    return r;
+  }
+  int doito(){
+    Random rnd = new Random();
+    int min = 1;
+    int max = 8;
+    int r = min + rnd.nextInt(max - min);
+    return r;
+  }
+
+  int ddez(){
+    Random rnd = new Random();
+    int min = 1;
+    int max = 10;
+    int r = min + rnd.nextInt(max - min);
+    return r;
+  }
+
+  int ddoze(){
+    Random rnd = new Random();
+    int min = 1;
+    int max = 12;
+    int r = min + rnd.nextInt(max - min);
+    return r;
+  }
+
+
   Scrollbar buildList(List<Log> logsList) {
     return Scrollbar(
       child: MediaQuery.removePadding(
@@ -133,23 +175,115 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   currentPlayer = _bloc.mapToPlayer(snapshot.data);
-                  return FloatingActionButton(
-                    child: Image.asset('assets/adventures/botão_espadas.webp'),
-                    onPressed: () {
-                      setState(() {
-                        diceValue = d20.roll('1d20');
-                      });
-                      _bloc
-                          .insertIntoSessionLog(widget.sessionUid, diceValue,
-                          currentPlayer.characterName)
-                          .then((log) => _scrollController.animateTo(
-                          _scrollController.position.maxScrollExtent,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut));
-                    },
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                  );
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        SizedBox(width: 25),
+                        FloatingActionButton(
+                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d20');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName)
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                     FloatingActionButton(
+                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d20');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName)
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                      FloatingActionButton(
+                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d20');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName)
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                     FloatingActionButton(
+                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d20');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName)
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                                              FloatingActionButton(
+                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d20');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName)
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                     FloatingActionButton(
+                        child: Image.asset('assets/adventures/botão_espadas.webp'),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d20');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName)
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                      
+                  ]);
                 } else
                   return Center(
                     child: Text("Carregando...",
