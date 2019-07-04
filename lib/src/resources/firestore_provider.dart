@@ -63,16 +63,27 @@ class FirestoreProvider {
   }
 
   deleteAdventure(String adventureUid) {
+    var adventure = _firestore.collection('adventures').document(adventureUid);
     _firestore
         .collection('sessions')
         .where('adventureUid', isEqualTo: adventureUid)
         .getDocuments()
         .then((snapshot) {
+      for (DocumentSnapshot sessionDS in snapshot.documents) {
+        sessionDS.reference.collection('logs').getDocuments().then((logs) {
+          for (DocumentSnapshot logDS in logs.documents) {
+            logDS.reference.delete();
+          }
+        });
+        sessionDS.reference.delete();
+      }
+    });
+    adventure.collection('players').getDocuments().then((snapshot) {
       for (DocumentSnapshot ds in snapshot.documents) {
         ds.reference.delete();
       }
     });
-    return _firestore.collection('adventures').document(adventureUid).delete();
+    return adventure.delete();
   }
 
   deleteInvite(String inviteId) {
@@ -80,7 +91,13 @@ class FirestoreProvider {
   }
 
   deleteSession(String sessionUid) {
-    return _firestore.collection('sessions').document(sessionUid).delete();
+    var session = _firestore.collection('sessions').document(sessionUid);
+    session.collection('logs').getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
+      }
+    });
+    return session.delete();
   }
 
   Stream<DocumentSnapshot> getAdventureData(String adventureUid) {
