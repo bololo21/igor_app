@@ -6,6 +6,7 @@ import 'package:igor_app/src/blocs/view_adventure_bloc.dart';
 import 'package:igor_app/src/models/adventure.dart';
 import 'package:igor_app/src/models/player.dart';
 import 'package:igor_app/src/models/session.dart';
+import 'package:igor_app/src/models/user.dart';
 import 'package:igor_app/src/screens/add_user.dart';
 import 'package:igor_app/src/screens/create_session.dart';
 import 'package:igor_app/src/screens/session_log.dart';
@@ -434,71 +435,81 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen>
         if (currentUserSnapshot.hasData &&
             (currentUserSnapshot.data.uid == player.id ||
                 currentUserSnapshot.data.uid == adventure.masterUid))
-          return IconButton(
-              icon: Icon(Icons.remove_circle_outline),
-              onPressed: () => showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Atenção!"),
-                      elevation: 0,
-                      backgroundColor: const Color(0xffffffff),
-                      content: SingleChildScrollView(
-                          child: ListBody(
-                        children: <Widget>[
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text:
-                            currentUserSnapshot.data.uid == player.id ?
-                            new TextSpan(
-                              style: new TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                              ),
-                              children: <TextSpan>[
-                                new TextSpan(
-                                    text:
-                                        'Tem certeza de que deseja sair desta aventura?'),
-                              ],
-                            ):
-                            new TextSpan(
-                              style: new TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                              ),
-                              children: <TextSpan>[
-                                new TextSpan(
-                                    text:
-                                    'Tem certeza de que deseja excluir o personagem de '),
-                                new TextSpan(
-                                    text: player.username,
-                                    style: new TextStyle(
-                                        fontWeight: FontWeight.bold)),
-                                new TextSpan(text: ' desta aventura?'),
-                              ],
-                            ),
-                          )
-                        ],
-                      )),
-                      actions: <Widget>[
-                        FlatButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Text("NÃO")),
-                        FlatButton(
-                            onPressed: () {
-                              setState(() {
-                                _bloc.leaveAdventure(player.id, adventure.id);
-                              });
-                              if (player.id == currentUserSnapshot.data.uid)
-                                Navigator.pushNamed(context, '/index_adventure');
-                              else
-                                Navigator.pop(context);
-                            },
-                            child: Text("SIM"))
-                      ],
-                    );
-                  }));
+          return StreamBuilder(
+            stream: _bloc.getUserData(player.id),
+            builder: (context, userSnapshot) {
+              if (userSnapshot.hasData) {
+                User user = _bloc.mapToUser(document: userSnapshot.data);
+                return IconButton(
+                    icon: Icon(Icons.remove_circle_outline),
+                    onPressed: () => showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Atenção!"),
+                            elevation: 0,
+                            backgroundColor: const Color(0xffffffff),
+                            content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: <Widget>[
+                                    RichText(
+                                      textAlign: TextAlign.center,
+                                      text:
+                                      currentUserSnapshot.data.uid == player.id ?
+                                      new TextSpan(
+                                        style: new TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.black,
+                                        ),
+                                        children: <TextSpan>[
+                                          new TextSpan(
+                                              text:
+                                              'Tem certeza de que deseja sair desta aventura?'),
+                                        ],
+                                      ):
+                                      new TextSpan(
+                                        style: new TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.black,
+                                        ),
+                                        children: <TextSpan>[
+                                          new TextSpan(
+                                              text:
+                                              'Tem certeza de que deseja excluir o personagem de '),
+                                          new TextSpan(
+                                              text: player.username,
+                                              style: new TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          new TextSpan(text: ' desta aventura?'),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )),
+                            actions: <Widget>[
+                              FlatButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text("NÃO")),
+                              FlatButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _bloc.leaveAdventure(player, adventure.id, user.token);
+                                    });
+                                    if (player.id == currentUserSnapshot.data.uid)
+                                      Navigator.pushNamed(context, '/index_adventure');
+                                    else
+                                      Navigator.pop(context);
+                                  },
+                                  child: Text("SIM"))
+                            ],
+                          );
+                        }));
+              }
+              else
+                return Text("");
+            },
+          );
         else
           return Text("");
       },

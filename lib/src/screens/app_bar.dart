@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
+import 'package:igor_app/src/blocs/invites_bloc.dart';
 import 'package:igor_app/src/blocs/login_bloc.dart';
 
 import '../../app_config.dart';
 
 final _bloc = $Provider.of<LoginBloc>();
+
+String _notificationIcon = 'assets/navbar/Convite.webp';
 
 class IgorAppBar extends AppBar {
   IgorAppBar({Key key})
@@ -55,7 +58,7 @@ class IgorDrawer extends Drawer {
                       ),
                     ),
                     SizedBox(height: 3 * appConfig.blockSizeVertical),
-                    GestureDetector(
+                    /*GestureDetector(
                       onTap: () => print(
                           "Livros"), //Navigator.pushNamed(context, '/index_book'),
                       child: Container(
@@ -74,7 +77,7 @@ class IgorDrawer extends Drawer {
                         ),
                       ),
                     ),
-                    SizedBox(height: 3 * appConfig.blockSizeVertical),
+                    SizedBox(height: 3 * appConfig.blockSizeVertical),*/
                     GestureDetector(
                       onTap: () => print(
                           "Conta"), //Navigator.pushNamed(context, '/view_user'),
@@ -95,7 +98,7 @@ class IgorDrawer extends Drawer {
                       ),
                     ),
                     SizedBox(height: 3 * appConfig.blockSizeVertical),
-                    GestureDetector(
+                    /*GestureDetector(
                       onTap: () => print(
                           "Notificações"), //Navigator.pushNamed(context, '/index_notification'),
                       child: Container(
@@ -114,8 +117,8 @@ class IgorDrawer extends Drawer {
                         ),
                       ),
                     ),
-                    SizedBox(height: 3 * appConfig.blockSizeVertical),
-                    GestureDetector(
+                    SizedBox(height: 3 * appConfig.blockSizeVertical),*/
+                    /*GestureDetector(
                       onTap: () => print(
                           "Configurações"), //Navigator.pushNamed(context, '/index_configuration'),
                       child: Container(
@@ -134,7 +137,7 @@ class IgorDrawer extends Drawer {
                         ),
                       ),
                     ),
-                    SizedBox(height: 3 * appConfig.blockSizeVertical),
+                    SizedBox(height: 3 * appConfig.blockSizeVertical),*/
                     GestureDetector(
                       onTap: () =>
                         Navigator.pushNamed(context, '/index_invites'),
@@ -143,7 +146,38 @@ class IgorDrawer extends Drawer {
                         width: 100 * appConfig.blockSize,
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.mail_outline, color: const Color(0xffff3d55), size: 5*appConfig.blockSizeVertical,),
+                            //Icon(Icons.mail_outline, color: const Color(0xffff3d55), size: 5*appConfig.blockSizeVertical,),
+                            /*StreamBuilder(
+                              stream: FirebaseAuth.instance.onAuthStateChanged,
+                              builder: (context, currentUserSnapshot) {
+                                if (currentUserSnapshot.hasData)
+                                  return StreamBuilder(
+                                    stream: _invitesBloc.getInvites(currentUserSnapshot.data.uid),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        List<DocumentSnapshot> docs =
+                                            snapshot.data.documents;
+                                        List<Invite> invitesList =
+                                        _invitesBloc.mapToInviteList(docList: docs);
+                                        if (invitesList.isNotEmpty)
+                                          _notificationIcon = 'assets/navbar/Convite_2.webp';
+                                        else
+                                          _notificationIcon = 'assets/navbar/Convite.webp';
+                                        return Text("");
+                                      }
+                                      else
+                                        return Text("");
+                                    }
+                                  );
+                                else {
+                                  _notificationIcon = 'assets/navbar/Convite.webp';
+                                  return Text("");
+                                }
+                              },
+                            ),*/
+                            Image.asset(_notificationIcon,
+                              height: 5 * appConfig.blockSizeVertical,
+                              width: 5 * appConfig.blockSizeVertical),
                             SizedBox(width: 4 * appConfig.blockSize),
                             Text("Convites",
                                 style:
@@ -178,3 +212,4 @@ class IgorDrawer extends Drawer {
               ),
             ));
 }
+

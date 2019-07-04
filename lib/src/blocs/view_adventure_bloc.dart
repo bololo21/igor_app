@@ -53,7 +53,8 @@ class ViewAdventureBloc extends Bloc {
     docList.forEach((document) {
       User user = User(
           document.documentID,
-          document.data["playerUsername"]
+          document.data["playerUsername"],
+          document.data["token"]
       );
       userList.add(user);
     });
@@ -86,7 +87,7 @@ class ViewAdventureBloc extends Bloc {
           document.documentID,
           document.data["sessionName"],
           document.data["adventureUid"],
-          document.data["sessionDate"].toDate());
+          document.data["sessionDate"]);
       sessionList.add(session);
     });
     return sessionList;
@@ -98,8 +99,21 @@ class ViewAdventureBloc extends Bloc {
 
   deleteSession(String sessionUid) => _repository.deleteSession(sessionUid);
 
-  Future<void> leaveAdventure(String playerUid, String adventureUid) =>
-    _repository.leaveAdventure(playerUid, adventureUid);
+  Future<void> leaveAdventure(Player player, String adventureUid, String userToken) =>
+    _repository.leaveAdventure(player, adventureUid, userToken);
 
   static Bloc instance() => ViewAdventureBloc();
+
+  Stream<DocumentSnapshot> getUserData(String userUid) {
+    return _repository.getUserData(userUid);
+  }
+
+  User mapToUser({DocumentSnapshot document}) {
+    User user = User(
+        document.documentID,
+        document.data["playerUsername"],
+        document.data["token"]);
+    return user;
+  }
+
 }

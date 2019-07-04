@@ -63,6 +63,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:18.0.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:18.0.1'
+    implementation ("com.google.firebase:firebase-messaging:19.0.0"){
+        exclude group: 'com.google.firebase', module: 'firebase-iid'
+    }
+    implementation 'com.google.firebase:firebase-iid:18.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
+//com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

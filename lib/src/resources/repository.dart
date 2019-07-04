@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:igor_app/src/models/player.dart';
 import 'package:igor_app/src/models/user.dart';
 
 import 'package:igor_app/src/resources/firestore_provider.dart';
@@ -10,9 +11,11 @@ class Repository {
   final _firebaseAuthProvider = FirebaseAuthProvider();
 
   //users
-
-  Future<FirebaseUser> authenticateUser(String email, String password) =>
-      _firebaseAuthProvider.authenticateUser(email, password);
+  Future<FirebaseUser> authenticateUser(String email, String password) {
+    Future<FirebaseUser> user = _firebaseAuthProvider.authenticateUser(email, password);
+    user.then((u) => _firestoreProvider.saveDeviceToken());
+    return user;
+  }
 
   Future<void> registerUser(String email, String password, String username,
       String date, String gender) async {
@@ -39,11 +42,15 @@ class Repository {
   Stream<QuerySnapshot> getInvitedUsers(String adventureUid) =>
       _firestoreProvider.getInvitedUsers(adventureUid);
 
-  Future<void> addUserToAdventure(User user, String adventureUid) =>
-      _firestoreProvider.addUserToAdventure(user, adventureUid);
+  Future<void> addUserToAdventure(User user, String adventureUid, User master) {
+    _firestoreProvider.addUserToAdventure(user, adventureUid);
+    return _firestoreProvider.sendNotification(title: "Novo jogador na aventura :)", body: "${user.username} aceitou seu convite para entrar na sua aventura!", deviceTarget: master.token);
+  }
 
-  Future<void> inviteUser(User user, String adventureUid) =>
-      _firestoreProvider.inviteUser(user, adventureUid);
+  Future<void> inviteUser(User user, String adventureUid) {
+    _firestoreProvider.inviteUser(user, adventureUid);
+    return _firestoreProvider.sendNotification(title: "Você tem um novo convite de aventura :)", body: "Entre na área de convites da sua conta para aceitar ou recusar!", deviceTarget: user.token);
+  }
 
   Future<void> addCharacterToAdventure(
           String userUid,
@@ -130,8 +137,9 @@ class Repository {
         sessionUid, sessionName, sessionDate);
   }
 
-  Future<void> leaveAdventure(String playerUid, String adventureUid) {
-    return _firestoreProvider.leaveAdventure(playerUid, adventureUid);
+  Future<void> leaveAdventure(Player player, String adventureUid, String userToken) {
+    return _firestoreProvider.leaveAdventure(player.id, adventureUid);
+    //return _firestoreProvider.sendNotification(title: "Ops...", body: "O mestre te removeu da aventura :(", deviceTarget: userToken);
   }
 
   Stream<QuerySnapshot> getNextSessions(String adventureUid) =>

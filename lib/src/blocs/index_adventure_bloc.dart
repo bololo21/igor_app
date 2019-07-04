@@ -40,7 +40,7 @@ class IndexAdventureBloc extends Bloc {
           document.documentID,
           document.data["sessionName"],
           document.data["adventureUid"],
-          document.data["sessionDate"].toDate());
+          document.data["sessionDate"]);
 
       sessionList.add(session);
     });

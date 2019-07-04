@@ -52,7 +52,8 @@ class AddUserBloc extends Bloc {
     docList.forEach((document) {
       User user = User(
         document.documentID,
-        document.data["username"]
+        document.data["username"],
+          document.data["token"]
       );
       userList.add(user);
     });

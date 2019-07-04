@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:igor_app/app_config.dart';
 import 'package:igor_app/src/models/user.dart';
+import 'package:http/http.dart' as http;
+
 
 class FirestoreProvider {
   Firestore _firestore = Firestore.instance;
@@ -76,6 +82,15 @@ class FirestoreProvider {
           }
         });
         sessionDS.reference.delete();
+      }
+    });
+    _firestore
+        .collection('invites')
+        .where('adventureUid', isEqualTo: adventureUid)
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
       }
     });
     adventure.collection('players').getDocuments().then((snapshot) {
@@ -275,4 +290,52 @@ class FirestoreProvider {
         .document(sessionUid)
         .updateData({'sessionName': sessionName, 'sessionDate': sessionDate});
   }
+
+  saveDeviceToken() async {
+    // Get the current user
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
+    // Get the token for this device
+    String fcmToken = await appConfig.firebaseMessaging.getToken();
+
+    // Save it to Firestore
+    if (fcmToken != null) {
+      _firestore
+          .collection('users')
+          .document(user.uid).updateData({"token": fcmToken});
+    }
+  }
+
+  Future<bool> sendNotification({String title, String body,String deviceTarget}) async {
+    final postUrl = 'https://fcm.googleapis.com/fcm/send';
+
+    final data = {
+      "notification": {"body": body, "title": title},
+      "priority": "high",
+      "data": {
+        "click_action": "FLUTTER_NOTIFICATION_CLICK",
+        "id": "1",
+        "status": "done"
+      },
+      "to": deviceTarget
+    };
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization': 'key=AIzaSyA7IB1hfF6VOpa_aOMnXK4weQltRAxwNAY'
+    };
+
+    final response = await http.post(postUrl,
+        body: json.encode(data),
+        encoding: Encoding.getByName('utf-8'),
+        headers: headers);
+    print(response.body.toString());
+    if (response.statusCode == 200) {
+      // on success do sth
+      return true;
+    } else {
+      // on failure do sth
+      return false;
+    }
+  }
+
 }

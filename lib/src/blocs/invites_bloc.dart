@@ -13,8 +13,8 @@ class InvitesBloc extends Bloc {
     return _repository.getInvites(userUid);
   }
 
-  Future<void> addUserToAdventure(User user, String adventureUid) {
-    return _repository.addUserToAdventure(user, adventureUid);
+  Future<void> addUserToAdventure(User user, String adventureUid, User master) {
+    return _repository.addUserToAdventure(user, adventureUid, master);
   }
 
   List mapToInviteList({List<DocumentSnapshot> docList}) {
@@ -44,7 +44,8 @@ class InvitesBloc extends Bloc {
   User mapToUser({DocumentSnapshot document}) {
     User user = User(
         document.documentID,
-        document.data["username"]);
+        document.data["username"],
+    document.data["token"]);
     return user;
   }
 

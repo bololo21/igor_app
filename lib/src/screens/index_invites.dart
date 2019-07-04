@@ -35,7 +35,6 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
                         if (userSnapshot.hasData) {
                           User currentUser =
                               _bloc.mapToUser(document: userSnapshot.data);
-
                           return StreamBuilder(
                             stream:
                                 _bloc.getInvites(currentUserSnapshot.data.uid),
@@ -71,9 +70,11 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
 
   Widget buildList(List<Invite> invitesList, User currentUser) {
     if (invitesList.isEmpty) {
-      return Text("Você não possui convites :(", style: TextStyle(color: const Color(0xffe2e2e1)),);
-    }
-    else{
+      return Text(
+        "Você não possui convites :(",
+        style: TextStyle(color: const Color(0xffe2e2e1)),
+      );
+    } else {
       return ListView.separated(
           separatorBuilder: (BuildContext context, int index) =>
               Divider(color: Colors.transparent, height: 3),
@@ -81,29 +82,35 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
           itemBuilder: (context, index) {
             return GestureDetector(
               child: StreamBuilder(
-                  stream: _bloc.getAdventureData(invitesList[index].adventureUid),
+                  stream:
+                      _bloc.getAdventureData(invitesList[index].adventureUid),
                   builder: (context, adventureSnapshot) {
                     if (adventureSnapshot.hasData) {
-                      Adventure adventure =
-                      _bloc.mapToAdventure(document: adventureSnapshot.data);
+                      Adventure adventure = _bloc.mapToAdventure(
+                          document: adventureSnapshot.data);
                       return StreamBuilder(
                           stream: _bloc.getUserData(adventure.masterUid),
                           builder: (context, masterSnapshot) {
                             if (masterSnapshot.hasData) {
-                              User master =
-                              _bloc.mapToUser(document: masterSnapshot.data);
+                              User master = _bloc.mapToUser(
+                                  document: masterSnapshot.data);
                               return inviteCard(adventure, master, currentUser,
                                   invitesList[index].inviteUid);
                             } else
-                              return Text("Carregando...");
+                              return Text("Carregando...",
+                                  style: TextStyle(
+                                      fontFamily: 'Fira-sans',
+                                      color: const Color(0xffe2e2e1)));
                           });
                     } else
-                      return Text("Carregando...");
+                      return Text("Carregando...",
+                          style: TextStyle(
+                              fontFamily: 'Fira-sans',
+                              color: const Color(0xffe2e2e1)));
                   }),
             );
           });
     }
-
   }
 
   @override
@@ -159,24 +166,20 @@ class _IndexInvitesScreenState extends State<IndexInvitesScreen> {
           child: IconButton(
               icon: Icon(Icons.check),
               onPressed: () {
-                _bloc.addUserToAdventure(currentUser, adventure.id);
+                _bloc.addUserToAdventure(currentUser, adventure.id, master);
                 _bloc.deleteInvite(inviteUid);
-                setState(() {
-                });
+                setState(() {});
               }),
         ),
-
         Positioned(
             right: 2 * appConfig.blockSize,
             bottom: 2 * appConfig.blockSizeVertical,
-            child:IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              _bloc.deleteInvite(inviteUid);
-              setState(() {
-              });
-            }))
-
+            child: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  _bloc.deleteInvite(inviteUid);
+                  setState(() {});
+                }))
       ],
     );
   }
