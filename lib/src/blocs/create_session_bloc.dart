@@ -6,16 +6,13 @@ import 'package:rxdart/rxdart.dart';
 
 class CreateSessionBloc extends Bloc {
   final _repository = Repository();
-  final _adventureUid = BehaviorSubject<String>();
   final _sessionName = BehaviorSubject<String>();
   final _date = BehaviorSubject<DateTime>();
 
-  Observable<String> get adventureName => _adventureUid.stream;
   Observable<String> get sessionName => _sessionName.stream;
   Observable<DateTime> get date => _date.stream;
 
   // Change data
-  Function(String) get changeAdventureName => _adventureUid.sink.add;
   Function(String) get changeSessionName => _sessionName.sink.add;
   Function(DateTime) get changeDate => _date.sink.add;
 
@@ -32,8 +29,6 @@ class CreateSessionBloc extends Bloc {
   }
 
   void dispose() async {
-    await _adventureUid.drain();
-    _adventureUid.close();
     await _sessionName.drain();
     _sessionName.close();
     await _date.drain();

@@ -27,6 +27,10 @@ class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
       _descriptionController.text = widget.adventure.description;
       _imagePath = widget.adventure.imagePath;
     }
+    else {
+      _bloc.changeName(null);
+      _bloc.changeDescription(null);
+    }
     super.initState();
   }
 
@@ -192,7 +196,6 @@ class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
                                     _bloc.changeDescription(_descriptionController.text);
                                     _bloc.changeName(_nameController.text);
                                     _bloc.updateAdventure(widget.adventure.id);
-
                                   }
                                   //Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAdventureScreen(adventureUid: )));
                                   Navigator.pushNamed(
@@ -216,6 +219,8 @@ class _RegisterAdventureScreenState extends State<RegisterAdventureScreen> {
   @override
   void dispose() {
     $Provider.dispose<RegisterAdventureBloc>();
+    _nameController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 }
