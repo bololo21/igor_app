@@ -237,7 +237,9 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
                                 child: Text("NÃO")),
                             FlatButton(
                                 onPressed: () {
-                                  _bloc.deleteAdventure(adventure.id);
+                                  setState(() {
+                                    _bloc.deleteAdventure(adventure.id);
+                                  });
                                   Navigator.pop(context);
                                 },
                                 child: Text("SIM"))

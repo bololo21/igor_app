@@ -408,7 +408,9 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen>
                                   child: Text("NÃO")),
                               FlatButton(
                                   onPressed: () {
-                                    _bloc.deleteSession(session.id);
+                                    setState(() {
+                                      _bloc.deleteSession(session.id);
+                                    });
                                     Navigator.pop(context);
                                   },
                                   child: Text("SIM"))
@@ -485,8 +487,13 @@ class _ViewAdventureScreenState extends State<ViewAdventureScreen>
                             child: Text("NÃO")),
                         FlatButton(
                             onPressed: () {
-                              _bloc.leaveAdventure(player.id, adventure.id);
-                              Navigator.pop(context);
+                              setState(() {
+                                _bloc.leaveAdventure(player.id, adventure.id);
+                              });
+                              if (player.id == currentUserSnapshot.data.uid)
+                                Navigator.pushNamed(context, '/index_adventure');
+                              else
+                                Navigator.pop(context);
                             },
                             child: Text("SIM"))
                       ],
