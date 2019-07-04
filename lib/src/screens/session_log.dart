@@ -22,6 +22,7 @@ class SessionLogScreen extends StatefulWidget {
 class _SessionLogScreenState extends State<SessionLogScreen> {
   final _bloc = $Provider.of<SessionLogBloc>();
   D20 d20 = D20();
+
   int diceValue;
   Player currentPlayer;
   ScrollController _scrollController = new ScrollController();
@@ -113,7 +114,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return Text(
-                  "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()}!",
+                  "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()} em um Dado ${logsList[index].dice}",
                   style: TextStyle(fontFamily: 'Fira-sans'));
             }),
       ),
@@ -133,23 +134,116 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   currentPlayer = _bloc.mapToPlayer(snapshot.data);
-                  return FloatingActionButton(
-                    child: Image.asset('assets/adventures/botão_espadas.webp'),
-                    onPressed: () {
-                      setState(() {
-                        diceValue = d20.roll('1d20');
-                      });
-                      _bloc
-                          .insertIntoSessionLog(widget.sessionUid, diceValue,
-                          currentPlayer.characterName)
-                          .then((log) => _scrollController.animateTo(
-                          _scrollController.position.maxScrollExtent,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut));
-                    },
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                  );
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        SizedBox(width: 24),
+                        FloatingActionButton(
+                        child: Text("D4", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
+                        //Image.asset('assets/adventures/botão_espadas.webp'),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d4');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName, 'D4')
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                     FloatingActionButton(
+                        child: Text("D6", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d6');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName, 'D6')
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                      FloatingActionButton(
+                        child: Text("D8", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d8');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName, 'D8')
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                     FloatingActionButton(
+                        child: Text("D10", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d10');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName, 'D10')
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                        FloatingActionButton(
+                        child: Text("D12", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d12');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName, 'D12')
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                     FloatingActionButton(
+                        child: Text("D20", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
+                        onPressed: () {
+                          setState(() {
+                            diceValue = d20.roll('1d20');
+                          });
+                          _bloc
+                              .insertIntoSessionLog(widget.sessionUid, diceValue,
+                              currentPlayer.characterName, 'D20')
+                              .then((log) => _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut));
+                        },
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+
+                  ]);
                 } else
                   return Center(
                     child: Text("Carregando...",
