@@ -125,18 +125,18 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                     Toast.show(
                                         "Este jogador já foi adicionado!",
                                         context,
-                                        duration: Toast.LENGTH_LONG,
+                                        duration: Toast.LENGTH_SHORT,
                                         gravity: Toast.BOTTOM);
                                   else if (invitesList.any((invite) =>
                                   user.id == invite.userUid)) {
                                     Toast.show("Este jogador já foi convidado!",
                                         context,
-                                        duration: Toast.LENGTH_LONG,
+                                        duration: Toast.LENGTH_SHORT,
                                         gravity: Toast.BOTTOM);
                                   } else {
                                     _bloc.inviteUser(user, widget.adventureUid);
                                     Toast.show("Jogador convidado!", context,
-                                        duration: Toast.LENGTH_LONG,
+                                        duration: Toast.LENGTH_SHORT,
                                         gravity: Toast.BOTTOM);
                                   }
                                 },

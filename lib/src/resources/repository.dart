@@ -79,7 +79,7 @@ class Repository {
           adventureName, adventureDate, description, imagePath);
 
   Future<void> createSession(
-          String adventureUid, String sessionName, String sessionDate) =>
+          String adventureUid, String sessionName, DateTime sessionDate) =>
       _firestoreProvider.createSessionData(
           adventureUid, sessionName, sessionDate);
 
@@ -125,7 +125,7 @@ class Repository {
         adventureUid, adventureName, description, imagePath);
   }
 
-  Future<void> updateSession(String sessionUid, String sessionName, String sessionDate) {
+  Future<void> updateSession(String sessionUid, String sessionName, DateTime sessionDate) {
     return _firestoreProvider.updateSession(
         sessionUid, sessionName, sessionDate);
   }
@@ -133,4 +133,8 @@ class Repository {
   Future<void> leaveAdventure(String playerUid, String adventureUid) {
     return _firestoreProvider.leaveAdventure(playerUid, adventureUid);
   }
+
+  Stream<QuerySnapshot> getNextSessions(String adventureUid) =>
+      _firestoreProvider.getNextSessions(adventureUid);
+
 }
