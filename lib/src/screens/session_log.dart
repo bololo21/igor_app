@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:d20/d20.dart';
-import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:igor_app/app_config.dart';
@@ -115,7 +114,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return Text(
-                  "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()}! em um Dado d${logsList[index].dice}",
+                  "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()} em um Dado ${logsList[index].dice}",
                   style: TextStyle(fontFamily: 'Fira-sans'));
             }),
       ),
@@ -145,11 +144,11 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         //Image.asset('assets/adventures/botão_espadas.webp'),
                         onPressed: () {
                           setState(() {
-                            diceValue = dquatro();
+                            diceValue = d20.roll('1d4');
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
-                              currentPlayer.characterName)
+                              currentPlayer.characterName, 'D4')
                               .then((log) => _scrollController.animateTo(
                               _scrollController.position.maxScrollExtent,
                               duration: const Duration(milliseconds: 300),
@@ -162,11 +161,11 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Text("D6", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
-                            diceValue = dseis();
+                            diceValue = d20.roll('1d6');
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
-                              currentPlayer.characterName)
+                              currentPlayer.characterName, 'D6')
                               .then((log) => _scrollController.animateTo(
                               _scrollController.position.maxScrollExtent,
                               duration: const Duration(milliseconds: 300),
@@ -179,11 +178,11 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Text("D8", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
-                            diceValue = doito();
+                            diceValue = d20.roll('1d8');
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
-                              currentPlayer.characterName)
+                              currentPlayer.characterName, 'D8')
                               .then((log) => _scrollController.animateTo(
                               _scrollController.position.maxScrollExtent,
                               duration: const Duration(milliseconds: 300),
@@ -196,11 +195,11 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Text("D10", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
-                            diceValue = ddez();
+                            diceValue = d20.roll('1d10');
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
-                              currentPlayer.characterName)
+                              currentPlayer.characterName, 'D10')
                               .then((log) => _scrollController.animateTo(
                               _scrollController.position.maxScrollExtent,
                               duration: const Duration(milliseconds: 300),
@@ -213,11 +212,11 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         child: Text("D12", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         onPressed: () {
                           setState(() {
-                            diceValue = ddoze();
+                            diceValue = d20.roll('1d12');
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
-                              currentPlayer.characterName)
+                              currentPlayer.characterName, 'D12')
                               .then((log) => _scrollController.animateTo(
                               _scrollController.position.maxScrollExtent,
                               duration: const Duration(milliseconds: 300),
@@ -234,7 +233,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                           });
                           _bloc
                               .insertIntoSessionLog(widget.sessionUid, diceValue,
-                              currentPlayer.characterName)
+                              currentPlayer.characterName, 'D20')
                               .then((log) => _scrollController.animateTo(
                               _scrollController.position.maxScrollExtent,
                               duration: const Duration(milliseconds: 300),
