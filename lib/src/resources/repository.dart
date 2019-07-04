@@ -107,9 +107,9 @@ class Repository {
       _firestoreProvider.deleteAdventure(adventureUid);
 
   Future<void> insertIntoSessionLog(
-          String sessionUid, int diceValue, String playerName) =>
+          String sessionUid, int diceValue, String playerName, String dice) =>
       _firestoreProvider.insertIntoSessionLog(
-          sessionUid, diceValue, playerName);
+          sessionUid, diceValue, playerName, dice);
 
   Stream<DocumentSnapshot> getCurrentUserPlayer(
           String userUid, String adventureUid) =>

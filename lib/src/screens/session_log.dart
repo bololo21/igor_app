@@ -102,46 +102,6 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
     );
   }
 
-  int dseis(){
-    Random rnd = new Random();
-    int min = 1;
-    int max = 7;
-    int r = min + rnd.nextInt(max - min);
-    return r;
-  }
-
-  int dquatro(){
-    Random rnd = new Random();
-    int min = 1;
-    int max = 5;
-    int r = min + rnd.nextInt(max - min);
-    return r;
-  }
-  int doito(){
-    Random rnd = new Random();
-    int min = 1;
-    int max = 9;
-    int r = min + rnd.nextInt(max - min);
-    return r;
-  }
-
-  int ddez(){
-    Random rnd = new Random();
-    int min = 1;
-    int max = 11;
-    int r = min + rnd.nextInt(max - min);
-    return r;
-  }
-
-  int ddoze(){
-    Random rnd = new Random();
-    int min = 1;
-    int max = 13;
-    int r = min + rnd.nextInt(max - min);
-    return r;
-  }
-
-
   Scrollbar buildList(List<Log> logsList) {
     return Scrollbar(
       child: MediaQuery.removePadding(
@@ -155,7 +115,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return Text(
-                  "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()}!",
+                  "${logsList[index].characterName} rodou ${logsList[index].diceValue.toString()}! em um Dado d${logsList[index].dice}",
                   style: TextStyle(fontFamily: 'Fira-sans'));
             }),
       ),
@@ -283,7 +243,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                         backgroundColor: Colors.transparent,
                         elevation: 0,
                       ),
-                      
+
                   ]);
                 } else
                   return Center(
