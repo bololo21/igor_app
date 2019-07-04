@@ -179,7 +179,7 @@ class _SessionLogScreenState extends State<SessionLogScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        SizedBox(width: 25),
+                        SizedBox(width: 24),
                         FloatingActionButton(
                         child: Text("D4", style: TextStyle(fontFamily: 'Fira-sans', fontWeight: FontWeight.bold, color: Colors.greenAccent, fontSize: 22)),
                         //Image.asset('assets/adventures/botão_espadas.webp'),
