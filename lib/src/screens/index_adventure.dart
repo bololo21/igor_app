@@ -171,7 +171,6 @@ class _IndexAdventureScreenState extends State<IndexAdventureScreen> {
     super.dispose();
   }
 
-  // TODO - implementar showProgressBar
   Widget showProgressBar(String id) {
     return Stack(children: <Widget>[
       //Image.asset("assets/adventures/marcador_barra_de_progressão.webp", width: 2 * appConfig.blockSize),

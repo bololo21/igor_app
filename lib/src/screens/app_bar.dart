@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:igor_app/src/blocs/bloc_provider.dart';
-import 'package:igor_app/src/blocs/invites_bloc.dart';
 import 'package:igor_app/src/blocs/login_bloc.dart';
 
 import '../../app_config.dart';
